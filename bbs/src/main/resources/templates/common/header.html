@@ -1,0 +1,66 @@
+<!-- 顶部工具栏 -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div class="fly-header layui-bg-black" th:fragment="bbsHeader">
+    <div class="layui-container">
+        <a class="fly-logo" th:href="@{/}">
+            <img th:src="@{/res/images/logo.png}" alt="layui">
+        </a>
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item layui-this">
+                <a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>
+            </li>
+            <li class="layui-nav-item layui-this" sec:authorize="isAuthenticated()">
+                <div sec:authorize="hasRole('ROLE_MANAGER')">
+                    <a href="/"><i class="iconfont icon-shezhi"></i>管理</a>
+                </div>
+            </li>
+
+            <li class="layui-nav-item">
+                <a href="case/case.html"><i class="iconfont icon-iconmingxinganli"></i>案例</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
+            </li>
+        </ul>
+
+        <ul class="layui-nav fly-nav-user">
+
+            <!-- 未登入的状态 -->
+            <li class="layui-nav-item" sec:authorize="isAnonymous()">
+
+                <a class="iconfont icon-touxiang layui-hide-xs" th:href="@{/login}"></a>
+            </li>
+            <li class="layui-nav-item" sec:authorize="isAnonymous()">
+
+                <a th:href="@{/login}">登入</a>
+            </li>
+
+            <!-- 登入后的状态 -->
+            <li class="layui-nav-item" sec:authorize="isAuthenticated()">
+
+                <a class="fly-nav-avatar" href="javascript:;">
+                    <cite class="layui-hide-xs" sec:authentication="principal.name"></cite>
+                    <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
+                    <i class="layui-badge fly-badge-vip layui-hide-xs" sec:authentication="principal.vipLevel">VIP3</i>
+                    <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a th:href="@{/user/set}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+                    <dd><a th:href="@{/user/message}"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+                    <dd><a th:href="@{/user/home}"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
+                    </dd>
+                    <hr style="margin: 5px 0;">
+                    <dd>
+                        <form th:action="@{/logout}" method="post" id="_logoutForm">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <a href="javascript:void(0)" style="text-align: center;"
+                               onclick="document.getElementById('_logoutForm').submit();">退出</a>
+                        </form>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
