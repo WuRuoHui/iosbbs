@@ -41,8 +41,6 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         <!-- 指定数据库表 -->
-        <table schema="" tableName="bbs_dept" domainObjectName="Dept"></table>
-        <table schema="" tableName="bbs_game" domainObjectName="Game"></table>
-        <table schema="" tableName="bbs_game_contact" domainObjectName="GameContact"></table>
+        <table schema="" tableName="bbs_top_menu" domainObjectName="TopMenu"></table>
     </context>
 </generatorConfiguration>
