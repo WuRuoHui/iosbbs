@@ -47,7 +47,7 @@ layui.use(['bodyTab', 'form', 'element', 'layer', 'jquery'], function () {
 
     //通过顶部菜单获取左侧二三级菜单   注：此处只做演示之用，实际开发中通过接口传参的方式获取导航数据
     function getData(json) {
-        $.getJSON(tab.tabConfig.url, function (data) {
+        $.getJSON('/menu/leftNav', function (data) {
             if (json == "contentManagement") {
                 dataStr = data.contentManagement;
                 //重新渲染左侧菜单
