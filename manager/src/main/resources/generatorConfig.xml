@@ -41,6 +41,6 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         <!-- 指定数据库表 -->
-        <table schema="" tableName="bbs_left_nav" domainObjectName="LeftNav"></table>
+        <table schema="" tableName="bbs_link_list" domainObjectName="FriendlyLink"></table>
     </context>
 </generatorConfiguration>

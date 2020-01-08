@@ -32,6 +32,10 @@ public class IndexController {
         return "index";
     }
 
+    @RequestMapping("/page/main")
+    public String showMain() {
+        return "page/main";
+    }
     @RequestMapping("/menu/topMenu")
     @ResponseBody
     public LayUIResult showTopMenu(){

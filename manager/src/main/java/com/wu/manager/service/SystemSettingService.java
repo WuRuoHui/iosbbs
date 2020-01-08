@@ -1,0 +1,17 @@
+package com.wu.manager.service;
+
+import com.wu.common.utils.LayUIResult;
+import com.wu.manager.pojo.FriendlyLink;
+
+/**
+ * @description: 系统设置service接口
+ * @author: Wu
+ * @create: 2020-01-08 09:19
+ **/
+
+public interface SystemSettingService {
+
+    LayUIResult getAllLinkList();
+
+    LayUIResult addLinkList(FriendlyLink friendlyLink);
+}

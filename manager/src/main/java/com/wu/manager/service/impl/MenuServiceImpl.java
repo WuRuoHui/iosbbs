@@ -52,9 +52,9 @@ public class MenuServiceImpl implements MenuService {
                 BeanUtils.copyProperties(leftNav,leftNavNode);
                 //如果二级菜单是父节点，即有子节点
                 if (leftNav.getIsParent()) {
-//                    LeftNavExample leftThrNavExample = new LeftNavExample();
-                    leftNavExample.createCriteria().andMenuLevelEqualTo(3).andParentIdEqualTo(leftNav.getId());
-                    List<LeftNav> leftThrNavs = leftNavMapper.selectByExample(leftNavExample);
+                    LeftNavExample leftThrNavExample = new LeftNavExample();
+                    leftThrNavExample.createCriteria().andMenuLevelEqualTo(3).andParentIdEqualTo(leftNav.getId());
+                    List<LeftNav> leftThrNavs = leftNavMapper.selectByExample(leftThrNavExample);
                     List<LeftNavNode> navThrNodes = new ArrayList<>();      //三级菜单list容器
                     for (LeftNav leftNav1 : leftThrNavs) {
                         LeftNavNode leftThrNavNode = new LeftNavNode();
