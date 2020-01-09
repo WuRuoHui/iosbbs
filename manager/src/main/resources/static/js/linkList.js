@@ -101,18 +101,26 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
     $(".delAll_btn").click(function () {
         var checkStatus = table.checkStatus('linkListTab'),
             data = checkStatus.data,
-            linkId = [];
+            linkIds = [];
         if (data.length > 0) {
             for (var i in data) {
-                linkId.push(data[i].newsId);
+                linkIds[i] = data[i].linkId;
             }
             layer.confirm('确定删除选中的友链？', {icon: 3, title: '提示信息'}, function (index) {
-                // $.get("删除友链接口",{
-                //     linkId : linkId  //将需要删除的linkId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                $.ajax({
+                    url: '/systemSetting/linkList',
+                    type: 'DELETE',
+                    contentType:'application/json',
+                    dataType: 'json',
+                    data :JSON.stringify(linkIds),
+                    success: function (res) {
+                        top.layer.msg(res.msg)
+                        if (res.code == 0) {
+                            tableIns.reload();
+                        }
+                        layer.close(index);
+                    }
+                })
             })
         } else {
             layer.msg("请选择需要删除的友链");

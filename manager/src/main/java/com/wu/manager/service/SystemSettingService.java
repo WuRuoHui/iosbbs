@@ -3,6 +3,8 @@ package com.wu.manager.service;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.pojo.FriendlyLink;
 
+import java.util.List;
+
 /**
  * @description: 系统设置service接口
  * @author: Wu
@@ -16,4 +18,6 @@ public interface SystemSettingService {
     LayUIResult addLinkList(FriendlyLink friendlyLink);
 
     LayUIResult deleteLinkListById(Integer linkId);
+
+    LayUIResult deleteLinkListByIds(List<Integer> linkIds);
 }

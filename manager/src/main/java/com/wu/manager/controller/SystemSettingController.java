@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @description: 系统参数controller
  * @author: Wu
@@ -20,12 +22,29 @@ public class SystemSettingController {
     @Autowired
     private SystemSettingService systemSettingService;
 
-    @RequestMapping("/page/systemSetting/{pageName}")
-    public String showSystemSettingPage(@PathVariable(name = "pageName")String pageName) {
-        if (pageName.equals("null")) {
-            return null;
-        }
-        return "page/systemSetting/"+pageName;
+    @RequestMapping("/page/systemSetting/basicParameter")
+    public String showSystemSettingBasicParameter() {
+        return "page/systemSetting/basicParameter";
+    }
+
+    @RequestMapping("/page/systemSetting/icons")
+    public String showSystemSettingIcons() {
+        return "page/systemSetting/icons";
+    }
+
+    @RequestMapping("/page/systemSetting/logs")
+    public String showSystemSettingLogs() {
+        return "page/systemSetting/logs";
+    }
+
+    @RequestMapping("/page/systemSetting/linkList")
+    public String showSystemSettingLinkList() {
+        return "page/systemSetting/linkList";
+    }
+
+    @RequestMapping("/page/systemSetting/linksAdd")
+    public String showSystemSettingLinksAdd() {
+        return "page/systemSetting/linksAdd";
     }
 
     @RequestMapping(value = "/systemSetting/linkList",method = RequestMethod.GET)
@@ -39,6 +58,13 @@ public class SystemSettingController {
     @ResponseBody
     public LayUIResult addLinkList(FriendlyLink friendlyLink) {
         LayUIResult layUIResult = systemSettingService.addLinkList(friendlyLink);
+        return layUIResult;
+    }
+
+    @DeleteMapping(value = "/systemSetting/linkList")
+    @ResponseBody
+    public LayUIResult deleteLinkList(@RequestBody List<Integer> linkIds) {
+        LayUIResult layUIResult = systemSettingService.deleteLinkListByIds(linkIds);
         return layUIResult;
     }
 
