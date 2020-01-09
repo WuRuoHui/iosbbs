@@ -82,19 +82,6 @@ layui.use(['bodyTab', 'form', 'element', 'layer', 'jquery'], function () {
         //渲染顶部窗口
         tab.tabMove();
     })
-    /*$(".topLevelMenus li,.mobileTopLevelMenus dd").click(function () {
-        alert(1)
-        if ($(this).parents(".mobileTopLevelMenus").length != "0") {
-            $(".topLevelMenus li").eq($(this).index()).addClass("layui-this").siblings().removeClass("layui-this");
-        } else {
-            $(".mobileTopLevelMenus dd").eq($(this).index()).addClass("layui-this").siblings().removeClass("layui-this");
-        }
-        $(".layui-layout-admin").removeClass("showMenu");
-        $("body").addClass("site-mobile");
-        getData($(this).data("menu"));
-        //渲染顶部窗口
-        tab.tabMove();
-    })*/
 
     //隐藏左侧导航
     $(".hideMenu").click(function () {

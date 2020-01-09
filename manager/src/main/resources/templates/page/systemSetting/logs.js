@@ -14,6 +14,7 @@ layui.use(['table'],function(){
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
             {field: 'logId', title: '序号', width:60, align:"center"},
+            {field: 'linkId', width: 0, type: 'space', style: 'display:none'},
             {field: 'url', title: '请求地址', width:350},
             {field: 'method', title: '操作方式', align:'center',templet:function(d){
                 if(d.method.toUpperCase() == "GET"){

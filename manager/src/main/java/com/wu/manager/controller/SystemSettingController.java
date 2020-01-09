@@ -22,6 +22,9 @@ public class SystemSettingController {
 
     @RequestMapping("/page/systemSetting/{pageName}")
     public String showSystemSettingPage(@PathVariable(name = "pageName")String pageName) {
+        if (pageName.equals("null")) {
+            return null;
+        }
         return "page/systemSetting/"+pageName;
     }
 
@@ -36,6 +39,13 @@ public class SystemSettingController {
     @ResponseBody
     public LayUIResult addLinkList(FriendlyLink friendlyLink) {
         LayUIResult layUIResult = systemSettingService.addLinkList(friendlyLink);
+        return layUIResult;
+    }
+
+    @DeleteMapping(value = "/systemSetting/linkList/{linkId}")
+    @ResponseBody
+    public LayUIResult deleteLinkList(@PathVariable(name = "linkId")Integer linkId) {
+        LayUIResult layUIResult = systemSettingService.deleteLinkListById(linkId);
         return layUIResult;
     }
 }

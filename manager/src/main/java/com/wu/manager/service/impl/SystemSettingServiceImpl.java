@@ -44,6 +44,15 @@ public class SystemSettingServiceImpl implements SystemSettingService {
         if (StringUtils.isEmpty(friendlyLink.getWebsiteUrl())) {
             return LayUIResult.build(1,"网站链接必填");
         }
+        //判断是否存在linkId，存在即说明是修改请求
+        if (friendlyLink.getLinkId()!=null) {
+            friendlyLink.setModifyTime(System.currentTimeMillis());
+            int i = friendlyLinkMapper.updateByPrimaryKeySelective(friendlyLink);
+            if (i<1) {
+                return LayUIResult.build(1,"修改失败");
+            }
+            return LayUIResult.build(0,"修改成功");
+        }
         //查询此次插入的友链是否存在，根据网站名和网站URL判断
         FriendlyLinkExample friendlyLinkExample = new FriendlyLinkExample();
         FriendlyLinkExample.Criteria criteria1 = friendlyLinkExample.createCriteria();
@@ -65,5 +74,17 @@ public class SystemSettingServiceImpl implements SystemSettingService {
         }else {
             return LayUIResult.build(0,"添加成功");
         }
+    }
+
+    @Override
+    public LayUIResult deleteLinkListById(Integer linkId) {
+        if (linkId == null) {
+            return LayUIResult.build(1,"删除失败");
+        }
+        int i = friendlyLinkMapper.deleteByPrimaryKey(linkId);
+        if (i<1) {
+            return LayUIResult.build(1,"删除失败");
+        }
+        return LayUIResult.build(0,"删除成功");
     }
 }

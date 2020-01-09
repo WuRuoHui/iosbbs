@@ -18,6 +18,7 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
         id: "linkListTab",
         cols: [[
             {type: "checkbox", fixed: "left", width: 50},
+            {field: 'linkId', width: 0, type: 'space', style: 'display:none'},
             {
                 field: 'logo', title: 'LOGO', width: 180, align: "center", templet: function (d) {
                     return '<a href="' + d.websiteUrl + '" target="_blank"><img src="' + d.logo + '" height="26" /></a>';
@@ -70,10 +71,11 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
             title: "添加友链",
             type: 2,
             area: ["300px", "385px"],
-            content: "/page/systemSetting/linksAdd.html",
+            content: "/page/systemSetting/linksAdd",
             success: function (layero, index) {
                 var body = $($(".layui-layer-iframe", parent.document).find("iframe")[0].contentWindow.document.body);
                 if (edit) {
+                    body.find(".linkId").val(edit.linkId);
                     body.find(".linkLogo").css("background", "#fff");
                     body.find(".linkLogoImg").attr("src", edit.logo);
                     body.find(".linkName").val(edit.websiteName);
@@ -126,12 +128,19 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
             addLink(data);
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此友链？', {icon: 3, title: '提示信息'}, function (index) {
-                // $.get("删除友链接口",{
-                //     linkId : data.linkId  //将需要删除的linkId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                $.ajax({
+                    url: '/systemSetting/linkList/' + data.linkId,
+                    type: 'DELETE',
+                    contentType:'application/json',
+                    dataType: 'json',
+                    success: function (res) {
+                        top.layer.msg(res.msg)
+                        if (res.code == 0) {
+                            tableIns.reload();
+                        }
+                        layer.close(index);
+                    }
+                })
             });
         }
     });
@@ -169,11 +178,12 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
         // 实际使用时的提交信息
         $.post("/systemSetting/linkList", {
             logo: $(".linkLogo").attr("src"),  //logo
+            linkId: $(".linkId").val(),
             websiteName: $(".linkName").val(),  //网站名称
             websiteUrl: $(".linkUrl").val(),    //网址
             masterEmail: $('.masterEmail').val(),    //站长邮箱
             // showAddress : data.filed.showAddress == "on" ? "checked" : "",    //展示位置
-            showAddress: $('.showAddress em').text() == "首页" ? "checked" : "",    //展示位置
+            showAddress: $('.showAddress + .layui-form-switch em').text() == "首页" ? "checked" : "",    //展示位置
         }, function (res) {
             setTimeout(function () {
                 if (res.code == 0) {
@@ -188,13 +198,6 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
                 }
             }, 500);
         })
-        /*setTimeout(function(){
-            top.layer.close(index);
-            top.layer.msg("文章添加成功！");
-            layer.closeAll("iframe");
-            //刷新父页面
-            $(".layui-tab-item.layui-show",parent.document).find("iframe")[0].contentWindow.location.reload();
-        },500);*/
         return false;
     })
 

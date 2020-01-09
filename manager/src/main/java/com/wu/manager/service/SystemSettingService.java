@@ -14,4 +14,6 @@ public interface SystemSettingService {
     LayUIResult getAllLinkList();
 
     LayUIResult addLinkList(FriendlyLink friendlyLink);
+
+    LayUIResult deleteLinkListById(Integer linkId);
 }
