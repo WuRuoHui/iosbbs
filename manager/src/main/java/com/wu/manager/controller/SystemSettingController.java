@@ -22,11 +22,6 @@ public class SystemSettingController {
     @Autowired
     private SystemSettingService systemSettingService;
 
-    @RequestMapping("/page/systemSetting/basicParameter")
-    public String showSystemSettingBasicParameter() {
-        return "page/systemSetting/basicParameter";
-    }
-
     @RequestMapping("/page/systemSetting/icons")
     public String showSystemSettingIcons() {
         return "page/systemSetting/icons";
