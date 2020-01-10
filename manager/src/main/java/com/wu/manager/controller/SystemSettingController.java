@@ -49,11 +49,18 @@ public class SystemSettingController {
 
     @RequestMapping(value = "/systemSetting/linkList",method = RequestMethod.GET)
     @ResponseBody
-    public LayUIResult getLinkList() {
-        LayUIResult layUIResult = systemSettingService.getAllLinkList();
+    public LayUIResult getLinkList(String search) {
+        LayUIResult layUIResult = systemSettingService.getAllLinkList(search);
         return layUIResult;
     }
 
+    /**
+     * @Description: 插入一个友链
+     * @Param: [friendlyLink]
+     * @return: com.wu.common.utils.LayUIResult
+     * @Author: wu
+     * @Date: 2020/1/10
+     */
     @PostMapping(value = "/systemSetting/linkList")
     @ResponseBody
     public LayUIResult addLinkList(FriendlyLink friendlyLink) {
@@ -62,12 +69,26 @@ public class SystemSettingController {
     }
 
     @DeleteMapping(value = "/systemSetting/linkList")
+    /**
+    * @Description: 根据id集合删除多个友链
+    * @Param: [linkIds]
+    * @return: com.wu.common.utils.LayUIResult
+    * @Author: wu
+    * @Date: 2020/1/10
+    */
     @ResponseBody
     public LayUIResult deleteLinkList(@RequestBody List<Integer> linkIds) {
         LayUIResult layUIResult = systemSettingService.deleteLinkListByIds(linkIds);
         return layUIResult;
     }
 
+    /**
+     * @Description: 删除一个友链
+     * @Param: [linkId]
+     * @return: com.wu.common.utils.LayUIResult
+     * @Author: wu
+     * @Date: 2020/1/10
+     */
     @DeleteMapping(value = "/systemSetting/linkList/{linkId}")
     @ResponseBody
     public LayUIResult deleteLinkList(@PathVariable(name = "linkId")Integer linkId) {

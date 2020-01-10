@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface SystemSettingService {
 
-    LayUIResult getAllLinkList();
+    LayUIResult getAllLinkList(String search);
 
     LayUIResult addLinkList(FriendlyLink friendlyLink);
 

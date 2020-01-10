@@ -49,10 +49,14 @@ public class SystemSettingServiceImpl implements SystemSettingService {
      * @return: com.wu.common.utils.LayUIResult
      * @Author: wu
      * @Date: 2020/1/10
+     * @param search
      */
     @Override
-    public LayUIResult getAllLinkList() {
+    public LayUIResult getAllLinkList(String search) {
         FriendlyLinkExample friendlyLinkExample = new FriendlyLinkExample();
+        if (!StringUtils.isEmpty(search)) {
+            friendlyLinkExample.createCriteria().andWebsiteNameLike('%'+search.trim()+'%');
+        }
         List<FriendlyLink> friendlyLinks = friendlyLinkMapper.selectByExample(friendlyLinkExample);
         Integer count = 0;
         if (friendlyLinks != null || friendlyLinks.size() > 0) {

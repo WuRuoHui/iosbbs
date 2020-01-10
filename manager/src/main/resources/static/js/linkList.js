@@ -46,23 +46,44 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
                     return '<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a><a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>';
                 }
             }
-        ]]
+        ]],done: function () {
+            $("[data-field='linkId']").css('display','none');
+        }
     });
 
-    //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
+    //搜索输入框回车时间，触发搜索按钮点击事件
+    $(".searchVal").on('keydown',function (event) {
+        if (event.which == 13) {
+            $(".search_btn").click();
+            return false;
+        }
+    });
+    //搜索按钮单击事件
     $(".search_btn").on("click", function () {
-        if ($(".searchVal").val() != '') {
-            table.reload("linkListTab", {
-                page: {
-                    curr: 1 //重新从第 1 页开始
-                },
-                where: {
-                    key: $(".searchVal").val()  //搜索的关键字
-                }
-            })
+        $.ajax({
+            url: '/systemSetting/linkList',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                search:$(".searchVal").val()
+            },
+            success: function (res) {
+                table.reload("linkListTab", {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    },
+                    where: {
+                        search: $(".searchVal").val()  //搜索的关键字
+                    }
+                })
+            }
+        })
+       /* if ($(".searchVal").val() != '') {
+
+
         } else {
             layer.msg("请输入搜索的内容");
-        }
+        }*/
     });
 
     //添加友链
@@ -110,9 +131,9 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
                 $.ajax({
                     url: '/systemSetting/linkList',
                     type: 'DELETE',
-                    contentType:'application/json',
+                    contentType: 'application/json',
                     dataType: 'json',
-                    data :JSON.stringify(linkIds),
+                    data: JSON.stringify(linkIds),
                     success: function (res) {
                         top.layer.msg(res.msg)
                         if (res.code == 0) {
@@ -139,7 +160,7 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
                 $.ajax({
                     url: '/systemSetting/linkList/' + data.linkId,
                     type: 'DELETE',
-                    contentType:'application/json',
+                    contentType: 'application/json',
                     dataType: 'json',
                     success: function (res) {
                         top.layer.msg(res.msg)
@@ -196,7 +217,7 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
             setTimeout(function () {
                 if (res.code == 0) {
                     top.layer.close(index);
-                    top.layer.msg("文章添加成功！");
+                    top.layer.msg("友链添加成功！");
                     layer.closeAll("iframe");
                     //刷新父页面
                     $(".layui-tab-item.layui-show", parent.document).find("iframe")[0].contentWindow.location.reload();
