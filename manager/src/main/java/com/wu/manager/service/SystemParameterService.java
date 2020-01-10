@@ -1,6 +1,7 @@
 package com.wu.manager.service;
 
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.pojo.SystemParameter;
 
 /**
  * @description: 系统参数service
@@ -10,4 +11,5 @@ import com.wu.common.utils.LayUIResult;
 
 public interface SystemParameterService {
     LayUIResult getSystemParameter();
+    LayUIResult insertOrUpdate(SystemParameter systemParameter);
 }
