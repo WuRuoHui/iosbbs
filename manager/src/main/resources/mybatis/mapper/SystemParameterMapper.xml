@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wu.manager.mapper.SystemParameterMapper">
+  <resultMap id="BaseResultMap" type="com.wu.manager.pojo.SystemParameter">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cms_name" jdbcType="VARCHAR" property="cmsName" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="home_page" jdbcType="VARCHAR" property="homePage" />
+    <result column="server" jdbcType="VARCHAR" property="server" />
+    <result column="data_base" jdbcType="VARCHAR" property="dataBase" />
+    <result column="max_upload" jdbcType="VARCHAR" property="maxUpload" />
+    <result column="user_rights" jdbcType="VARCHAR" property="userRights" />
+    <result column="keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="powerby" jdbcType="VARCHAR" property="powerby" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="record" jdbcType="VARCHAR" property="record" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, cms_name, version, author, home_page, server, data_base, max_upload, user_rights, 
+    keywords, powerby, description, record
+  </sql>
+  <select id="selectByExample" parameterType="com.wu.manager.pojo.SystemParameterExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bbs_system_parameter
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bbs_system_parameter
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bbs_system_parameter
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wu.manager.pojo.SystemParameterExample">
+    delete from bbs_system_parameter
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wu.manager.pojo.SystemParameter">
+    insert into bbs_system_parameter (id, cms_name, version, 
+      author, home_page, server, 
+      data_base, max_upload, user_rights, 
+      keywords, powerby, description, 
+      record)
+    values (#{id,jdbcType=INTEGER}, #{cmsName,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{homePage,jdbcType=VARCHAR}, #{server,jdbcType=VARCHAR}, 
+      #{dataBase,jdbcType=VARCHAR}, #{maxUpload,jdbcType=VARCHAR}, #{userRights,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{powerby,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{record,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wu.manager.pojo.SystemParameter">
+    insert into bbs_system_parameter
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cmsName != null">
+        cms_name,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="homePage != null">
+        home_page,
+      </if>
+      <if test="server != null">
+        server,
+      </if>
+      <if test="dataBase != null">
+        data_base,
+      </if>
+      <if test="maxUpload != null">
+        max_upload,
+      </if>
+      <if test="userRights != null">
+        user_rights,
+      </if>
+      <if test="keywords != null">
+        keywords,
+      </if>
+      <if test="powerby != null">
+        powerby,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="record != null">
+        record,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cmsName != null">
+        #{cmsName,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="homePage != null">
+        #{homePage,jdbcType=VARCHAR},
+      </if>
+      <if test="server != null">
+        #{server,jdbcType=VARCHAR},
+      </if>
+      <if test="dataBase != null">
+        #{dataBase,jdbcType=VARCHAR},
+      </if>
+      <if test="maxUpload != null">
+        #{maxUpload,jdbcType=VARCHAR},
+      </if>
+      <if test="userRights != null">
+        #{userRights,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null">
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="powerby != null">
+        #{powerby,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="record != null">
+        #{record,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wu.manager.pojo.SystemParameterExample" resultType="java.lang.Long">
+    select count(*) from bbs_system_parameter
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bbs_system_parameter
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.cmsName != null">
+        cms_name = #{record.cmsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null">
+        version = #{record.version,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null">
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.homePage != null">
+        home_page = #{record.homePage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.server != null">
+        server = #{record.server,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataBase != null">
+        data_base = #{record.dataBase,jdbcType=VARCHAR},
+      </if>
+      <if test="record.maxUpload != null">
+        max_upload = #{record.maxUpload,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userRights != null">
+        user_rights = #{record.userRights,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keywords != null">
+        keywords = #{record.keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.powerby != null">
+        powerby = #{record.powerby,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.record != null">
+        record = #{record.record,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bbs_system_parameter
+    set id = #{record.id,jdbcType=INTEGER},
+      cms_name = #{record.cmsName,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      home_page = #{record.homePage,jdbcType=VARCHAR},
+      server = #{record.server,jdbcType=VARCHAR},
+      data_base = #{record.dataBase,jdbcType=VARCHAR},
+      max_upload = #{record.maxUpload,jdbcType=VARCHAR},
+      user_rights = #{record.userRights,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      powerby = #{record.powerby,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      record = #{record.record,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wu.manager.pojo.SystemParameter">
+    update bbs_system_parameter
+    <set>
+      <if test="cmsName != null">
+        cms_name = #{cmsName,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="homePage != null">
+        home_page = #{homePage,jdbcType=VARCHAR},
+      </if>
+      <if test="server != null">
+        server = #{server,jdbcType=VARCHAR},
+      </if>
+      <if test="dataBase != null">
+        data_base = #{dataBase,jdbcType=VARCHAR},
+      </if>
+      <if test="maxUpload != null">
+        max_upload = #{maxUpload,jdbcType=VARCHAR},
+      </if>
+      <if test="userRights != null">
+        user_rights = #{userRights,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null">
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="powerby != null">
+        powerby = #{powerby,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="record != null">
+        record = #{record,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wu.manager.pojo.SystemParameter">
+    update bbs_system_parameter
+    set cms_name = #{cmsName,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      home_page = #{homePage,jdbcType=VARCHAR},
+      server = #{server,jdbcType=VARCHAR},
+      data_base = #{dataBase,jdbcType=VARCHAR},
+      max_upload = #{maxUpload,jdbcType=VARCHAR},
+      user_rights = #{userRights,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      powerby = #{powerby,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      record = #{record,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
