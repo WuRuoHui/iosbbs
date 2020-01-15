@@ -2,12 +2,11 @@ package com.wu.manager.controller;
 
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.service.UserService;
-import com.wu.manager.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -27,10 +26,16 @@ public class UserController {
         return "page/user/"+pageName;
     }
 
-    @RequestMapping("/user/userGrade")
+    @RequestMapping(value = "/user/userGrade",method = RequestMethod.GET)
     @ResponseBody
     public LayUIResult showUserGrade() {
         LayUIResult layUIResult = userService.selectAllUserGrade();
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/user",method = RequestMethod.GET)
+    public LayUIResult selectUser() {
+        LayUIResult layUIResult = userService.selectAllUser();
         return layUIResult;
     }
 

@@ -11,4 +11,6 @@ import com.wu.common.utils.LayUIResult;
 public interface UserService {
 
     LayUIResult selectAllUserGrade();
+
+    LayUIResult selectAllUser();
 }

@@ -2,6 +2,9 @@ package com.wu.manager.service.impl;
 
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.mapper.UserGradeMapper;
+import com.wu.manager.mapper.UserMapper;
+import com.wu.manager.pojo.User;
+import com.wu.manager.pojo.UserExample;
 import com.wu.manager.pojo.UserGrade;
 import com.wu.manager.pojo.UserGradeExample;
 import com.wu.manager.service.UserService;
@@ -21,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserGradeMapper userGradeMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public LayUIResult selectAllUserGrade() {
@@ -29,5 +34,15 @@ public class UserServiceImpl implements UserService {
             return LayUIResult.build(0,userGrades.size(),"查询成功",userGrades);
         }
         return LayUIResult.build(1,0,"无数据",userGrades);
+    }
+
+    @Override
+    public LayUIResult selectAllUser() {
+        UserExample userExample = new UserExample();
+        List<User> users = userMapper.selectByExample(userExample);
+        if (users != null && users.size() >0) {
+            return LayUIResult.ok(users.size(),users);
+        }
+        return LayUIResult.fail(null,null);
     }
 }

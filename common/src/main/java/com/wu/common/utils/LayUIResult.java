@@ -27,8 +27,13 @@ public class LayUIResult implements Serializable {
     }
 
     public static LayUIResult ok(Integer count,Object data) {
-        return new LayUIResult(0,count,null,data);
+        return new LayUIResult(0,count,"success",data);
     }
+
+    public static LayUIResult fail(Integer count,Object data) {
+        return new LayUIResult(1,count,"fail",data);
+    }
+
 
     public static LayUIResult ok(Object data) {
         return new LayUIResult(data);
