@@ -28,7 +28,7 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
     //用户等级
     table.render({
         elem: '#userGrade',
-        url : '../../json/userGrade.json',
+        url : '/user/userGrade',
         cellMinWidth : 95,
         cols : [[
             {field:"id", title: 'ID', width: 60, fixed:"left",sort:"true", align:'center', edit: 'text'},
@@ -87,6 +87,15 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
     //控制表格编辑时文本的位置【跟随渲染时的位置】
     $("body").on("click",".layui-table-body.layui-table-main tbody tr td",function(){
         $(this).find(".layui-table-edit").addClass("layui-"+$(this).attr("align"));
+    });
+
+    //监听单元格编辑
+    table.on('edit(userGrade)', function(obj){
+        table.render();
+        var value = obj.value //得到修改后的值
+            ,data = obj.data //得到所在行所有键值
+            ,field = obj.field; //得到字段
+        layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
     });
 
 })

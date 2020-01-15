@@ -5,7 +5,6 @@ import com.wu.manager.mapper.SystemParameterMapper;
 import com.wu.manager.pojo.SystemParameter;
 import com.wu.manager.pojo.SystemParameterExample;
 import com.wu.manager.service.SystemParameterService;
-import com.wu.manager.service.SystemSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

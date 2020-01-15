@@ -32,6 +32,7 @@ layui.use(['form', 'layer', 'jquery'], function () {
                 setTimeout(function () {
                     layer.close(index);
                     layer.msg(data.msg);
+                    // form.render();
                 }, 500);
             },
         })
