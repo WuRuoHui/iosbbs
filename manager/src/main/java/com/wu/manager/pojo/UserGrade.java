@@ -1,6 +1,8 @@
 package com.wu.manager.pojo;
 
-public class UserGrade {
+import java.io.Serializable;
+
+public class UserGrade implements Serializable {
     private Integer id;
 
     private String gradeIcon;

@@ -34,9 +34,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user",method = RequestMethod.GET)
+    @ResponseBody
     public LayUIResult selectUser() {
         LayUIResult layUIResult = userService.selectAllUser();
         return layUIResult;
     }
-
 }
