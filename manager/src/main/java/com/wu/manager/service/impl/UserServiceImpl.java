@@ -35,23 +35,20 @@ public class UserServiceImpl implements UserService {
     private StringRedisTemplate redisTemplate;
     @Value(value = "${BBS.USER.GRADE}")
     private String BBS_USER_GRADE;
-    @Value(value = "${BBS.USER.GRADE.COUNT}")
-    private String BBS_USER_GRADE_COUNT;
-    @Value(value = "${BBS.USER.GRADE.DATA}")
-    private String BBS_USER_GRADE_DATA;
 
     @Override
     @Transactional
     public LayUIResult selectAllUserGrade() {
-        String data = (String) redisTemplate.opsForValue().get(BBS_USER_GRADE);
-        if(!StringUtils.isEmpty(data) /*&& StringUtils.isEmpty()*/) {
+        //从Redis中取到用户VIP等级
+        String data = redisTemplate.opsForValue().get(BBS_USER_GRADE);
+        //如果用户等级不为为空，则将查询到的json格式字符串转换为List并返还
+        if(!StringUtils.isEmpty(data)) {
             List<UserGrade> userGradesRedis = JsonUtils.jsonToList(data, UserGrade.class);
-            System.out.println("redis");
             return LayUIResult.ok(userGradesRedis.size(),userGradesRedis);
         }
+        //如果为空，则到数据库中取，存入Redis中并返回
         List<UserGrade> userGrades = userGradeMapper.selectByExample(new UserGradeExample());
         if (userGrades != null && userGrades.size() >0) {
-            System.out.println("mysql");
             redisTemplate.opsForValue().set(BBS_USER_GRADE, JsonUtils.objectToJson(userGrades));
             return LayUIResult.build(0,userGrades.size(),"查询成功",userGrades);
         }
