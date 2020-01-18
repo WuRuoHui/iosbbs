@@ -2,7 +2,7 @@ package com.wu.manager.utils;
 
 /**
  * @program: iosbbs
- * @description: 自定义redis工具类
+ * @description: 自定义redis service
  * @author: Wu
  * @create: 2020-01-17 21:33
  **/
