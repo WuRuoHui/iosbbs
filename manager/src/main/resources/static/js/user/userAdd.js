@@ -7,9 +7,26 @@ layui.use(['form', 'layer'], function () {
         //弹出loading
         var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
         // 实际使用时的提交信息
-        // $.post("上传路径",{
+        $.ajax({
+            url: '/user',
+            type: 'POST',
+            data : $(".addUser").serialize(),
+            dataType: 'json',
+            success: function (res) {
+                setTimeout(function () {
+                    top.layer.close(index);
+                    top.layer.msg(res.msg);
+                    if (res.code == '0') {
+                        layer.closeAll("iframe");
+                        //刷新父页面
+                        parent.location.reload();
+                    }
+                }, 2000);
+            }
+        })
+        // $.post("/user",{
         //     userName : $(".userName").val(),  //登录名
-        //     userEmail : $(".userEmail").val(),  //邮箱
+        //     userEmail : $(".password").val(),  //邮箱
         //     userSex : data.field.sex,  //性别
         //     userGrade : data.field.userGrade,  //会员等级
         //     userStatus : data.field.userStatus,    //用户状态
@@ -18,13 +35,6 @@ layui.use(['form', 'layer'], function () {
         // },function(res){
         //
         // })
-        setTimeout(function () {
-            top.layer.close(index);
-            top.layer.msg("用户添加成功！");
-            layer.closeAll("iframe");
-            //刷新父页面
-            parent.location.reload();
-        }, 2000);
         return false;
     })
 
@@ -37,7 +47,22 @@ layui.use(['form', 'layer'], function () {
             var data = res.data;
             $(".vipLevel").empty();
             for (var i = 0; i < data.length; i++) {
-                $(".vipLevel").append("<option value='"+data[i].id+"'>"+data[i].gradeName+"</option>");
+                $(".vipLevel").append("<option value='" + data[i].id + "'>" + data[i].gradeName + "</option>");
+            }
+            form.render();
+        }
+    })
+
+    //动态添加用户角色下拉框
+    $.ajax({
+        url: '/role',
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            var data = res.data;
+            $(".role").empty();
+            for (var i = 0; i < data.length; i++) {
+                $(".role").append("<option value='" + data[i].id + "'>" + data[i].description + "</option>");
             }
             form.render();
         }

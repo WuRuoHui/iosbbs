@@ -1,13 +1,12 @@
 package com.wu.manager.controller;
 
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.dto.UserDTO;
+import com.wu.manager.pojo.User;
 import com.wu.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @description: 用户controller
@@ -37,6 +36,13 @@ public class UserController {
     @ResponseBody
     public LayUIResult selectUser() {
         LayUIResult layUIResult = userService.selectAllUser();
+        return layUIResult;
+    }
+
+    @PostMapping(value = "/user")
+    @ResponseBody
+    public LayUIResult insertUser(User user,Integer role) {
+        LayUIResult layUIResult = userService.insertUser(user,role);
         return layUIResult;
     }
 }

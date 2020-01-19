@@ -1,7 +1,10 @@
 package com.wu.manager.pojo;
 
+import lombok.ToString;
+
 import java.io.Serializable;
 
+@ToString
 public class UserGrade implements Serializable {
     private Integer id;
 

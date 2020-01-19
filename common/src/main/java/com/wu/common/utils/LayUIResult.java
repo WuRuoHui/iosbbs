@@ -26,14 +26,21 @@ public class LayUIResult implements Serializable {
         return new LayUIResult(status, msg, data);
     }
 
-    public static LayUIResult ok(Integer count,Object data) {
-        return new LayUIResult(0,count,"success",data);
+    public static LayUIResult ok(Integer count, Object data) {
+        return new LayUIResult(0, count, "success", data);
     }
 
-    public static LayUIResult fail(Integer count,Object data) {
-        return new LayUIResult(1,count,"fail",data);
+    public static LayUIResult fail(Integer count, Object data) {
+        return new LayUIResult(1, count, "fail", data);
     }
 
+    public static LayUIResult fail() {
+        return new LayUIResult(1, 0, "fail", null);
+    }
+
+    public static LayUIResult fail(String msg) {
+        return new LayUIResult(1, 0, msg, null);
+    }
 
     public static LayUIResult ok(Object data) {
         return new LayUIResult(data);

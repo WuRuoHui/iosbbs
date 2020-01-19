@@ -2,12 +2,11 @@ package com.wu.manager.service.impl;
 
 import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.dto.UserDTO;
 import com.wu.manager.mapper.UserGradeMapper;
 import com.wu.manager.mapper.UserMapper;
-import com.wu.manager.pojo.User;
-import com.wu.manager.pojo.UserExample;
-import com.wu.manager.pojo.UserGrade;
-import com.wu.manager.pojo.UserGradeExample;
+import com.wu.manager.mapper.UserRoleMapper;
+import com.wu.manager.pojo.*;
 import com.wu.manager.service.UserService;
 import com.wu.manager.utils.StringRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private StringRedisService redisService;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
     @Value(value = "${BBS.USER.GRADE}")
     private String BBS_USER_GRADE;
 
@@ -63,5 +64,39 @@ public class UserServiceImpl implements UserService {
             return LayUIResult.ok(users.size(),users);
         }
         return LayUIResult.fail(null,null);
+    }
+
+    @Override
+    public LayUIResult insertUser(UserDTO userDTO) {
+
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public LayUIResult insertUser(User user, Integer roleId) {
+        if (user == null) {
+            return LayUIResult.fail();
+        }
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andUsernameEqualTo(user.getUsername());
+        List<User> users = userMapper.selectByExample(userExample);
+        if (users != null && users.size() > 0) {
+            return LayUIResult.build(1,"用户名已存在");
+        }
+        user.setGmtCreate(System.currentTimeMillis());
+        user.setGmtModified(System.currentTimeMillis());
+        int rows = userMapper.insert(user);
+        if (rows<=0) {
+            return LayUIResult.fail();
+        }
+        UserRole userRole = new UserRole();
+        userRole.setUserId(user.getId());
+        userRole.setRoleId(roleId);
+        int row = userRoleMapper.insert(userRole);
+        if (row <= 0) {
+            return LayUIResult.build(1,"添加失败");
+        }
+        return LayUIResult.build(0,"添加成功");
     }
 }
