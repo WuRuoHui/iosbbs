@@ -1,5 +1,6 @@
 package com.wu.manager.dto;
 
+import com.wu.manager.pojo.Role;
 import com.wu.manager.pojo.UserGrade;
 import lombok.Data;
 
@@ -20,11 +21,11 @@ public class UserDTO {
 
     private Long gmtCreate;
 
-    private Long gmtModified;
-
     private String avatarUrl;
 
     private UserGrade userGrade;
+
+    private Role role;
 
     private Boolean status;
 

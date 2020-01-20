@@ -8,7 +8,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     //用户列表
     var tableIns = table.render({
         elem: '#userList',
-        url : '../../json/userList.json',
+        url : '/user',
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -17,28 +17,24 @@ layui.use(['form','layer','table','laytpl'],function(){
         id : "userListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
-            {field: 'userName', title: '用户名', minWidth:100, align:"center"},
-            {field: 'userEmail', title: '用户邮箱', minWidth:200, align:'center',templet:function(d){
-                return '<a class="layui-blue" href="mailto:'+d.userEmail+'">'+d.userEmail+'</a>';
-            }},
-            {field: 'userSex', title: '用户性别', align:'center'},
+            {field: 'username', title: '用户名', minWidth:100, align:"center"},
+            {field: 'name', title: '姓名', minWidth:100, align:'center'},
+            {field: 'userSex', title: '用户性别', align:'center',templet:function (d) {
+                    return d.sex == "1"?"男": "女";
+                }},
             {field: 'userStatus', title: '用户状态',  align:'center',templet:function(d){
-                return d.userStatus == "0" ? "正常使用" : "限制使用";
+                return d.status == "0" ? "正常使用" : "限制使用";
             }},
-            {field: 'userGrade', title: '用户等级', align:'center',templet:function(d){
-                if(d.userGrade == "0"){
-                    return "注册会员";
-                }else if(d.userGrade == "1"){
-                    return "中级会员";
-                }else if(d.userGrade == "2"){
-                    return "高级会员";
-                }else if(d.userGrade == "3"){
-                    return "钻石会员";
-                }else if(d.userGrade == "4"){
-                    return "超级会员";
-                }
+            {field: 'role', title: '用户类型', align:'center',templet:function(d) {
+                return d.role.description;
             }},
-            {field: 'userEndTime', title: '最后登录时间', align:'center',minWidth:150},
+            {field: 'userGrade', title: 'VIP等级', align:'center',templet:function(d){
+                return d.userGrade.gradeName;
+            }},
+            {field: 'gmtCreate', title: '创建时间', align:'center',minWidth:150,templet:function(d) {
+                return formatDate(new Date(d.gmtCreate));
+
+    }},
             {title: '操作', minWidth:175, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
@@ -68,12 +64,12 @@ layui.use(['form','layer','table','laytpl'],function(){
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
-                    body.find(".userName").val(edit.userName);  //登录名
-                    body.find(".userEmail").val(edit.userEmail);  //邮箱
-                    body.find(".userSex input[value="+edit.userSex+"]").prop("checked","checked");  //性别
-                    body.find(".userGrade").val(edit.userGrade);  //会员等级
-                    body.find(".userStatus").val(edit.userStatus);    //用户状态
-                    body.find(".userDesc").text(edit.userDesc);    //用户简介
+                    body.find(".username").val(edit.username);  //登录名
+                    body.find(".name").val(edit.name);  //名字
+                    body.find(".sex input[value="+edit.sex+"]").prop("checked","checked");  //性别
+                    body.find(".vipLevel option[value=7]").prop("selected",true);  //会员等级
+                    // body.find(".userStatus").val(edit.userStatus);    //用户状态
+                    // body.find(".userDesc").text(edit.userDesc);    //用户简介
                     form.render();
                 }
                 setTimeout(function(){
@@ -156,3 +152,18 @@ layui.use(['form','layer','table','laytpl'],function(){
     });
 
 })
+
+//格式化时间
+function filterTime(val) {
+    if (val < 10) {
+        return "0" + val;
+    } else {
+        return val;
+    }
+}
+
+//日期格式化
+function formatDate(time) {
+    var submitTime = time.getFullYear() + '-' + filterTime(time.getMonth() + 1) + '-' + filterTime(time.getDate()) + ' ' + filterTime(time.getHours()) + ':' + filterTime(time.getMinutes()) + ':' + filterTime(time.getSeconds());
+    return submitTime;
+}

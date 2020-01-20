@@ -3,18 +3,21 @@ package com.wu.manager.service.impl;
 import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.UserDTO;
+import com.wu.manager.mapper.RoleMapper;
 import com.wu.manager.mapper.UserGradeMapper;
 import com.wu.manager.mapper.UserMapper;
 import com.wu.manager.mapper.UserRoleMapper;
 import com.wu.manager.pojo.*;
 import com.wu.manager.service.UserService;
 import com.wu.manager.utils.StringRedisService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private UserGradeMapper userGradeMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RoleMapper roleMapper;
     @Autowired
     private StringRedisService redisService;
     @Autowired
@@ -56,28 +61,19 @@ public class UserServiceImpl implements UserService {
         return LayUIResult.build(1,0,"无数据",userGrades);
     }
 
-    @Override
-    public LayUIResult selectAllUser() {
-        UserExample userExample = new UserExample();
-        List<User> users = userMapper.selectByExample(userExample);
-        if (users != null && users.size() >0) {
-            return LayUIResult.ok(users.size(),users);
-        }
-        return LayUIResult.fail(null,null);
-    }
-
-    @Override
-    public LayUIResult insertUser(UserDTO userDTO) {
-
-        return null;
-    }
-
+    /**
+     * @Description: 添加用户
+     * @Param: [user, roleId]
+     * @return: com.wu.common.utils.LayUIResult
+     * @Date: 2020/1/19
+     */
     @Override
     @Transactional
     public LayUIResult insertUser(User user, Integer roleId) {
         if (user == null) {
             return LayUIResult.fail();
         }
+        //查询用户名是否存在
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUsernameEqualTo(user.getUsername());
         List<User> users = userMapper.selectByExample(userExample);
@@ -90,6 +86,7 @@ public class UserServiceImpl implements UserService {
         if (rows<=0) {
             return LayUIResult.fail();
         }
+        //插入用户-角色关联表
         UserRole userRole = new UserRole();
         userRole.setUserId(user.getId());
         userRole.setRoleId(roleId);
@@ -98,5 +95,39 @@ public class UserServiceImpl implements UserService {
             return LayUIResult.build(1,"添加失败");
         }
         return LayUIResult.build(0,"添加成功");
+    }
+
+    @Override
+    public LayUIResult selectAllUser() {
+        UserExample userExample = new UserExample();
+        List<User> users = userMapper.selectByExample(userExample);
+        List<UserDTO> userDTOS = new ArrayList<>();
+        for (User user : users) {
+            //返回数据时将密码置为空值
+            user.setPassword(null);
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(user,userDTO);
+            //查询用户对应的VIP等级
+            UserGrade userGrade = userGradeMapper.selectByPrimaryKey(user.getVipLevel());
+            userDTO.setUserGrade(userGrade);
+            //查找用户对应的用户-角色关联
+            UserRoleExample userRoleExample = new UserRoleExample();
+            userRoleExample.createCriteria().andUserIdEqualTo(user.getId());
+            List<UserRole> userRoles = userRoleMapper.selectByExample(userRoleExample);
+            //查找对应的角色
+            Role role = roleMapper.selectByPrimaryKey(userRoles.get(0).getRoleId());
+            userDTO.setRole(role);
+            userDTOS.add(userDTO);
+        }
+        if (users != null && users.size() >0) {
+            return LayUIResult.ok(userDTOS.size(),userDTOS);
+        }
+        return LayUIResult.fail(null,null);
+    }
+
+    @Override
+    public LayUIResult insertUser(UserDTO userDTO) {
+
+        return null;
     }
 }

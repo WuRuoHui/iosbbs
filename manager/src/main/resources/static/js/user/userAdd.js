@@ -24,17 +24,6 @@ layui.use(['form', 'layer'], function () {
                 }, 2000);
             }
         })
-        // $.post("/user",{
-        //     userName : $(".userName").val(),  //登录名
-        //     userEmail : $(".password").val(),  //邮箱
-        //     userSex : data.field.sex,  //性别
-        //     userGrade : data.field.userGrade,  //会员等级
-        //     userStatus : data.field.userStatus,    //用户状态
-        //     newsTime : submitTime,    //添加时间
-        //     userDesc : $(".userDesc").text(),    //用户简介
-        // },function(res){
-        //
-        // })
         return false;
     })
 
@@ -76,6 +65,7 @@ layui.use(['form', 'layer'], function () {
             return val;
         }
     }
+
 
     //定时发布
     var time = new Date();
