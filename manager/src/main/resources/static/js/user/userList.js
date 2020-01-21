@@ -17,6 +17,10 @@ layui.use(['form','layer','table','laytpl'],function(){
         id : "userListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
+            {field: '', title: '序号', width:80, sort: true, align:"center",templet:function (d) {
+                    return (d.LAY_INDEX);
+                }},
+            {field:'id',width:0},
             {field: 'username', title: '用户名', minWidth:100, align:"center"},
             {field: 'name', title: '姓名', minWidth:100, align:'center'},
             {field: 'userSex', title: '用户性别', align:'center',templet:function (d) {
@@ -33,10 +37,11 @@ layui.use(['form','layer','table','laytpl'],function(){
             }},
             {field: 'gmtCreate', title: '创建时间', align:'center',minWidth:150,templet:function(d) {
                 return formatDate(new Date(d.gmtCreate));
-
-    }},
+            }},
             {title: '操作', minWidth:175, templet:'#userListBar',fixed:"right",align:"center"}
-        ]]
+        ]],done: function () {
+            $("[data-field='id']").css('display','none');
+        }
     });
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
@@ -64,12 +69,13 @@ layui.use(['form','layer','table','laytpl'],function(){
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
+                    body.find(".id").val(edit.id);
                     body.find(".username").val(edit.username);  //登录名
                     body.find(".name").val(edit.name);  //名字
                     body.find(".sex input[value="+edit.sex+"]").prop("checked","checked");  //性别
-                    body.find(".vipLevel option[value=7]").prop("selected",true);  //会员等级
-                    // body.find(".userStatus").val(edit.userStatus);    //用户状态
-                    // body.find(".userDesc").text(edit.userDesc);    //用户简介
+                    body.find(".status option[value="+(edit.status?1:0)+"]").prop("selected",true);    //用户状态
+                    // body.find(".vipLevel option[value=7]").prop("selected",true);  //会员等级
+                    body.find(".role option[value=2]").prop("selected",true);  //用户类型
                     form.render();
                 }
                 setTimeout(function(){
@@ -87,7 +93,9 @@ layui.use(['form','layer','table','laytpl'],function(){
         })
     }
     $(".addNews_btn").click(function(){
-        addUser();
+        $(function () {
+            addUser();
+        })
     })
 
     //批量删除

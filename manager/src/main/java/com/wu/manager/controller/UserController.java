@@ -1,7 +1,6 @@
 package com.wu.manager.controller;
 
 import com.wu.common.utils.LayUIResult;
-import com.wu.manager.dto.UserDTO;
 import com.wu.manager.pojo.User;
 import com.wu.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,9 @@ public class UserController {
     @PostMapping(value = "/user")
     @ResponseBody
     public LayUIResult insertUser(User user,Integer role) {
-        LayUIResult layUIResult = userService.insertUser(user,role);
-        return layUIResult;
+        System.out.println(user.getId()+":"+role);
+//        LayUIResult layUIResult = userService.insertUser(user,role);
+//        return layUIResult;
+        return null;
     }
 }

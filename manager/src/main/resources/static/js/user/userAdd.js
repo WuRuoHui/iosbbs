@@ -43,18 +43,21 @@ layui.use(['form', 'layer'], function () {
     })
 
     //动态添加用户角色下拉框
-    $.ajax({
-        url: '/role',
-        type: 'GET',
-        dataType: 'json',
-        success: function (res) {
-            var data = res.data;
-            $(".role").empty();
-            for (var i = 0; i < data.length; i++) {
-                $(".role").append("<option value='" + data[i].id + "'>" + data[i].description + "</option>");
+    $(function () {
+
+        $.ajax({
+            url: '/role',
+            type: 'GET',
+            dataType: 'json',
+            success: function (res) {
+                var data = res.data;
+                $(".role").empty();
+                for (var i = 0; i < data.length; i++) {
+                    $(".role").append("<option value='" + data[i].id + "'>" + data[i].description + "</option>");
+                }
+                form.render();
             }
-            form.render();
-        }
+        })
     })
 
     //格式化时间
