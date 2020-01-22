@@ -20,7 +20,7 @@
         </javaTypeResolver>
 
         <!-- targetProject:生成PO类的位置 -->
-        <javaModelGenerator targetPackage="com.wu.kefubbs.pojo"
+        <javaModelGenerator targetPackage="com.wu.bbs.pojo"
                             targetProject="./src/main/java">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
@@ -35,12 +35,12 @@
         </sqlMapGenerator>
         <!-- targetPackage：mapper接口生成的位置 -->
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.wu.kefubbs.mapper"
+                             targetPackage="com.wu.bbs.mapper"
                              targetProject="./src/main/java">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         <!-- 指定数据库表 -->
-        <table schema="" tableName="bbs_top_menu" domainObjectName="TopMenu"></table>
+        <table schema="" tableName="bbs_user_grade" domainObjectName="UserGrade"></table>
     </context>
 </generatorConfiguration>

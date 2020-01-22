@@ -7,6 +7,7 @@
 package com.wu.bbs.service.impl;
 
 import com.wu.bbs.mapper.RoleMapper;
+import com.wu.bbs.mapper.UserGradeMapper;
 import com.wu.bbs.mapper.UserMapper;
 import com.wu.bbs.mapper.UserRoleMapper;
 import com.wu.bbs.pojo.*;
@@ -31,12 +32,17 @@ public class UserServiceImpl implements UserService {
     private RoleMapper roleMapper;
     @Autowired
     private UserRoleMapper userRoleMapper;
+    @Autowired
+    private UserGradeMapper userGradeMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserExample example = new UserExample();
         example.createCriteria().andUsernameEqualTo(username);
         com.wu.bbs.pojo.User user = userMapper.selectByExample(example).get(0);
+        user.getVipLevel();
+        UserGrade userGrade = userGradeMapper.selectByPrimaryKey(Integer.valueOf(user.getVipLevel()));
+        user.setVipLevel(userGrade.getGradeName());
         if (user == null) return null;
         List<Role> authorities = authorities(user.getId());
         user.setRoleList(authorities);

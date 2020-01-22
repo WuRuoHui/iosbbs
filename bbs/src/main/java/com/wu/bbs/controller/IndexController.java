@@ -10,7 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@PreAuthorize("hasRole('ROLE_USER')")
+@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_MANAGER')")
 @Controller
 public class IndexController {
 

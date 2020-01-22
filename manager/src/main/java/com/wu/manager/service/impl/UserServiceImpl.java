@@ -73,6 +73,10 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return LayUIResult.fail();
         }
+        if (user.getId() != null) {
+            int rows = userMapper.updateByPrimaryKeySelective(user);
+            return rows > 0 ? LayUIResult.build(0,"更新成功"):LayUIResult.build(1,"更新失败");
+        }
         //查询用户名是否存在
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUsernameEqualTo(user.getUsername());

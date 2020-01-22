@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@PreAuthorize("hasRole('ROLE_USER')")
+@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_MANAGER')")
 //@Secured({"ROLE_MANAGER","ROLE_USER"})
 //@RolesAllowed({"ROLE_USER","ROLE_MANAGER"})
 public class UserController {

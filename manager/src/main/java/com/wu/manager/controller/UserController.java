@@ -41,9 +41,7 @@ public class UserController {
     @PostMapping(value = "/user")
     @ResponseBody
     public LayUIResult insertUser(User user,Integer role) {
-        System.out.println(user.getId()+":"+role);
-//        LayUIResult layUIResult = userService.insertUser(user,role);
-//        return layUIResult;
-        return null;
+        LayUIResult layUIResult = userService.insertUser(user,role);
+        return layUIResult;
     }
 }
