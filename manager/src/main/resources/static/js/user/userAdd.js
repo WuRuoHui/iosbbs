@@ -44,7 +44,6 @@ layui.use(['form', 'layer'], function () {
 
     //动态添加用户角色下拉框
     $(function () {
-
         $.ajax({
             url: '/role',
             type: 'GET',

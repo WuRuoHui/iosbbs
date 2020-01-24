@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
         List<Role> authorities = authorities(user.getId());
         user.setRoleList(authorities);
         return user;
-//        return new User(user.getUsername(),user.getPassword(), authorities);
     }
 
     //给当前用户指定角色

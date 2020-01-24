@@ -11,7 +11,7 @@
 <!-- 引入header -->
 <div th:replace="common/header::bbsHeader"></div>
 <!-- 引入顶部工具条 -->
-<div th:replace="common/column::bbsColumn"></div>
+<div th:replace="common/column::bbsColumn(value = 'index')"></div>
 
 <div class="layui-container">
     <div class="layui-row layui-col-space15">
@@ -30,10 +30,10 @@
                         </a>
                         <h2>
                             <a class="layui-badge">动态</a>
-                            <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
+                            <a href="jie/detail">基于 layui 的极简社区页面模版</a>
                         </h2>
                         <div class="fly-list-info">
-                            <a href="user/home.html" link>
+                            <a href="user/home" link>
                                 <cite>贤心</cite>
                                 <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
                                 <i class="layui-badge fly-badge-vip">VIP3</i>
@@ -66,10 +66,10 @@
                         </a>
                         <h2>
                             <a class="layui-badge">分享</a>
-                            <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
+                            <a href="jie/detail">基于 layui 的极简社区页面模版</a>
                         </h2>
                         <div class="fly-list-info">
-                            <a href="user/home.html" link>
+                            <a href="user/home" link>
                                 <cite>贤心</cite>
                                 <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
                                 <i class="layui-badge fly-badge-vip">VIP3</i>
@@ -89,7 +89,7 @@
                 </ul>
                 <div style="text-align: center">
                     <div class="laypage-main">
-                        <a href="jie/index.html" class="laypage-next">更多求解</a>
+                        <a href="jie/index" class="laypage-next">更多求解</a>
                     </div>
                 </div>
             </div>
