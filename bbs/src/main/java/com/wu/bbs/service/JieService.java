@@ -14,6 +14,5 @@ import org.springframework.security.core.Authentication;
 
 public interface JieService {
 
-
     LayUIResult insertOrUpdate(Jie jie, Authentication authentication);
 }

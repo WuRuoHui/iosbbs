@@ -19,9 +19,5 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping("/index")
-    public String index() {
-        return "index";
-    }
 }
 

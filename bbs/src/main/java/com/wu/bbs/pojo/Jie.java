@@ -1,8 +1,5 @@
 package com.wu.bbs.pojo;
 
-import lombok.ToString;
-
-@ToString
 public class Jie {
     private Integer id;
 

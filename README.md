@@ -1,0 +1,11 @@
+####环境
+MySql8.0    
+JDK1.8  
+SpringBoot  
+SpringSecurity  
+MyBatis     
+Druid连接池
+####插件
+lombok  
+[flyway](https://flywaydb.org/)：命令行`flyway:migrate`     
+[PageHelper](https://pagehelper.github.io/)：分页插件

@@ -2,6 +2,7 @@ package com.wu.manager.service.impl;
 
 import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.dto.LeftNavDTO;
 import com.wu.manager.mapper.LeftNavMapper;
 import com.wu.manager.mapper.TopMenuMapper;
 import com.wu.manager.pojo.*;
@@ -68,5 +69,23 @@ public class MenuServiceImpl implements MenuService {
             map.put(topMenu.getParameterName(),leftNavNodes);
         }
         return map;
+    }
+
+    @Override
+    public LayUIResult selectLeftNav() {
+        LeftNavExample leftNavExample = new LeftNavExample();
+        List<LeftNav> leftNavs = leftNavMapper.selectByExample(leftNavExample);
+        List<LeftNavDTO> leftNavDTOS = new ArrayList<>();
+        if (leftNavs!= null && leftNavs.size()>0) {
+            for (LeftNav leftNav : leftNavs) {
+                LeftNavDTO leftNavDTO = new LeftNavDTO();
+                BeanUtils.copyProperties(leftNav,leftNavDTO);
+                TopMenu topMenu = topMenuMapper.selectByPrimaryKey(leftNav.getParentId());
+                leftNavDTO.setParent(topMenu);
+                leftNavDTOS.add(leftNavDTO);
+            }
+            return LayUIResult.build(0,leftNavs.size(),"success",leftNavDTOS);
+        }
+        return LayUIResult.build(1,"fail");
     }
 }
