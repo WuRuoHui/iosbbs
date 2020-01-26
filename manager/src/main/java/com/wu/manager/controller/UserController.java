@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @description: 用户controller
  * @author: Wu
@@ -42,6 +44,21 @@ public class UserController {
     @ResponseBody
     public LayUIResult insertUser(User user,Integer role) {
         LayUIResult layUIResult = userService.insertUser(user,role);
+        return layUIResult;
+    }
+
+    @DeleteMapping("/user")
+    @ResponseBody
+    public LayUIResult deleteUserByIds(@RequestBody List<Integer> userIds) {
+        System.out.println(userIds.size());
+        LayUIResult layUIResult = userService.deleteUserByIds(userIds);
+        return layUIResult;
+    }
+
+    @DeleteMapping("/user/{id}")
+    @ResponseBody
+    public LayUIResult deleteUserById(@PathVariable(name = "id") Integer id) {
+        LayUIResult layUIResult = userService.deleteUserById(id);
         return layUIResult;
     }
 }

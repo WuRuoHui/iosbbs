@@ -19,4 +19,6 @@ public interface MenuService {
     public Map<String, List<LeftNavNode>> getAllLeftNav();
 
     LayUIResult selectLeftNav();
+
+    LayUIResult selectTopMenu();
 }

@@ -53,26 +53,27 @@ layui.use(['form','layer','table','laytpl'],function(){
         }
     });
 
-    //添加用户
-    function addUser(edit){
+    //添加菜单
+    function addMenu(edit){
+        var selectId;
+        if (edit) selectId = edit.parent.id
         var index = layui.layer.open({
-            title : "添加用户",
+            title : "添加菜单",
             type : 2,
-            content : "userAdd.html",
+            content : "menuAdd?selectId="+ selectId,
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
                     body.find(".id").val(edit.id);
-                    body.find(".username").val(edit.username);  //登录名
-                    body.find(".name").val(edit.name);  //名字
-                    body.find(".sex input[value="+edit.sex+"]").prop("checked","checked");  //性别
-                    body.find(".status option[value="+(edit.status?1:0)+"]").prop("selected",true);    //用户状态
-                    // body.find(".vipLevel option[value=7]").prop("selected",true);  //会员等级
-                    body.find(".role option[value=2]").prop("selected",true);  //用户类型
+                    body.find(".title").val(edit.title);  //菜单名
+                    body.find(".icon").val(edit.icon);  //字体图标
+                    body.find(".href").val(edit.href);  //url
+                    body.find(".menuLevel option[value="+edit.menuLevel+"]").prop("selected",true);  //菜单等级
+                    body.find(".isParent input[value="+(edit.isParent?0:1)+"]").prop("checked","checked");  //是否父菜单
                     form.render();
                 }
                 setTimeout(function(){
-                    layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {
+                    layui.layer.tips('点击此处返回菜单列表', '.layui-layer-setwin .layui-layer-close', {
                         tips: 3
                     });
                 },500)
@@ -85,9 +86,9 @@ layui.use(['form','layer','table','laytpl'],function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
         })
     }
-    $(".addNews_btn").click(function(){
+    $(".addMenu_btn").click(function(){
         $(function () {
-            addUser();
+            addMenu();
         })
     })
 
@@ -114,12 +115,12 @@ layui.use(['form','layer','table','laytpl'],function(){
     })
 
     //列表操作
-    table.on('tool(userList)', function(obj){
+    table.on('tool(menuList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
 
         if(layEvent === 'edit'){ //编辑
-            addUser(data);
+            addMenu(data);
         }else if(layEvent === 'usable'){ //启用禁用
             var _this = $(this),
                 usableText = "是否确定禁用此用户？",
@@ -153,18 +154,3 @@ layui.use(['form','layer','table','laytpl'],function(){
     });
 
 })
-
-//格式化时间
-function filterTime(val) {
-    if (val < 10) {
-        return "0" + val;
-    } else {
-        return val;
-    }
-}
-
-//日期格式化
-function formatDate(time) {
-    var submitTime = time.getFullYear() + '-' + filterTime(time.getMonth() + 1) + '-' + filterTime(time.getDate()) + ' ' + filterTime(time.getHours()) + ':' + filterTime(time.getMinutes()) + ':' + filterTime(time.getSeconds());
-    return submitTime;
-}

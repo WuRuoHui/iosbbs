@@ -1,7 +1,6 @@
 package com.wu.manager.controller;
 
 import com.wu.common.utils.LayUIResult;
-import com.wu.manager.mapper.LeftNavMapper;
 import com.wu.manager.pojo.LeftNavNode;
 import com.wu.manager.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +23,28 @@ public class MenuController {
 
     @Autowired
     private MenuService menuService;
-    @Autowired
-    private LeftNavMapper leftNavMapper;
 
     @RequestMapping("/page/menuManager")
     public String showMenuManager(){
         return "page/menu/menuList";
     }
 
+    @RequestMapping("/page/menuAdd")
+    public String showMenuAdd() {
+        return "page/menu/menuAdd";
+    }
+
     @RequestMapping("/menu/topMenu")
     @ResponseBody
     public LayUIResult showTopMenu(){
         LayUIResult layUIResult = menuService.getAllTopMenu();
+        return layUIResult;
+    }
+
+    @RequestMapping("/menu/topMenuObject")
+    @ResponseBody
+    public LayUIResult selectTopMenuObject() {
+        LayUIResult layUIResult = menuService.selectTopMenu();
         return layUIResult;
     }
 

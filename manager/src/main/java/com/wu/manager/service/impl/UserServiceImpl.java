@@ -48,17 +48,17 @@ public class UserServiceImpl implements UserService {
         //从Redis中取到用户VIP等级
         String data = redisService.getString(BBS_USER_GRADE);
         //如果用户等级不为为空，则将查询到的json格式字符串转换为List并返还
-        if(!StringUtils.isEmpty(data)) {
+        if (!StringUtils.isEmpty(data)) {
             List<UserGrade> userGradesRedis = JsonUtils.jsonToList(data, UserGrade.class);
-            return LayUIResult.ok(userGradesRedis.size(),userGradesRedis);
+            return LayUIResult.ok(userGradesRedis.size(), userGradesRedis);
         }
         //如果为空，则到数据库中取，存入Redis中并返回
         List<UserGrade> userGrades = userGradeMapper.selectByExample(new UserGradeExample());
-        if (userGrades != null && userGrades.size() >0) {
+        if (userGrades != null && userGrades.size() > 0) {
             redisService.setString(BBS_USER_GRADE, JsonUtils.objectToJson(userGrades));
-            return LayUIResult.build(0,userGrades.size(),"查询成功",userGrades);
+            return LayUIResult.build(0, userGrades.size(), "查询成功", userGrades);
         }
-        return LayUIResult.build(1,0,"无数据",userGrades);
+        return LayUIResult.build(1, 0, "无数据", userGrades);
     }
 
     /**
@@ -75,19 +75,40 @@ public class UserServiceImpl implements UserService {
         }
         if (user.getId() != null) {
             int rows = userMapper.updateByPrimaryKeySelective(user);
-            return rows > 0 ? LayUIResult.build(0,"更新成功"):LayUIResult.build(1,"更新失败");
+            //更新用户角色表
+            //判断用户角色表中是否存在对应的关系
+            UserRoleExample example = new UserRoleExample();
+            List<UserRole> userRoles = userRoleMapper.selectByExample(example);
+            //如果存在，更新角色-用户关系表
+            if (userRoles != null && userRoles.size() > 0) {
+                UserRole userRole = new UserRole();
+                userRole.setUserId(user.getId());
+                userRole.setRoleId(roleId);
+                UserRoleExample example1 = new UserRoleExample();
+                example1.createCriteria()
+                        .andUserIdEqualTo(user.getId());
+                userRoleMapper.updateByExample(userRole, example1);
+            } else {
+                //如果不存在
+                //插入用户-角色关联表
+                UserRole userRole = new UserRole();
+                userRole.setUserId(user.getId());
+                userRole.setRoleId(roleId);
+                userMapper.insert(user);
+            }
+            return rows > 0 ? LayUIResult.build(0, "更新成功") : LayUIResult.build(1, "更新失败");
         }
         //查询用户名是否存在
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUsernameEqualTo(user.getUsername());
         List<User> users = userMapper.selectByExample(userExample);
         if (users != null && users.size() > 0) {
-            return LayUIResult.build(1,"用户名已存在");
+            return LayUIResult.build(1, "用户名已存在");
         }
         user.setGmtCreate(System.currentTimeMillis());
         user.setGmtModified(System.currentTimeMillis());
         int rows = userMapper.insert(user);
-        if (rows<=0) {
+        if (rows <= 0) {
             return LayUIResult.fail();
         }
         //插入用户-角色关联表
@@ -96,9 +117,28 @@ public class UserServiceImpl implements UserService {
         userRole.setRoleId(roleId);
         int row = userRoleMapper.insert(userRole);
         if (row <= 0) {
-            return LayUIResult.build(1,"添加失败");
+            return LayUIResult.build(1, "添加失败");
         }
-        return LayUIResult.build(0,"添加成功");
+        return LayUIResult.build(0, "添加成功");
+    }
+
+    /**
+     * @Description: 删除单个用户
+     * @Param: [id]
+     * @return: com.wu.common.utils.LayUIResult
+     * @Date: 2020/1/26
+     */
+    @Override
+    public LayUIResult deleteUserById(Integer id) {
+        if (id == null) return LayUIResult.fail();
+        int rows = userMapper.deleteByPrimaryKey(id);
+        if (rows > 0) return LayUIResult.build(0, "success");
+        return LayUIResult.fail();
+    }
+
+    @Override
+    public LayUIResult deleteUserByIds(List<Integer> userIds) {
+        return null;
     }
 
     @Override
@@ -110,7 +150,7 @@ public class UserServiceImpl implements UserService {
             //返回数据时将密码置为空值
             user.setPassword(null);
             UserDTO userDTO = new UserDTO();
-            BeanUtils.copyProperties(user,userDTO);
+            BeanUtils.copyProperties(user, userDTO);
             //查询用户对应的VIP等级
             UserGrade userGrade = userGradeMapper.selectByPrimaryKey(user.getVipLevel());
             userDTO.setUserGrade(userGrade);
@@ -123,15 +163,10 @@ public class UserServiceImpl implements UserService {
             userDTO.setRole(role);
             userDTOS.add(userDTO);
         }
-        if (users != null && users.size() >0) {
-            return LayUIResult.ok(userDTOS.size(),userDTOS);
+        if (users != null && users.size() > 0) {
+            return LayUIResult.ok(userDTOS.size(), userDTOS);
         }
-        return LayUIResult.fail(null,null);
+        return LayUIResult.fail(null, null);
     }
 
-    @Override
-    public LayUIResult insertUser(UserDTO userDTO) {
-
-        return null;
-    }
 }

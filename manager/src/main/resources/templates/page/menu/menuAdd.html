@@ -13,69 +13,60 @@
 	<link rel="stylesheet" th:href="@{/css/public.css}" media="all" />
 </head>
 <body class="childrenBody">
-<form class="layui-form addUser" style="width:80%;">
+<form class="layui-form addMenu" style="width:80%;">
 	<input type="hidden" class="layui-input id" name="id">
 	<div class="layui-form-item layui-row layui-col-xs12">
-		<label class="layui-form-label">登录名</label>
+		<label class="layui-form-label">菜单名</label>
 		<div class="layui-input-block">
-			<input type="text" class="layui-input username" name="username" lay-verify="required" placeholder="请输入登录名">
+			<input type="text" class="layui-input title" name="title" lay-verify="required" placeholder="请输入菜单名">
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
-		<label class="layui-form-label">姓名</label>
+		<label class="layui-form-label">字体图标</label>
 		<div class="layui-input-block">
-			<input type="text" class="layui-input name" name="name" lay-verify="required" placeholder="请输入姓名">
+			<input type="text" class="layui-input icon" name="icon" lay-verify="required" placeholder="请输入字体图标">
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
-		<label class="layui-form-label">密码</label>
+		<label class="layui-form-label">地址</label>
 		<div class="layui-input-block">
-			<input type="text" class="layui-input password" name="password" placeholder="请输入密码">
+			<input type="text" class="layui-input href" name="href" placeholder="地址">
 		</div>
 	</div>
 	<div class="layui-row">
 		<div class="magb15 layui-col-md4 layui-col-xs12">
-			<label class="layui-form-label">性别</label>
-			<div class="layui-input-block sex">
-				<input type="radio" name="sex" value="1" title="男" checked>
-				<input type="radio" name="sex" value="0" title="女">
-			</div>
-		</div>
-		<div class="magb15 layui-col-md4 layui-col-xs12">
-			<label class="layui-form-label">用户角色</label>
-			<div class="layui-input-block">
-				<select name="role" class="role" lay-filter="role">
+			<label class="layui-form-label">菜单等级</label>
+			<div class="layui-input-block menuLevel">
+				<select name="menuLevel" class="menuLevel" lay-filter="menuLevel">
+					<option value="2">二级菜单</option>
+					<option value="3">三级菜单</option>
 				</select>
 			</div>
 		</div>
 		<div class="magb15 layui-col-md4 layui-col-xs12">
-			<label class="layui-form-label">会员等级</label>
-			<div class="layui-input-block">
-				<select name="vipLevel" class="vipLevel" lay-filter="userGrade">
-					<option value="1">倔强青铜</option>
-					<option value="2">秩序白银</option>
-				</select>
+			<label class="layui-form-label">是否父菜单</label>
+			<div class="layui-input-block isParent">
+				<input type="radio" name="isParent" value="1" title="否" lay-filter="isParent" checked>
+				<input type="radio" name="isParent" value="0" title="是" lay-filter="isParent">
 			</div>
 		</div>
 		<div class="magb15 layui-col-md4 layui-col-xs12">
-			<label class="layui-form-label">用户状态</label>
+			<label class="layui-form-label">父菜单</label>
 			<div class="layui-input-block">
-				<select name="status" class="status" lay-filter="userStatus">
-					<option value="0">正常使用</option>
-					<option value="1">限制用户</option>
+				<select name="parent" class="parent" lay-filter="parent">
 				</select>
 			</div>
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<div class="layui-input-block">
-			<button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addUser">立即添加</button>
+			<button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addMenu">立即添加</button>
 			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
 		</div>
 	</div>
 </form>
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
-<script type="text/javascript" th:src="@{/js/user/userAdd.js}"></script>
+<script type="text/javascript" th:src="@{/js/menu/menuAdd.js}"></script>
 <script type="text/javascript" th:src="@{/js/getUrlParam.js}"></script>
 </body>
 </html>

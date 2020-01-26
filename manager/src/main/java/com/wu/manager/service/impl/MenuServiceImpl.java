@@ -32,7 +32,6 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public LayUIResult getAllTopMenu() {
         List<TopMenu> topMenus = topMenuMapper.selectByExample(new TopMenuExample());
-
         return LayUIResult.ok(JsonUtils.objectToJson(topMenus));
     }
 
@@ -85,6 +84,16 @@ public class MenuServiceImpl implements MenuService {
                 leftNavDTOS.add(leftNavDTO);
             }
             return LayUIResult.build(0,leftNavs.size(),"success",leftNavDTOS);
+        }
+        return LayUIResult.build(1,"fail");
+    }
+
+    @Override
+    public LayUIResult selectTopMenu() {
+        TopMenuExample topMenuExample = new TopMenuExample();
+        List<TopMenu> topMenus = topMenuMapper.selectByExample(topMenuExample);
+        if (topMenus != null && topMenus.size()>0) {
+            return LayUIResult.build(0,topMenus.size(),"success",topMenus);
         }
         return LayUIResult.build(1,"fail");
     }

@@ -27,6 +27,8 @@ layui.use(['form', 'layer'], function () {
         return false;
     })
 
+    var vipLevelId = UrlParm.parm("vipLevelId");
+
     //动态添加VIP等级下拉框
     $.ajax({
         url: '/user/userGrade',
@@ -37,11 +39,15 @@ layui.use(['form', 'layer'], function () {
             $(".vipLevel").empty();
             for (var i = 0; i < data.length; i++) {
                 $(".vipLevel").append("<option value='" + data[i].id + "'>" + data[i].gradeName + "</option>");
+                if (vipLevelId == data[i].id) {
+                    $(".vipLevel option[value=" + vipLevelId + "]").prop("selected", true);    //用户状态
+                }
             }
             form.render();
         }
     })
 
+    var roleId = UrlParm.parm("roleId")
     //动态添加用户角色下拉框
     $(function () {
         $.ajax({
@@ -53,6 +59,9 @@ layui.use(['form', 'layer'], function () {
                 $(".role").empty();
                 for (var i = 0; i < data.length; i++) {
                     $(".role").append("<option value='" + data[i].id + "'>" + data[i].description + "</option>");
+                    if (roleId == data[i].id) {
+                        $(".role option[value=" + roleId + "]").prop("selected", true);    //用户状态
+                    }
                 }
                 form.render();
             }
