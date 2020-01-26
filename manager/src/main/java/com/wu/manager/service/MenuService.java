@@ -1,6 +1,7 @@
 package com.wu.manager.service;
 
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.pojo.LeftNav;
 import com.wu.manager.pojo.LeftNavNode;
 
 import java.util.List;
@@ -21,4 +22,8 @@ public interface MenuService {
     LayUIResult selectLeftNav();
 
     LayUIResult selectTopMenu();
+
+    LayUIResult insertOrUpdateLeftNav(LeftNav leftNav);
+
+    LayUIResult deleteLeftNavById(Integer id);
 }

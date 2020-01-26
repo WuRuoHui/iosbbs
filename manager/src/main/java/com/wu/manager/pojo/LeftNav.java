@@ -1,5 +1,8 @@
 package com.wu.manager.pojo;
 
+import lombok.ToString;
+
+@ToString
 public class LeftNav {
     private Integer id;
 

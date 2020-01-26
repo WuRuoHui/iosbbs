@@ -69,7 +69,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     body.find(".icon").val(edit.icon);  //字体图标
                     body.find(".href").val(edit.href);  //url
                     body.find(".menuLevel option[value="+edit.menuLevel+"]").prop("selected",true);  //菜单等级
-                    body.find(".isParent input[value="+(edit.isParent?0:1)+"]").prop("checked","checked");  //是否父菜单
+                    body.find(".isParent input[value="+(edit.isParent?1:0)+"]").prop("checked","checked");  //是否父菜单
                     form.render();
                 }
                 setTimeout(function(){
@@ -94,14 +94,14 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //批量删除
     $(".delAll_btn").click(function(){
-        var checkStatus = table.checkStatus('userListTable'),
+        var checkStatus = table.checkStatus('menuListTable'),
             data = checkStatus.data,
             newsId = [];
         if(data.length > 0) {
             for (var i in data) {
                 newsId.push(data[i].newsId);
             }
-            layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除选中的菜单项？', {icon: 3, title: '提示信息'}, function (index) {
                 // $.get("删除文章接口",{
                 //     newsId : newsId  //将需要删除的newsId作为参数传入
                 // },function(data){
@@ -142,13 +142,20 @@ layui.use(['form','layer','table','laytpl'],function(){
                 layer.close(index);
             });
         }else if(layEvent === 'del'){ //删除
-            layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                    tableIns.reload();
-                    layer.close(index);
-                // })
+            layer.confirm('确定删除此菜单项？',{icon:3, title:'提示信息'},function(index){
+                $.ajax({
+                    url: '/menu/' + data.id,
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (res) {
+                        top.layer.msg(res.msg)
+                        if (res.code == 0) {
+                            tableIns.reload();
+                        }
+                        layer.close(index);
+                    }
+                })
             });
         }
     });

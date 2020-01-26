@@ -177,15 +177,6 @@ layui.use(['form','layer','table','laytpl'],function(){
             },function(index){
                 layer.close(index);
             });
-        }else if(layEvent === 'del'){ //删除
-            layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                    tableIns.reload();
-                    layer.close(index);
-                // })
-            });
         }
     });
 

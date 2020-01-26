@@ -30,7 +30,7 @@
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">地址</label>
 		<div class="layui-input-block">
-			<input type="text" class="layui-input href" name="href" placeholder="地址">
+			<input type="text" class="layui-input href" name="href" placeholder="地址（如为父菜单，则不需要地址）">
 		</div>
 	</div>
 	<div class="layui-row">
@@ -46,14 +46,14 @@
 		<div class="magb15 layui-col-md4 layui-col-xs12">
 			<label class="layui-form-label">是否父菜单</label>
 			<div class="layui-input-block isParent">
-				<input type="radio" name="isParent" value="1" title="否" lay-filter="isParent" checked>
-				<input type="radio" name="isParent" value="0" title="是" lay-filter="isParent">
+				<input type="radio" name="isParent" value="0" title="否" lay-filter="isParent" checked>
+				<input type="radio" name="isParent" value="1" title="是" lay-filter="isParent">
 			</div>
 		</div>
 		<div class="magb15 layui-col-md4 layui-col-xs12">
 			<label class="layui-form-label">父菜单</label>
 			<div class="layui-input-block">
-				<select name="parent" class="parent" lay-filter="parent">
+				<select name="parentId" class="parent" lay-filter="parent">
 				</select>
 			</div>
 		</div>

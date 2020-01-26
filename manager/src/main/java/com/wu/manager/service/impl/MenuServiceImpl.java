@@ -97,4 +97,40 @@ public class MenuServiceImpl implements MenuService {
         }
         return LayUIResult.build(1,"fail");
     }
+
+    @Override
+    public LayUIResult insertOrUpdateLeftNav(LeftNav leftNav) {
+        if (leftNav == null) {
+            return LayUIResult.fail("数据为空，操作失败");
+        }
+        //判断id是否存在
+        if (leftNav.getId() != null) {
+            //存在则进行更新操作
+            int rows = leftNavMapper.updateByPrimaryKeySelective(leftNav);
+            if (rows >0) {
+                return LayUIResult.build(0,"更新成功");
+            }
+            return LayUIResult.fail("更新失败");
+        }
+        //不存在则进行插入操作
+        leftNav.setSpread(false);
+        int rows = leftNavMapper.insertSelective(leftNav);
+        if (rows >0 ) {
+            return LayUIResult.build(0,"插入成功");
+        }
+        return LayUIResult.fail("插入失败");
+    }
+
+    @Override
+    public LayUIResult deleteLeftNavById(Integer id) {
+        LeftNav leftNav = leftNavMapper.selectByPrimaryKey(id);
+        if (leftNav == null) {
+            return LayUIResult.fail("要删除的菜单项不存在");
+        }
+        int rows = leftNavMapper.deleteByPrimaryKey(id);
+        if (rows > 0) {
+            return LayUIResult.build(0,"删除菜单项成功");
+        }
+        return LayUIResult.fail("删除菜单项失败");
+    }
 }

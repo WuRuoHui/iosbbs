@@ -1,11 +1,14 @@
 package com.wu.manager.controller;
 
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.pojo.LeftNav;
 import com.wu.manager.pojo.LeftNavNode;
 import com.wu.manager.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -61,4 +64,19 @@ public class MenuController {
         LayUIResult layUIResult = menuService.selectLeftNav();
         return layUIResult;
     }
+
+    @RequestMapping(value = "/menu",method = RequestMethod.POST)
+    @ResponseBody
+    public LayUIResult insertLeftNav(LeftNav leftNav) {
+        LayUIResult layUIResult = menuService.insertOrUpdateLeftNav(leftNav);
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/menu/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteMenuById(@PathVariable(name = "id") Integer id) {
+        LayUIResult layUIResult = menuService.deleteLeftNavById(id);
+        return layUIResult;
+    }
+
 }
