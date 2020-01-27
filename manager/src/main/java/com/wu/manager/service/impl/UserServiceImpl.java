@@ -41,6 +41,10 @@ public class UserServiceImpl implements UserService {
     private UserRoleMapper userRoleMapper;
     @Value(value = "${BBS.USER.GRADE}")
     private String BBS_USER_GRADE;
+    @Value(value = "BBS.USER")
+    private String BBS_USER;
+    @Value(value = "BBS.USERCOUNT")
+    private String BBS_USER_COUNT;
 
     @Override
     @Transactional
@@ -96,7 +100,11 @@ public class UserServiceImpl implements UserService {
                 userRole.setRoleId(roleId);
                 userMapper.insert(user);
             }
-            return rows > 0 ? LayUIResult.build(0, "更新成功") : LayUIResult.build(1, "更新失败");
+            if (rows > 0) {
+                redisService.deleteHash(BBS_USER, BBS_USER_COUNT);
+                LayUIResult.build(0, "更新成功");
+            }
+            return LayUIResult.build(1, "更新失败");
         }
         //查询用户名是否存在
         UserExample userExample = new UserExample();
@@ -119,6 +127,7 @@ public class UserServiceImpl implements UserService {
         if (row <= 0) {
             return LayUIResult.build(1, "添加失败");
         }
+        redisService.deleteHash(BBS_USER, BBS_USER_COUNT);
         return LayUIResult.build(0, "添加成功");
     }
 
@@ -132,13 +141,45 @@ public class UserServiceImpl implements UserService {
     public LayUIResult deleteUserById(Integer id) {
         if (id == null) return LayUIResult.fail();
         int rows = userMapper.deleteByPrimaryKey(id);
-        if (rows > 0) return LayUIResult.build(0, "success");
+        if (rows > 0) {
+            deleteUserRoleById(id);
+            return LayUIResult.build(0, "删除成功");
+        }
         return LayUIResult.fail();
     }
 
+    /**
+     * @Description: 批量删除用户
+     * @Param: [userIds]
+     * @return: com.wu.common.utils.LayUIResult
+     * @Date: 2020/1/26
+     */
     @Override
+    @Transactional
     public LayUIResult deleteUserByIds(List<Integer> userIds) {
-        return null;
+        if (userIds == null || userIds.size() < 1) {
+            LayUIResult.fail("请选择需要删除的用户");
+        }
+        for (Integer id : userIds) {
+            int rows = userMapper.deleteByPrimaryKey(id);
+            if (rows < 1) {
+                return LayUIResult.fail("删除失败");
+            }
+            deleteUserById(id);
+        }
+        redisService.deleteHash(BBS_USER, BBS_USER_COUNT);
+        return LayUIResult.build(0, "批量删除成功");
+    }
+
+    @Override
+    public LayUIResult selectUserCount() {
+        String result = (String) redisService.getHash(BBS_USER, BBS_USER_COUNT);
+        if (!StringUtils.isEmpty(result)) {
+            return LayUIResult.ok(Integer.valueOf(result), null);
+        }
+        Long count = userMapper.countByExample(new UserExample());
+        redisService.putHash(BBS_USER, BBS_USER_COUNT, String.valueOf(count));
+        return LayUIResult.ok(count.intValue(), null);
     }
 
     @Override
@@ -169,4 +210,15 @@ public class UserServiceImpl implements UserService {
         return LayUIResult.fail(null, null);
     }
 
+    /**
+     * @Description: 根据userId删除用户-角色关联表
+     * @Param: [id]
+     * @return: void
+     * @Date: 2020/1/26
+     */
+    public void deleteUserRoleById(Integer id) {
+        UserRoleExample userRoleExample = new UserRoleExample();
+        userRoleExample.createCriteria().andUserIdEqualTo(id);
+        userRoleMapper.deleteByExample(userRoleExample);
+    }
 }

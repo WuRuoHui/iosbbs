@@ -20,4 +20,14 @@ public class IndexController {
     public String showMain() {
         return "page/main";
     }
+
+    @RequestMapping("/page/404")
+    public String showErrorPage() {
+        return "page/404";
+    }
+
+    @RequestMapping("/page/login/login")
+    public String showLoginPage() {
+        return "page/login/login";
+    }
 }

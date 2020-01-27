@@ -22,18 +22,18 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/page/user/{pageName}")
-    public String showUserPage(@PathVariable(name = "pageName")String pageName) {
-        return "page/user/"+pageName;
+    public String showUserPage(@PathVariable(name = "pageName") String pageName) {
+        return "page/user/" + pageName;
     }
 
-    @RequestMapping(value = "/user/userGrade",method = RequestMethod.GET)
+    @RequestMapping(value = "/user/userGrade", method = RequestMethod.GET)
     @ResponseBody
     public LayUIResult showUserGrade() {
         LayUIResult layUIResult = userService.selectAllUserGrade();
         return layUIResult;
     }
 
-    @RequestMapping(value = "/user",method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
     public LayUIResult selectUser() {
         LayUIResult layUIResult = userService.selectAllUser();
@@ -42,15 +42,14 @@ public class UserController {
 
     @PostMapping(value = "/user")
     @ResponseBody
-    public LayUIResult insertUser(User user,Integer role) {
-        LayUIResult layUIResult = userService.insertUser(user,role);
+    public LayUIResult insertUser(User user, Integer role) {
+        LayUIResult layUIResult = userService.insertUser(user, role);
         return layUIResult;
     }
 
     @DeleteMapping("/user")
     @ResponseBody
     public LayUIResult deleteUserByIds(@RequestBody List<Integer> userIds) {
-        System.out.println(userIds.size());
         LayUIResult layUIResult = userService.deleteUserByIds(userIds);
         return layUIResult;
     }
@@ -59,6 +58,13 @@ public class UserController {
     @ResponseBody
     public LayUIResult deleteUserById(@PathVariable(name = "id") Integer id) {
         LayUIResult layUIResult = userService.deleteUserById(id);
+        return layUIResult;
+    }
+
+    @RequestMapping("/userCount")
+    @ResponseBody
+    public LayUIResult selectUserCount() {
+        LayUIResult layUIResult = userService.selectUserCount();
         return layUIResult;
     }
 }

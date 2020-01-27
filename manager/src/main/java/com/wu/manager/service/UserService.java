@@ -22,4 +22,6 @@ public interface UserService {
     LayUIResult deleteUserById(Integer id);
 
     LayUIResult deleteUserByIds(List<Integer> userIds);
+
+    LayUIResult selectUserCount();
 }

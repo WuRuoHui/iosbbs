@@ -20,8 +20,8 @@ public class StringRedisServiceImpl implements StringRedisService {
     private StringRedisTemplate stringRedisTemplate;
 
     //存入的键值均为字符串
-    public void setString(String key,String value) {
-        stringRedisTemplate.opsForValue().set(key,value);
+    public void setString(String key, String value) {
+        stringRedisTemplate.opsForValue().set(key, value);
     }
 
     //存入的key为字符串，值为对象，存入时转化为json格式的字符
@@ -34,5 +34,21 @@ public class StringRedisServiceImpl implements StringRedisService {
     public String getString(String key) {
         String result = stringRedisTemplate.opsForValue().get(key);
         return result;
+    }
+
+    //存入string键-hash
+    public void putHash(String key, Object hk, Object hv) {
+        stringRedisTemplate.opsForHash().put(key, hk, hv);
+    }
+
+    public Object getHash(String key, Object hk) {
+        Object result = stringRedisTemplate.opsForHash().get(key, hk);
+        return result;
+    }
+
+    @Override
+    public Long deleteHash(String key, Object hk) {
+        Long rows = stringRedisTemplate.opsForHash().delete(key, hk);
+        return rows;
     }
 }

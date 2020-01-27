@@ -17,4 +17,10 @@ public interface StringRedisService {
 
     //根据键取到值
     public String getString(String key);
+
+    void putHash(String key, Object hk, Object hv);
+
+    Object getHash(String key, Object hk);
+
+    Long deleteHash(String key ,Object hk);
 }
