@@ -78,6 +78,11 @@ public class UserServiceImpl implements UserService {
             return LayUIResult.fail();
         }
         if (user.getId() != null) {
+            //如果不更新密码，则设置密码为空，防止更新时清空密码
+            if (StringUtils.isEmpty(user.getPassword())) {
+                user.setPassword(null);
+            }
+            user.setGmtModified(System.currentTimeMillis());
             int rows = userMapper.updateByPrimaryKeySelective(user);
             //更新用户角色表
             //判断用户角色表中是否存在对应的关系
@@ -91,7 +96,7 @@ public class UserServiceImpl implements UserService {
                 UserRoleExample example1 = new UserRoleExample();
                 example1.createCriteria()
                         .andUserIdEqualTo(user.getId());
-                userRoleMapper.updateByExample(userRole, example1);
+                userRoleMapper.updateByExampleSelective(userRole, example1);
             } else {
                 //如果不存在
                 //插入用户-角色关联表
@@ -100,9 +105,10 @@ public class UserServiceImpl implements UserService {
                 userRole.setRoleId(roleId);
                 userMapper.insert(user);
             }
+            System.out.println(user);
+            System.out.println(rows);
             if (rows > 0) {
-                redisService.deleteHash(BBS_USER, BBS_USER_COUNT);
-                LayUIResult.build(0, "更新成功");
+                return LayUIResult.build(0, "更新成功");
             }
             return LayUIResult.build(1, "更新失败");
         }
@@ -172,6 +178,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    /**
+    * @Description: 查询总用户数
+    * @Param: []
+    * @return: com.wu.common.utils.LayUIResult
+    * @Date: 2020/1/28
+    */
     public LayUIResult selectUserCount() {
         String result = (String) redisService.getHash(BBS_USER, BBS_USER_COUNT);
         if (!StringUtils.isEmpty(result)) {
