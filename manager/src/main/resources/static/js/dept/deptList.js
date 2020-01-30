@@ -16,14 +16,14 @@ layui.use(['form','layer','table','laytpl'],function(){
         limit : 20,
         id : "deptListTable",
         cols : [[
-            {type: "checkbox", fixed:"left", width:50},
-            {field: '', title: '序号', width:80, sort: true, align:"center",templet:function (d) {
+            {type: "checkbox", fixed:"left"},
+            {field: '', title: '序号', sort: true, align:"center",templet:function (d) {
                     return (d.LAY_INDEX);
                 }},
             {field:'id',width:0},
-            {field: 'name', title: '部门名称', minWidth:100, align:'center'},
+            {field: 'name', title: '部门名称',  align:'center'},
             {field: 'nickname', title: '简称', align:'center'},
-            {title: '操作', minWidth:175, templet:'#deptListBar',fixed:"right",align:"center"}
+            {title: '操作',  templet:'#deptListBar',fixed:"right",align:"center"}
         ]],done: function () {
             $("[data-field='id']").css('display','none');
         }
@@ -47,12 +47,10 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //添加部门
     function addDept(edit){
-        var roleId;
-        var vipLevelId;
         var index = layui.layer.open({
             title : "添加部门",
             type : 2,
-            content : "deptAdd",
+            content : "/page/dept/deptAdd",
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
@@ -90,9 +88,9 @@ layui.use(['form','layer','table','laytpl'],function(){
             for (var i in data) {
                 userIds[i] = data[i].id;
             }
-            layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除选中的部门信息？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/user',
+                    url: '/dept',
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',
@@ -117,11 +115,11 @@ layui.use(['form','layer','table','laytpl'],function(){
             data = obj.data;
 
         if(layEvent === 'edit'){ //编辑
-            addUser(data);
+            addDept(data);
         }else if (layEvent === 'del') {  //删除
-            layer.confirm('确定删除此用户？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除此部门信息？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/user/' + data.id,
+                    url: '/dept/' + data.id,
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',

@@ -15,4 +15,6 @@ public interface DeptService {
     LayUIResult insertOrUpdateDept(Dept dept);
 
     LayUIResult selectDeptList();
+
+    LayUIResult deleteDeptById(Integer id);
 }

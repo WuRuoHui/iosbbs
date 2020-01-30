@@ -5,6 +5,7 @@ import com.wu.manager.pojo.Dept;
 import com.wu.manager.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,6 +44,13 @@ public class DeptController {
     @ResponseBody
     public LayUIResult selectDeptList() {
         LayUIResult layUIResult = deptService.selectDeptList();
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/dept/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public  LayUIResult deleteDeptById(@PathVariable(name = "id") Integer id) {
+        LayUIResult layUIResult = deptService.deleteDeptById(id);
         return layUIResult;
     }
 }
