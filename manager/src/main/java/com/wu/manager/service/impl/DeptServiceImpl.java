@@ -7,6 +7,7 @@ import com.wu.manager.pojo.DeptExample;
 import com.wu.manager.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,7 +26,6 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public LayUIResult insertOrUpdateDept(Dept dept) {
-        System.out.println(dept);
         if (dept == null) {
             return LayUIResult.build(1,"部门信息不能为空");
         }
@@ -68,5 +68,20 @@ public class DeptServiceImpl implements DeptService {
             return LayUIResult.build(0,"删除成功！");
         }
         return LayUIResult.build(1,"您要删除的数据不存在！");
+    }
+
+    @Override
+    @Transactional
+    public LayUIResult deleteDeptByIds(List<Integer> userIds) {
+        if (userIds == null || userIds.size() < 1) {
+            return LayUIResult.fail("请选择要删除的选项");
+        }
+        for (Integer id : userIds) {
+            int rows = deptMapper.deleteByPrimaryKey(id);
+            if (rows < 1) {
+                return LayUIResult.fail("删除失败，重新刷新试试");
+            }
+        }
+        return LayUIResult.build(0,"删除成功!");
     }
 }

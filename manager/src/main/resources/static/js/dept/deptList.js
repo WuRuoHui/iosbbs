@@ -81,7 +81,7 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //批量删除
     $(".delAll_btn").click(function(){
-        var checkStatus = table.checkStatus('userListTable'),
+        var checkStatus = table.checkStatus('deptListTable'),
             data = checkStatus.data,
             userIds = [];
         if(data.length > 0) {
@@ -90,7 +90,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             }
             layer.confirm('确定删除选中的部门信息？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/dept',
+                    url: '/depts',
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',
@@ -113,7 +113,6 @@ layui.use(['form','layer','table','laytpl'],function(){
     table.on('tool(deptList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
-
         if(layEvent === 'edit'){ //编辑
             addDept(data);
         }else if (layEvent === 'del') {  //删除

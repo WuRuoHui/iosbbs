@@ -3,6 +3,8 @@ package com.wu.manager.service;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.pojo.Dept;
 
+import java.util.List;
+
 /**
  * @program: iosbbs
  * @description: 部门service
@@ -17,4 +19,6 @@ public interface DeptService {
     LayUIResult selectDeptList();
 
     LayUIResult deleteDeptById(Integer id);
+
+    LayUIResult deleteDeptByIds(List<Integer> userIds);
 }
