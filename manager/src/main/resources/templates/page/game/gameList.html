@@ -23,23 +23,22 @@
 				<a class="layui-btn search_btn" data-type="reload">搜索</a>
 			</div>
 			<div class="layui-inline">
-				<a class="layui-btn layui-btn-normal addNews_btn">添加用户</a>
+				<a class="layui-btn layui-btn-normal addGame_btn">添加游戏</a>
 			</div>
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
 			</div>
 		</form>
 	</blockquote>
-	<table id="userList" lay-filter="userList"></table>
+	<table id="userList" lay-filter="gameList"></table>
 
 	<!--操作-->
-	<script type="text/html" id="userListBar">
+	<script type="text/html" id="gameListBar">
 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-		<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a>
 		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 	</script>
 </form>
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
-<script type="text/javascript" th:src="@{/js/user/userList.js}"></script>
+<script type="text/javascript" th:src="@{/js/game/gameList.js}"></script>
 </body>
 </html>
