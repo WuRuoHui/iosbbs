@@ -27,6 +27,33 @@ layui.use(['form', 'layer'], function () {
         return false;
     })
 
+    //监听专栏选择
+    form.on('select(isParent)', function (obj) {
+        var value = obj.value
+            ,elemQuiz = $('#parentName')
+        elemQuiz.addClass('layui-hide');
+        if (value === '0') {
+            //动态加载部门下拉框
+            $.ajax({
+                url: '/mainGames',
+                type: 'GET',
+                dataType: 'json',
+                success: function (res) {
+                    var data = res.data;
+                    $(".parentId").empty();
+                    for (var i = 0; i < data.length; i++) {
+                        $(".parentId").append("<option value='" + data[i].id + "'>" + data[i].name + "</option>");
+                        if (vipLevelId == data[i].id) {
+                            $(".vipLevel option[value=" + vipLevelId + "]").prop("selected", true);    //用户状态
+                        }
+                    }
+                    form.render();
+                }
+            })
+            elemQuiz.removeClass('layui-hide');
+        }
+    });
+
     //动态加载部门下拉框
     $.ajax({
         url: '/depts',
@@ -44,8 +71,8 @@ layui.use(['form', 'layer'], function () {
             form.render();
         }
     })
-    var vipLevelId = UrlParm.parm("vipLevelId");
 
+    var vipLevelId = UrlParm.parm("vipLevelId");
     //动态添加VIP等级下拉框
     $.ajax({
         url: '/user/userGrade',

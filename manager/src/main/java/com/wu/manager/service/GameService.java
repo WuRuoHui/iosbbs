@@ -14,4 +14,7 @@ public interface GameService {
 
     LayUIResult insertGame(Game game);
 
+    LayUIResult selectMainGames();
+
+    LayUIResult selectAllGames();
 }

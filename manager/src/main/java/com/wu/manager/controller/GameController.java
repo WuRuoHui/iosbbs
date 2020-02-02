@@ -38,4 +38,18 @@ public class GameController {
         LayUIResult layUIResult = gameService.insertGame(game);
         return layUIResult;
     }
+
+    @RequestMapping(value = "/mainGames",method = RequestMethod.GET)
+    @ResponseBody
+    public LayUIResult selectMainGames() {
+        LayUIResult layUIResult = gameService.selectMainGames();
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/games",method = RequestMethod.GET)
+    @ResponseBody
+    public LayUIResult selectAllGames() {
+        LayUIResult layUIResult = gameService.selectAllGames();
+        return layUIResult;
+    }
 }

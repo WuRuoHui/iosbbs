@@ -8,7 +8,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     //用户列表
     var tableIns = table.render({
         elem: '#gameList',
-        url : '/game',
+        url : '/games',
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -21,24 +21,20 @@ layui.use(['form','layer','table','laytpl'],function(){
                     return (d.LAY_INDEX);
                 }},
             {field:'id',width:0},
-            {field: 'username', title: '用户名', minWidth:100, align:"center"},
-            {field: 'name', title: '姓名', minWidth:100, align:'center'},
-            {field: 'userSex', title: '用户性别', align:'center',templet:function (d) {
-                    return d.sex == "1"?"男": "女";
-                }},
-            {field: 'userStatus', title: '用户状态',  align:'center',templet:function(d){
-                return d.status == "0" ? "正常使用" : "限制使用";
+            {field: 'name', title: '游戏名', minWidth:100, align:"center"},
+            {field: 'status', title: '是否上架', align:'center',templet:function (d) {
+                    return d.status?"上架": "下架";
             }},
-            {field: 'role', title: '用户类型', align:'center',templet:function(d) {
-                return d.role.description;
-            }},
-            {field: 'userGrade', title: 'VIP等级', align:'center',templet:function(d){
-                return d.userGrade.gradeName;
-            }},
+            // {field: 'deptName', title: '部门名称', align:'center',templet:function(d){
+            //         return d.userGrade.gradeName;
+            // }},
+            // {field: 'parentName', title: '主包名', align:'center',templet:function(d) {
+            //     return d.role.description;
+            // }},
             {field: 'gmtCreate', title: '创建时间', align:'center',minWidth:150,templet:function(d) {
                 return formatDate(new Date(d.gmtCreate));
             }},
-            {title: '操作', minWidth:175, templet:'#userListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:175, templet:'#gameListBar',fixed:"right",align:"center"}
         ]],done: function () {
             $("[data-field='id']").css('display','none');
         }
