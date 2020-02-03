@@ -25,16 +25,20 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'status', title: '是否上架', align:'center',templet:function (d) {
                     return d.status?"上架": "下架";
             }},
-            // {field: 'deptName', title: '部门名称', align:'center',templet:function(d){
-            //         return d.userGrade.gradeName;
-            // }},
-            // {field: 'parentName', title: '主包名', align:'center',templet:function(d) {
-            //     return d.role.description;
-            // }},
+            {field: 'deptName', title: '部门名称', align:'center',templet:function(d){
+                    return d.dept.nickname;
+            }},
+            {field: 'isParent', title: '是否父包', align:'center',templet:function (d) {
+                    return d.isParent?"是": "否";
+            }},
+            {field: 'parentName', title: '主包名', align:'center',templet:function(d) {
+                if (d.isParent) return "空";
+                return d.parent.name;
+            }},
             {field: 'gmtCreate', title: '创建时间', align:'center',minWidth:150,templet:function(d) {
                 return formatDate(new Date(d.gmtCreate));
             }},
-            {title: '操作', minWidth:175, templet:'#gameListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:100, templet:'#gameListBar',fixed:"right",align:"center"}
         ]],done: function () {
             $("[data-field='id']").css('display','none');
         }
@@ -58,25 +62,23 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //添加用户
     function addGame(edit){
-        var roleId;
-        var vipLevelId;
+        var deptId;
+        var parentId;
         if (edit) {
-            vipLevelId = edit.userGrade.id;
-            roleId = edit.role.id;
+            deptId = edit.dept.id;
+            parentId = edit.parent === null?null:edit.parent.id;
         }
         var index = layui.layer.open({
             title : "添加游戏",
             type : 2,
-            content : "/page/game/gameAdd?roleId="+roleId+"&vipLevelId="+vipLevelId,
+            content : "/page/game/gameAdd?deptId="+deptId+"&parentId="+parentId,
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
                     body.find(".id").val(edit.id);
-                    body.find(".username").val(edit.username);  //登录名
-                    body.find(".name").val(edit.name);  //名字
-                    body.find(".sex input[value="+edit.sex+"]").prop("checked","checked");  //性别
-                    body.find(".status option[value="+(edit.status?1:0)+"]").prop("selected",true);    //用户状态
-                    // body.find(".role option[value=2]").prop("selected",true);  //用户类型
+                    body.find(".name").val(edit.name);  //游戏名
+                    body.find(".status input[value="+(edit.status?1:0)+"]").prop("checked","checked");  //是否上架
+                    body.find(".isParent option[value="+(edit.isParent?1:0)+"]").prop("selected",true);    //是否父包
                     form.render();
                 }
                 setTimeout(function(){
@@ -108,9 +110,9 @@ layui.use(['form','layer','table','laytpl'],function(){
             for (var i in data) {
                 userIds[i] = data[i].id;
             }
-            layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除选中的游戏？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/user',
+                    url: '/game',
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',
@@ -130,16 +132,16 @@ layui.use(['form','layer','table','laytpl'],function(){
     })
 
     //列表操作
-    table.on('tool(userList)', function(obj){
+    table.on('tool(gameList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
 
         if(layEvent === 'edit'){ //编辑
-            addUser(data);
+            addGame(data);
         }else if (layEvent === 'del') {  //删除
-            layer.confirm('确定删除此用户？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除此游戏信息？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/user/' + data.id,
+                    url: '/game/' + data.id,
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',

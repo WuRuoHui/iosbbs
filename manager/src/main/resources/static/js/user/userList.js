@@ -80,7 +80,6 @@ layui.use(['form','layer','table','laytpl'],function(){
                     body.find(".name").val(edit.name);  //名字
                     body.find(".sex input[value="+edit.sex+"]").prop("checked","checked");  //性别
                     body.find(".status option[value="+(edit.status?1:0)+"]").prop("selected",true);    //用户状态
-                    // body.find(".role option[value=2]").prop("selected",true);  //用户类型
                     form.render();
                 }
                 setTimeout(function(){

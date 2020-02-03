@@ -27,33 +27,46 @@ layui.use(['form', 'layer'], function () {
         return false;
     })
 
+    var parentId = UrlParm.parm("parentId");
+    if (parentId != 'null') {
+        showMainGames();
+        $('#parentName').removeClass('layui-hide');
+    }
     //监听专栏选择
     form.on('select(isParent)', function (obj) {
         var value = obj.value
             ,elemQuiz = $('#parentName')
         elemQuiz.addClass('layui-hide');
         if (value === '0') {
-            //动态加载部门下拉框
-            $.ajax({
-                url: '/mainGames',
-                type: 'GET',
-                dataType: 'json',
-                success: function (res) {
-                    var data = res.data;
-                    $(".parentId").empty();
-                    for (var i = 0; i < data.length; i++) {
-                        $(".parentId").append("<option value='" + data[i].id + "'>" + data[i].name + "</option>");
-                        if (vipLevelId == data[i].id) {
-                            $(".vipLevel option[value=" + vipLevelId + "]").prop("selected", true);    //用户状态
-                        }
-                    }
-                    form.render();
-                }
-            })
+            //动态加载父包下拉框
+            showMainGames();
             elemQuiz.removeClass('layui-hide');
         }
     });
 
+    //动态加载父包方法
+    function showMainGames() {
+        $.ajax({
+            url: '/mainGames',
+            type: 'GET',
+            dataType: 'json',
+            success: function (res) {
+                var data = res.data;
+                $(".parentId").empty();
+                for (var i = 0; i < data.length; i++) {
+                    $(".parentId").append("<option value='" + data[i].id + "'>" + data[i].name + "</option>");
+                    if (parentId == data[i].id) {
+                        $(".parentId option[value=" + parentId + "]").prop("selected", true);    //用户状态
+                    }
+                }
+                form.render();
+            }
+        })
+    }
+
+    //从url中获取deptId参数
+    var deptId = UrlParm.parm("deptId");
+    console.log(deptId + ":" + parentId);
     //动态加载部门下拉框
     $.ajax({
         url: '/depts',
@@ -64,8 +77,8 @@ layui.use(['form', 'layer'], function () {
             $(".deptId").empty();
             for (var i = 0; i < data.length; i++) {
                 $(".deptId").append("<option value='" + data[i].id + "'>" + data[i].nickname + "</option>");
-                if (vipLevelId == data[i].id) {
-                    $(".vipLevel option[value=" + vipLevelId + "]").prop("selected", true);    //用户状态
+                if (deptId == data[i].id) {
+                    $(".deptId option[value=" + deptId + "]").prop("selected", true);    //用户状态
                 }
             }
             form.render();
