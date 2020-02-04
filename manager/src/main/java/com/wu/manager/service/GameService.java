@@ -3,6 +3,8 @@ package com.wu.manager.service;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.pojo.Game;
 
+import java.util.List;
+
 /**
  * @program: iosbbs
  * @description: 游戏service接口
@@ -17,4 +19,8 @@ public interface GameService {
     LayUIResult selectMainGames();
 
     LayUIResult selectAllGames();
+
+    LayUIResult deleteGameById(Integer id);
+
+    LayUIResult deleteGamesByIds(List<Integer> ids);
 }

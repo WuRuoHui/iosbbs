@@ -38,7 +38,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'gmtCreate', title: '创建时间', align:'center',minWidth:150,templet:function(d) {
                 return formatDate(new Date(d.gmtCreate));
             }},
-            {title: '操作', minWidth:100, templet:'#gameListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150, toolbar:'#gameListBar',fixed:"right",align:"center"}
         ]],done: function () {
             $("[data-field='id']").css('display','none');
         }
@@ -105,18 +105,18 @@ layui.use(['form','layer','table','laytpl'],function(){
     $(".delAll_btn").click(function(){
         var checkStatus = table.checkStatus('gameListTable'),
             data = checkStatus.data,
-            userIds = [];
+            gameIds = [];
         if(data.length > 0) {
             for (var i in data) {
-                userIds[i] = data[i].id;
+                gameIds[i] = data[i].id;
             }
             layer.confirm('确定删除选中的游戏？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/game',
+                    url: '/games',
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',
-                    data: JSON.stringify(userIds),
+                    data: JSON.stringify(gameIds),
                     success: function (res) {
                         top.layer.msg(res.msg)
                         if (res.code == 0) {
@@ -127,7 +127,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 })
             })
         }else{
-            layer.msg("请选择需要删除的用户");
+            layer.msg("请选择需要删除的游戏信息");
         }
     })
 

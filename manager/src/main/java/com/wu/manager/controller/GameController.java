@@ -5,9 +5,9 @@ import com.wu.manager.pojo.Game;
 import com.wu.manager.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @program: iosbbs
@@ -50,6 +50,20 @@ public class GameController {
     @ResponseBody
     public LayUIResult selectAllGames() {
         LayUIResult layUIResult = gameService.selectAllGames();
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/game/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteGameById(@PathVariable(name = "id") Integer id) {
+        LayUIResult layUIResult = gameService.deleteGameById(id);
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/games",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteGamesByIds(@RequestBody List<Integer> ids) {
+        LayUIResult layUIResult = gameService.deleteGamesByIds(ids);
         return layUIResult;
     }
 }

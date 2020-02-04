@@ -28,9 +28,11 @@ layui.use(['form', 'layer'], function () {
     })
 
     var parentId = UrlParm.parm("parentId");
-    if (parentId != 'null') {
+    if (parentId != 'null' && parentId != 'undefined') {
         showMainGames();
         $('#parentName').removeClass('layui-hide');
+    }else {
+        $('#parentName').addClass('layui-hide');
     }
     //监听专栏选择
     form.on('select(isParent)', function (obj) {
