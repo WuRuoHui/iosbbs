@@ -1,8 +1,5 @@
 package com.wu.manager.pojo;
 
-import lombok.ToString;
-
-@ToString
 public class Game {
     private Integer id;
 
@@ -21,6 +18,8 @@ public class Game {
     private Integer parentId;
 
     private Boolean isParent;
+
+    private Integer edition;
 
     public Integer getId() {
         return id;
@@ -92,5 +91,13 @@ public class Game {
 
     public void setIsParent(Boolean isParent) {
         this.isParent = isParent;
+    }
+
+    public Integer getEdition() {
+        return edition;
+    }
+
+    public void setEdition(Integer edition) {
+        this.edition = edition;
     }
 }

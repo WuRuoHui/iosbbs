@@ -28,6 +28,13 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'deptName', title: '部门名称', align:'center',templet:function(d){
                     return d.dept.nickname;
             }},
+            {field: 'edition', title: '版本', align:'center',templet:function(d){
+                if (d.edition === 0) {
+                    return "iOS";
+                }else if (d.edition === 1){
+                    return "安卓";
+                }
+            }},
             {field: 'isParent', title: '是否父包', align:'center',templet:function (d) {
                     return d.isParent?"是": "否";
             }},
@@ -79,6 +86,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     body.find(".name").val(edit.name);  //游戏名
                     body.find(".status input[value="+(edit.status?1:0)+"]").prop("checked","checked");  //是否上架
                     body.find(".isParent option[value="+(edit.isParent?1:0)+"]").prop("selected",true);    //是否父包
+                    body.find(".edition option[value="+edit.edition+"]").prop("selected",true);    //版本
                     form.render();
                 }
                 setTimeout(function(){

@@ -653,6 +653,66 @@ public class GameExample {
             addCriterion("is_parent not between", value1, value2, "isParent");
             return (Criteria) this;
         }
+
+        public Criteria andEditionIsNull() {
+            addCriterion("edition is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionIsNotNull() {
+            addCriterion("edition is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionEqualTo(Integer value) {
+            addCriterion("edition =", value, "edition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionNotEqualTo(Integer value) {
+            addCriterion("edition <>", value, "edition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionGreaterThan(Integer value) {
+            addCriterion("edition >", value, "edition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("edition >=", value, "edition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionLessThan(Integer value) {
+            addCriterion("edition <", value, "edition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionLessThanOrEqualTo(Integer value) {
+            addCriterion("edition <=", value, "edition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionIn(List<Integer> values) {
+            addCriterion("edition in", values, "edition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionNotIn(List<Integer> values) {
+            addCriterion("edition not in", values, "edition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionBetween(Integer value1, Integer value2) {
+            addCriterion("edition between", value1, value2, "edition");
+            return (Criteria) this;
+        }
+
+        public Criteria andEditionNotBetween(Integer value1, Integer value2) {
+            addCriterion("edition not between", value1, value2, "edition");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

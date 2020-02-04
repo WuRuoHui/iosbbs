@@ -30,4 +30,6 @@ public class GameDTO {
 
     private Boolean isParent;
 
+    private Integer edition;
+
 }
