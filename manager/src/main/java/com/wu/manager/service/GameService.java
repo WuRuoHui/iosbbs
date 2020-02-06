@@ -2,6 +2,7 @@ package com.wu.manager.service;
 
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.pojo.Game;
+import com.wu.manager.pojo.GameDownload;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface GameService {
     LayUIResult deleteGameById(Integer id);
 
     LayUIResult deleteGamesByIds(List<Integer> ids);
+
+    LayUIResult insertOrUpdateGameDownload(GameDownload gameDownload);
 }

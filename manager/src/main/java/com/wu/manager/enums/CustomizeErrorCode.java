@@ -16,6 +16,10 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     UPDATE_DATA_SUCCESS(2005,"更新成功"),
     UPDATE_DATA_FAIL(2006,"更新失败"),
     GAME_ALREADY_EXIST(2007,"游戏已存在，不可重复添加"),
+    INSERT_DATA_NOT_FILL(2008,"添加失败，请确认是否有填写信息"),
+    DATA_ALREADY_EXIST(2009,"数据已存在，不可重复添加"),
+    INSERT_DATA_FAIL(2010,"添加失败"),
+    INSERT_DATA_SUCCESS(2011,"添加成功"),
     ;
 
     private Integer code;

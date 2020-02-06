@@ -4,10 +4,9 @@ import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.GameDTO;
 import com.wu.manager.enums.CustomizeErrorCode;
 import com.wu.manager.mapper.DeptMapper;
+import com.wu.manager.mapper.GameDownloadMapper;
 import com.wu.manager.mapper.GameMapper;
-import com.wu.manager.pojo.Dept;
-import com.wu.manager.pojo.Game;
-import com.wu.manager.pojo.GameExample;
+import com.wu.manager.pojo.*;
 import com.wu.manager.service.GameService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,8 @@ public class GameServiceImpl implements GameService {
     private GameMapper gameMapper;
     @Autowired
     private DeptMapper deptMapper;
+    @Autowired
+    private GameDownloadMapper gameDownloadMapper;
 
     @Override
     public LayUIResult insertGame(Game game) {
@@ -125,5 +126,24 @@ public class GameServiceImpl implements GameService {
             }
         }
         return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+    }
+
+    @Override
+    public LayUIResult insertOrUpdateGameDownload(GameDownload gameDownload) {
+        if (gameDownload == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_NOT_FILL.getMessage());
+        }
+        //判断是否已经存在了某个游戏的下载方式
+        GameDownloadExample gameDownloadExample = new GameDownloadExample();
+        gameDownloadExample.createCriteria().andGameIdEqualTo(gameDownload.getGameId());
+        List<GameDownload> gameDownloads = gameDownloadMapper.selectByExample(gameDownloadExample);
+        if (gameDownloads != null && gameDownloads.size() > 0 ) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_ALREADY_EXIST.getMessage());
+        }
+        int rows = gameDownloadMapper.insertSelective(gameDownload);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.INSERT_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_FAIL.getMessage());
     }
 }
