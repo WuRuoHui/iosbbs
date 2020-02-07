@@ -1,5 +1,6 @@
 package com.wu.manager;
 
+import com.wu.manager.mapper.GameExtMapper;
 import com.wu.manager.mapper.UserGradeMapper;
 import com.wu.manager.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -19,9 +20,15 @@ class ManagerApplicationTests {
     private RedisTemplate redisTemplate;
     @Value(value = "${BBS.USER.GRADE}")
     private String BBS_USER_GRADE_PREFIX;
+    @Autowired
+    private GameExtMapper gameExtMapper;
 
     @Test
     void contextLoads() {
+        /*List<Integer> ids = gameExtMapper.selectIdsByNameSearch("奇迹之剑");
+        for (Integer id : ids) {
+            System.out.println(id);
+        }*/
         /*List<UserGrade> userGrades = userGradeMapper.selectByExample(new UserGradeExample());
         Map<Integer,List<UserGrade>> map = new HashMap<>();
         map.put(userGrades.size(),userGrades);

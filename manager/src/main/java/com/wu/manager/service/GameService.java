@@ -19,7 +19,7 @@ public interface GameService {
 
     LayUIResult selectMainGames();
 
-    LayUIResult selectAllGames();
+    LayUIResult selectAllGames(String nameSearch, Integer page, Integer limit);
 
     LayUIResult deleteGameById(Integer id);
 
@@ -27,7 +27,7 @@ public interface GameService {
 
     LayUIResult insertOrUpdateGameDownload(GameDownload gameDownload);
 
-    LayUIResult selectAllGameDownloads();
+    LayUIResult selectAllGameDownloads(String nameSearch, Integer page, Integer limit);
 
     LayUIResult deleteGameDownloadById(Integer id);
 

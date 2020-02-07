@@ -49,8 +49,8 @@ public class GameController {
 
     @RequestMapping(value = "/games",method = RequestMethod.GET)
     @ResponseBody
-    public LayUIResult selectAllGames() {
-        LayUIResult layUIResult = gameService.selectAllGames();
+    public LayUIResult selectAllGames(String nameSearch,Integer page, Integer limit) {
+        LayUIResult layUIResult = gameService.selectAllGames(nameSearch,page,limit);
         return layUIResult;
     }
 
@@ -87,8 +87,8 @@ public class GameController {
 
     @RequestMapping(value = "/gameDownloads",method = RequestMethod.GET)
     @ResponseBody
-    public LayUIResult selectAllGameDownload() {
-        LayUIResult layUIResult = gameService.selectAllGameDownloads();
+    public LayUIResult selectAllGameDownload(String nameSearch,Integer page, Integer limit) {
+        LayUIResult layUIResult = gameService.selectAllGameDownloads(nameSearch,page,limit);
         return layUIResult;
     }
 

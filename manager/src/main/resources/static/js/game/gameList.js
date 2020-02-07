@@ -54,12 +54,13 @@ layui.use(['form','layer','table','laytpl'],function(){
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
         if($(".searchVal").val() != ''){
-            table.reload("newsListTable",{
+            table.reload("gameListTable",{
+                url : '/games',
                 page: {
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    key: $(".searchVal").val()  //搜索的关键字
+                    nameSearch: $(".searchVal").val()  //搜索的关键字
                 }
             })
         }else{

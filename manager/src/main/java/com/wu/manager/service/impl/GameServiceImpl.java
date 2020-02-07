@@ -1,11 +1,13 @@
 package com.wu.manager.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.GameDTO;
 import com.wu.manager.dto.GameDownloadDTO;
 import com.wu.manager.enums.CustomizeErrorCode;
 import com.wu.manager.mapper.DeptMapper;
 import com.wu.manager.mapper.GameDownloadMapper;
+import com.wu.manager.mapper.GameExtMapper;
 import com.wu.manager.mapper.GameMapper;
 import com.wu.manager.pojo.*;
 import com.wu.manager.service.GameService;
@@ -13,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,8 @@ public class GameServiceImpl implements GameService {
     private DeptMapper deptMapper;
     @Autowired
     private GameDownloadMapper gameDownloadMapper;
+    @Autowired
+    private GameExtMapper gameExtMapper;
 
     @Override
     public LayUIResult insertGame(Game game) {
@@ -78,10 +83,17 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public LayUIResult selectAllGames() {
+    public LayUIResult selectAllGames(String nameSearch, Integer page, Integer limit) {
         List<GameDTO> gameDTOS = new ArrayList<>();
-        List<Game> games = gameMapper.selectByExample(new GameExample());
+        GameExample gameExample = new GameExample();
+        if (!StringUtils.isEmpty(nameSearch)){
+            gameExample.createCriteria()
+                    .andNameLike("%"+nameSearch.trim()+"%");
+        }
+        PageHelper.startPage(page,limit);
+        List<Game> games = gameMapper.selectByExample(gameExample);
         if (games != null && games.size() > 0) {
+            long count = gameMapper.countByExample(new GameExample());
             for (Game game : games) {
                 GameDTO gameDTO = new GameDTO();
                 BeanUtils.copyProperties(game, gameDTO);
@@ -93,7 +105,7 @@ public class GameServiceImpl implements GameService {
                 }
                 gameDTOS.add(gameDTO);
             }
-            return LayUIResult.build(0, games.size(), "success", gameDTOS);
+            return LayUIResult.build(0, (int)count, "success", gameDTOS);
         }
         return LayUIResult.fail("fail");
     }
@@ -162,10 +174,20 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public LayUIResult selectAllGameDownloads() {
+    public LayUIResult selectAllGameDownloads(String nameSearch, Integer page, Integer limit) {
         List<GameDownloadDTO> gameDownloadDTOS = new ArrayList<>();
-        List<GameDownload> gameDownloads = gameDownloadMapper.selectByExample(new GameDownloadExample());
+        GameDownloadExample gameDownloadExample = new GameDownloadExample();
+        if (!StringUtils.isEmpty(nameSearch)) {
+            List<Integer> ids = gameExtMapper.selectIdsByNameSearch(nameSearch);
+            if (ids == null || ids.size()<10) {
+                ids.add(-1);
+            }
+            gameDownloadExample.createCriteria().andGameIdIn(ids);
+        }
+        PageHelper.startPage(page,limit);     //设置分页
+        List<GameDownload> gameDownloads = gameDownloadMapper.selectByExample(gameDownloadExample);
         if (gameDownloads != null && gameDownloads.size() > 0) {
+            long count = gameDownloadMapper.countByExample(new GameDownloadExample());    //查询总记录数
             for (GameDownload gameDownload : gameDownloads) {
                 GameDownloadDTO gameDownloadDTO = new GameDownloadDTO();
                 BeanUtils.copyProperties(gameDownload, gameDownloadDTO);
@@ -173,9 +195,9 @@ public class GameServiceImpl implements GameService {
                 gameDownloadDTO.setGame(game);
                 gameDownloadDTOS.add(gameDownloadDTO);
             }
-            return LayUIResult.build(0, gameDownloadDTOS.size(), CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(), gameDownloadDTOS);
+            return LayUIResult.build(0, (int) count, CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(), gameDownloadDTOS);
         }
-        return LayUIResult.build(1, CustomizeErrorCode.SELECT_DATA_FAIL.getMessage());
+        return LayUIResult.build(1, CustomizeErrorCode.NOT_DATA_EXIST.getMessage());
     }
 
     @Override

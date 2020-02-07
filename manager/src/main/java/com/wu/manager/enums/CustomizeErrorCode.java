@@ -22,7 +22,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     INSERT_DATA_SUCCESS(2011,"添加成功"),
     SELECT_DATA_SUCCESS(2012,"查询成功"),
     SELECT_DATA_FAIL(2013,"查询失败"),
-    DATA_NOT_FOUND(2014,"对应信息不存在或已删除，刷新试试！")
+    DATA_NOT_FOUND(2014,"对应信息不存在或已删除，刷新试试！"),
+    NOT_DATA_EXIST(2015,"无数据"),
     ;
 
     private Integer code;
