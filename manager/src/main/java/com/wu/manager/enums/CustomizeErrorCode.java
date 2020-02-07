@@ -20,6 +20,9 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     DATA_ALREADY_EXIST(2009,"数据已存在，不可重复添加"),
     INSERT_DATA_FAIL(2010,"添加失败"),
     INSERT_DATA_SUCCESS(2011,"添加成功"),
+    SELECT_DATA_SUCCESS(2012,"查询成功"),
+    SELECT_DATA_FAIL(2013,"查询失败"),
+    DATA_NOT_FOUND(2014,"对应信息不存在或已删除，刷新试试！")
     ;
 
     private Integer code;

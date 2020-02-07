@@ -8,7 +8,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     //用户列表
     var tableIns = table.render({
         elem: '#gameDownloadList',
-        url : '/games',
+        url : '/gameDownloads',
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -21,31 +21,20 @@ layui.use(['form','layer','table','laytpl'],function(){
                     return (d.LAY_INDEX);
                 }},
             {field:'id',width:0},
-            {field: 'name', title: '游戏名', minWidth:100, align:"center"},
-            {field: 'status', title: '是否上架', align:'center',templet:function (d) {
-                    return d.status?"上架": "下架";
+            {field: 'name', title: '游戏名', minWidth:100, align:"center",templet(d) {
+                return d.game.name;
             }},
-            {field: 'deptName', title: '部门名称', align:'center',templet:function(d){
-                    return d.dept.nickname;
-            }},
-            {field: 'edition', title: '版本', align:'center',templet:function(d){
-                if (d.edition === 0) {
-                    return "iOS";
-                }else if (d.edition === 1){
-                    return "安卓";
+            {field: 'url', title: '下载地址', align:'center'},
+            {field: 'mix', title: '游戏版本', align:'center',templet:function(d){
+                if (d.mix === 0) {
+                    return "iOS专服";
+                }else if (d.mix === 1){
+                    return "混服";
+                }else if (d.mix == 2 ) {
+                    return "安卓专服";
                 }
             }},
-            {field: 'isParent', title: '是否父包', align:'center',templet:function (d) {
-                    return d.isParent?"是": "否";
-            }},
-            {field: 'parentName', title: '主包名', align:'center',templet:function(d) {
-                if (d.isParent) return "空";
-                return d.parent.name;
-            }},
-            {field: 'gmtCreate', title: '创建时间', align:'center',minWidth:150,templet:function(d) {
-                return formatDate(new Date(d.gmtCreate));
-            }},
-            {title: '操作', minWidth:150, toolbar:'#gameListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150, toolbar:'#gameDownloadListBar',fixed:"right",align:"center"}
         ]],done: function () {
             $("[data-field='id']").css('display','none');
         }
@@ -69,24 +58,20 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //添加用户
     function addGameDownload(edit){
-        var deptId;
-        var parentId;
+        var gameId;
         if (edit) {
-            deptId = edit.dept.id;
-            parentId = edit.parent === null?null:edit.parent.id;
+            gameId = edit.game.id;
         }
         var index = layui.layer.open({
             title : "添加游戏",
             type : 2,
-            content : "/page/game/gameDownloadAdd?deptId="+deptId+"&parentId="+parentId,
+            content : "/page/game/gameDownloadAdd?gameId="+gameId,
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
                     body.find(".id").val(edit.id);
-                    body.find(".name").val(edit.name);  //游戏名
-                    body.find(".status input[value="+(edit.status?1:0)+"]").prop("checked","checked");  //是否上架
-                    body.find(".isParent option[value="+(edit.isParent?1:0)+"]").prop("selected",true);    //是否父包
-                    body.find(".edition option[value="+edit.edition+"]").prop("selected",true);    //版本
+                    body.find(".url").val(edit.url);  //游戏名
+                    body.find(".mix option[value="+edit.mix+"]").prop("selected",true);    //游戏版本
                     form.render();
                 }
                 setTimeout(function(){
@@ -111,20 +96,20 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //批量删除
     $(".delAll_btn").click(function(){
-        var checkStatus = table.checkStatus('gameListTable'),
+        var checkStatus = table.checkStatus('gameDownloadListTable'),
             data = checkStatus.data,
-            gameIds = [];
+            gameDownloadIds = [];
         if(data.length > 0) {
             for (var i in data) {
-                gameIds[i] = data[i].id;
+                gameDownloadIds[i] = data[i].id;
             }
-            layer.confirm('确定删除选中的游戏？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除选中的游戏下载方式？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/games',
+                    url: '/gameDownloads',
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',
-                    data: JSON.stringify(gameIds),
+                    data: JSON.stringify(gameDownloadIds),
                     success: function (res) {
                         top.layer.msg(res.msg)
                         if (res.code == 0) {
@@ -135,21 +120,20 @@ layui.use(['form','layer','table','laytpl'],function(){
                 })
             })
         }else{
-            layer.msg("请选择需要删除的游戏信息");
+            layer.msg("请选择需要删除的游戏下载方式");
         }
     })
 
     //列表操作
-    table.on('tool(gameList)', function(obj){
+    table.on('tool(gameDownloadList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
-
         if(layEvent === 'edit'){ //编辑
-            addGame(data);
+            addGameDownload(data);
         }else if (layEvent === 'del') {  //删除
-            layer.confirm('确定删除此游戏信息？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除此游戏下载方式？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/game/' + data.id,
+                    url: '/gameDownload/' + data.id,
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',
@@ -164,7 +148,6 @@ layui.use(['form','layer','table','laytpl'],function(){
             });
         }
     });
-
 })
 
 //格式化时间

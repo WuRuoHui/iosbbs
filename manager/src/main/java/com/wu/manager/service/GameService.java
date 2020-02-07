@@ -26,4 +26,10 @@ public interface GameService {
     LayUIResult deleteGamesByIds(List<Integer> ids);
 
     LayUIResult insertOrUpdateGameDownload(GameDownload gameDownload);
+
+    LayUIResult selectAllGameDownloads();
+
+    LayUIResult deleteGameDownloadById(Integer id);
+
+    LayUIResult deleteGameDownloadByIds(List<Integer> gameDownloadIds);
 }

@@ -84,4 +84,25 @@ public class GameController {
         LayUIResult layUIResult = gameService.insertOrUpdateGameDownload(gameDownload);
         return layUIResult;
     }
+
+    @RequestMapping(value = "/gameDownloads",method = RequestMethod.GET)
+    @ResponseBody
+    public LayUIResult selectAllGameDownload() {
+        LayUIResult layUIResult = gameService.selectAllGameDownloads();
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/gameDownload/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteGameDownloadById(@PathVariable(name = "id") Integer id) {
+        LayUIResult layUIResult = gameService.deleteGameDownloadById(id);
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/gameDownloads",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteGameDownloadByIds(@RequestBody List<Integer> gameDownloadIds) {
+        LayUIResult layUIResult = gameService.deleteGameDownloadByIds(gameDownloadIds);
+        return layUIResult;
+    }
 }

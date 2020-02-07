@@ -28,7 +28,7 @@ layui.use(['form', 'layer'], function () {
     })
 
     //从url中获取deptId参数
-    var deptId = UrlParm.parm("deptId");
+    var gameId = UrlParm.parm("gameId");
     //动态加载游戏下拉框
     $.ajax({
         url: '/games',
@@ -39,8 +39,8 @@ layui.use(['form', 'layer'], function () {
             $(".gameId").empty();
             for (var i = 0; i < data.length; i++) {
                 $(".gameId").append("<option value='" + data[i].id + "'>" + data[i].name + "</option>");
-                if (deptId == data[i].id) {
-                    $(".deptId option[value=" + deptId + "]").prop("selected", true);    //用户状态
+                if (gameId == data[i].id) {
+                    $(".gameId option[value=" + gameId + "]").prop("selected", true);    //游戏名称
                 }
             }
             form.render();
