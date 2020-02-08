@@ -2,6 +2,7 @@ package com.wu.manager.service;
 
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.pojo.Game;
+import com.wu.manager.pojo.GameContact;
 import com.wu.manager.pojo.GameDownload;
 
 import java.util.List;
@@ -32,4 +33,6 @@ public interface GameService {
     LayUIResult deleteGameDownloadById(Integer id);
 
     LayUIResult deleteGameDownloadByIds(List<Integer> gameDownloadIds);
+
+    LayUIResult insertGameContact(GameContact gameContact);
 }

@@ -5,10 +5,7 @@ import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.GameDTO;
 import com.wu.manager.dto.GameDownloadDTO;
 import com.wu.manager.enums.CustomizeErrorCode;
-import com.wu.manager.mapper.DeptMapper;
-import com.wu.manager.mapper.GameDownloadMapper;
-import com.wu.manager.mapper.GameExtMapper;
-import com.wu.manager.mapper.GameMapper;
+import com.wu.manager.mapper.*;
 import com.wu.manager.pojo.*;
 import com.wu.manager.service.GameService;
 import org.springframework.beans.BeanUtils;
@@ -38,6 +35,8 @@ public class GameServiceImpl implements GameService {
     private GameDownloadMapper gameDownloadMapper;
     @Autowired
     private GameExtMapper gameExtMapper;
+    @Autowired
+    private GameContactMapper gameContactMapper;
 
     @Override
     public LayUIResult insertGame(Game game) {
@@ -90,7 +89,9 @@ public class GameServiceImpl implements GameService {
             gameExample.createCriteria()
                     .andNameLike("%"+nameSearch.trim()+"%");
         }
-        PageHelper.startPage(page,limit);
+        if (page!=null && limit != null) {
+            PageHelper.startPage(page,limit);
+        }
         List<Game> games = gameMapper.selectByExample(gameExample);
         if (games != null && games.size() > 0) {
             long count = gameMapper.countByExample(new GameExample());
@@ -231,5 +232,27 @@ public class GameServiceImpl implements GameService {
             }
         }
         return LayUIResult.build(0, CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+    }
+
+    @Override
+    public LayUIResult insertGameContact(GameContact gameContact) {
+        if (gameContact == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_NOT_FILL.getMessage());
+        }
+        //判断联系方式是否已存在
+        GameContactExample gameContactExample = new GameContactExample();
+        gameContactExample.createCriteria()
+                .andGameIdEqualTo(gameContact.getGameId());
+        long rows = gameContactMapper.countByExample(gameContactExample);
+        //存在则返回已存在信息
+        if (rows > 0) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_ALREADY_EXIST.getMessage());
+        }
+        //不存在则添加
+        int successRow = gameContactMapper.insertSelective(gameContact);
+        if (successRow > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.INSERT_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_FAIL.getMessage());
     }
 }

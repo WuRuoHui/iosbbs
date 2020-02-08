@@ -1,0 +1,1 @@
+alter table bbs_game_contact modify id int auto_increment PRIMARY KEY comment '联系方式ID';

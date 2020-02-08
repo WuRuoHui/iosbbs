@@ -2,6 +2,7 @@ package com.wu.manager.controller;
 
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.pojo.Game;
+import com.wu.manager.pojo.GameContact;
 import com.wu.manager.pojo.GameDownload;
 import com.wu.manager.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +104,28 @@ public class GameController {
     @ResponseBody
     public LayUIResult deleteGameDownloadByIds(@RequestBody List<Integer> gameDownloadIds) {
         LayUIResult layUIResult = gameService.deleteGameDownloadByIds(gameDownloadIds);
+        return layUIResult;
+    }
+
+    @RequestMapping("/page/gameContact/gameContactList")
+    public String showGameContactList(){
+        return "page/gameContact/gameContactList";
+    }
+
+    @RequestMapping("/page/gameContact/gameContactAdd")
+    public String showGameContactAdd(){
+        return "page/gameContact/gameContactAdd";
+    }
+
+    @RequestMapping("/page/gameContact/gameContactUpdate")
+    public String showGameContactUpdate(){
+        return "page/gameContact/gameContactUpdate";
+    }
+
+    @RequestMapping(value = "/gameContact",method = RequestMethod.POST)
+    @ResponseBody
+    public LayUIResult insertGameContact(GameContact gameContact) {
+        LayUIResult layUIResult = gameService.insertGameContact(gameContact);
         return layUIResult;
     }
 }
