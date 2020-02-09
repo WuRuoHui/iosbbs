@@ -128,4 +128,11 @@ public class GameController {
         LayUIResult layUIResult = gameService.insertGameContact(gameContact);
         return layUIResult;
     }
+
+    @RequestMapping(value = "/gameContacts",method = RequestMethod.GET)
+    @ResponseBody
+    public LayUIResult selectAllGameContacts() {
+        LayUIResult layUIResult = gameService.selectAllGameContacts();
+        return layUIResult;
+    }
 }

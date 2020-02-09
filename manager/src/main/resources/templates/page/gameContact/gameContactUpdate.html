@@ -13,63 +13,44 @@
     <link rel="stylesheet" th:href="@{/css/public.css}" media="all"/>
 </head>
 <body class="childrenBody">
-<form class="layui-form addGame" style="width:80%;">
+<form class="layui-form updateGame" style="width:80%;">
     <input type="hidden" class="layui-input id" name="id">
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">游戏名</label>
         <div class="layui-input-block">
-            <input type="text" class="layui-input name" name="name" lay-verify="required" placeholder="请输入游戏名">
-        </div>
-    </div>
-    </div>
-	<div class="layui-form-item layui-row layui-col-xs12">
-        <label class="layui-form-label">是否上架</label>
-        <div class="layui-input-block status">
-            <input type="radio" name="status" value="1" title="是" checked>
-            <input type="radio" name="status" value="0" title="否">
-        </div>
-    </div>
-    <div class="layui-form-item layui-row layui-col-xs12">
-        <label class="layui-form-label">所属部门</label>
-        <div class="layui-input-block">
-            <select name="deptId" class="deptId" lay-filter="deptId">
+            <select name="gameId" class="gameId" lay-filter="gameId" lay-search>
             </select>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
-        <label class="layui-form-label">版本</label>
+        <label class="layui-form-label">QQ</label>
         <div class="layui-input-block">
-            <select name="edition" class="edition" lay-filter="edition">
-                <option value="0">iOS</option>
-                <option value="1">安卓</option>
-            </select>
-        </div>
-    </div>
-	<div class="layui-form-item layui-row layui-col-xs12">
-        <label class="layui-form-label">是否父包</label>
-        <div class="layui-input-block">
-            <select name="isParent" class="isParent" lay-filter="isParent">
-                <option value="1">是</option>
-                <option value="0">否</option>
-            </select>
-        </div>
-    </div>
-	<div class="layui-form-item layui-row layui-col-xs12 layui-hide" id="parentName">
-        <label class="layui-form-label">父包名</label>
-        <div class="layui-input-block">
-            <select name="parentId" class="parentId" lay-filter="parentId" lay-search>
-            </select>
+            <input type="text" class="layui-input qq" name="qq" lay-verify="required" placeholder="请输入QQ">
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">电话</label>
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addGame">立即添加</button>
+            <input type="text" class="layui-input phone" name="phone" lay-verify="required" placeholder="请输入电话">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">描述</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input description" name="description" lay-verify="required"
+                   placeholder="请输入描述">
+        </div>
+    </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="updateGameContact">立即更新</button>
             <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
         </div>
     </div>
 </form>
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
-<script type="text/javascript" th:src="@{/js/game/gameAdd.js}"></script>
+<script type="text/javascript" th:src="@{/js/gameContact/gameContactUpdate.js}"></script>
 <script type="text/javascript" th:src="@{/js/getUrlParam.js}"></script>
 </body>
 </html>

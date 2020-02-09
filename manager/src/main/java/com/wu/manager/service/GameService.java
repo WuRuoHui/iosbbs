@@ -35,4 +35,6 @@ public interface GameService {
     LayUIResult deleteGameDownloadByIds(List<Integer> gameDownloadIds);
 
     LayUIResult insertGameContact(GameContact gameContact);
+
+    LayUIResult selectAllGameContacts();
 }

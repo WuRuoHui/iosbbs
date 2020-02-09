@@ -2,6 +2,7 @@ package com.wu.manager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.dto.GameContactDTO;
 import com.wu.manager.dto.GameDTO;
 import com.wu.manager.dto.GameDownloadDTO;
 import com.wu.manager.enums.CustomizeErrorCode;
@@ -254,5 +255,32 @@ public class GameServiceImpl implements GameService {
             return LayUIResult.build(0,CustomizeErrorCode.INSERT_DATA_SUCCESS.getMessage());
         }
         return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_FAIL.getMessage());
+    }
+
+    @Override
+    public LayUIResult selectAllGameContacts() {
+        List<GameContact> gameContacts = gameContactMapper.selectByExample(new GameContactExample());
+        List<GameContactDTO> gameContactDTOS = new ArrayList<>();
+        if (gameContacts!= null && gameContacts.size()>0) {
+            for (GameContact gameContact : gameContacts) {
+                GameContactDTO gameContactDTO = new GameContactDTO();
+                BeanUtils.copyProperties(gameContact,gameContactDTO);
+                if (gameContact.getGameId() != null) {
+                    Game game = gameMapper.selectByPrimaryKey(gameContact.getGameId());
+                    GameDTO gameDTO = new GameDTO();
+                    if (game != null) {
+                        BeanUtils.copyProperties(game,gameDTO);
+                    }
+                    if (game.getDeptId() != null) {
+                        Dept dept = deptMapper.selectByPrimaryKey(game.getDeptId());
+                        gameDTO.setDept(dept);
+                    }
+                    gameContactDTO.setGame(gameDTO);
+                }
+                gameContactDTOS.add(gameContactDTO);
+            }
+            return LayUIResult.build(0,gameContactDTOS.size(),CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),gameContactDTOS);
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.NOT_DATA_EXIST.getMessage());
     }
 }
