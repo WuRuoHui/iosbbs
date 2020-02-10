@@ -98,20 +98,20 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //批量删除
     $(".delAll_btn").click(function(){
-        var checkStatus = table.checkStatus('gameListTable'),
+        var checkStatus = table.checkStatus('gameContactListTable'),
             data = checkStatus.data,
-            gameIds = [];
+            gameContactIds = [];
         if(data.length > 0) {
             for (var i in data) {
-                gameIds[i] = data[i].id;
+                gameContactIds[i] = data[i].id;
             }
             layer.confirm('确定删除选中的游戏？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/games',
+                    url: '/gameContacts',
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',
-                    data: JSON.stringify(gameIds),
+                    data: JSON.stringify(gameContactIds),
                     success: function (res) {
                         top.layer.msg(res.msg)
                         if (res.code == 0) {
@@ -134,9 +134,9 @@ layui.use(['form','layer','table','laytpl'],function(){
         if(layEvent === 'edit'){ //编辑
             addContactGame(data);
         }else if (layEvent === 'del') {  //删除
-            layer.confirm('确定删除此游戏信息？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除此游戏联系方式？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/game/' + data.id,
+                    url: '/gameContact/' + data.id,
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',

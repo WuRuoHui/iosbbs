@@ -283,4 +283,61 @@ public class GameServiceImpl implements GameService {
         }
         return LayUIResult.build(1,CustomizeErrorCode.NOT_DATA_EXIST.getMessage());
     }
+
+    @Override
+    public LayUIResult deleteGameContactById(Integer id) {
+        if (id == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        //判断当前数据库是否存在该条数据
+        GameContact gameContact = gameContactMapper.selectByPrimaryKey(id);
+        if (gameContact == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        int rows = gameContactMapper.deleteByPrimaryKey(id);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
+    }
+
+    @Override
+    @Transactional
+    public LayUIResult deleteGameContactByGameContactIds(List<Integer> gameContactIds) {
+        if (gameContactIds == null || gameContactIds.size() < 1) {
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        for (Integer gameContactId : gameContactIds) {
+            int rows = gameContactMapper.deleteByPrimaryKey(gameContactId);
+            if (rows < 1 ) {
+                return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
+            }
+        }
+        return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+    }
+
+    @Override
+    public LayUIResult updateGameContact(GameContact gameContact) {
+        if (gameContact == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+        }
+        //当更新的游戏发生变化，判断数据库中是否已存在该游戏的联系方式
+        GameContactExample gameContactExample = new GameContactExample();
+        GameContactExample.Criteria criteria = gameContactExample.createCriteria();
+        //判断条件为等于当前游戏id且不为传入的数据的主键
+        criteria.andIdNotEqualTo(gameContact.getId());
+        if (gameContact.getGameId() != null) {
+            criteria.andGameIdEqualTo(gameContact.getGameId());
+        }
+        List<GameContact> gameContacts = gameContactMapper.selectByExample(gameContactExample);
+        if (gameContacts !=null && gameContacts.size() > 0) {
+            return LayUIResult.build(1,CustomizeErrorCode.UPDATE_FAIL_DATA_EXIST.getMessage());
+        }
+        int rows = gameContactMapper.updateByPrimaryKeySelective(gameContact);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
 }

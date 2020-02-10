@@ -9,7 +9,7 @@ layui.use(['form', 'layer'], function () {
         // 实际使用时的提交信息
         $.ajax({
             url: '/gameContact',
-            type: 'POST',
+            type: 'PUT',
             data : $(".updateGameContact").serialize(),
             dataType: 'json',
             success: function (res) {

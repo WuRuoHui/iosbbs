@@ -135,4 +135,25 @@ public class GameController {
         LayUIResult layUIResult = gameService.selectAllGameContacts();
         return layUIResult;
     }
+
+    @RequestMapping(value = "/gameContact/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteGameContactById(@PathVariable(name = "id") Integer id) {
+        LayUIResult layUIResult = gameService.deleteGameContactById(id);
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/gameContacts",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteGameContactByGameContactIdss(@RequestBody List<Integer> gameContactIds) {
+        LayUIResult layUIResult = gameService.deleteGameContactByGameContactIds(gameContactIds);
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/gameContact",method = RequestMethod.PUT)
+    @ResponseBody
+    public LayUIResult updateGameContact(GameContact gameContact) {
+        LayUIResult layUIResult = gameService.updateGameContact(gameContact);
+        return layUIResult;
+    }
 }

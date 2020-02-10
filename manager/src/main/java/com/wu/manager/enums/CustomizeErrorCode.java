@@ -24,6 +24,7 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     SELECT_DATA_FAIL(2013,"查询失败"),
     DATA_NOT_FOUND(2014,"对应信息不存在或已删除，刷新试试！"),
     NOT_DATA_EXIST(2015,"无数据"),
+    UPDATE_FAIL_DATA_EXIST(2016,"更新失败，当前游戏联系方式已存在！"),
     ;
 
     private Integer code;

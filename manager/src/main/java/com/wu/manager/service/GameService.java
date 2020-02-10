@@ -37,4 +37,10 @@ public interface GameService {
     LayUIResult insertGameContact(GameContact gameContact);
 
     LayUIResult selectAllGameContacts();
+
+    LayUIResult deleteGameContactById(Integer id);
+
+    LayUIResult deleteGameContactByGameContactIds(List<Integer> gameContactIds);
+
+    LayUIResult updateGameContact(GameContact gameContact);
 }
