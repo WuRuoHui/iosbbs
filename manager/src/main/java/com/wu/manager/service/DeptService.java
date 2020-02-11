@@ -16,7 +16,7 @@ public interface DeptService {
 
     LayUIResult insertOrUpdateDept(Dept dept);
 
-    LayUIResult selectDeptList();
+    LayUIResult selectDeptList(String nameSearch, Integer page, Integer limit);
 
     LayUIResult deleteDeptById(Integer id);
 

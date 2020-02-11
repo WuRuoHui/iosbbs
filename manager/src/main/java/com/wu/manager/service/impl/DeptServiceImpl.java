@@ -1,6 +1,8 @@
 package com.wu.manager.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.enums.CustomizeErrorCode;
 import com.wu.manager.mapper.DeptMapper;
 import com.wu.manager.pojo.Dept;
 import com.wu.manager.pojo.DeptExample;
@@ -8,6 +10,7 @@ import com.wu.manager.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -52,13 +55,21 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public LayUIResult selectDeptList() {
+    public LayUIResult selectDeptList(String nameSearch, Integer page, Integer limit) {
         DeptExample deptExample = new DeptExample();
+        DeptExample.Criteria criteria = deptExample.createCriteria();
+        if (!StringUtils.isEmpty(nameSearch)) {
+            criteria.andNameLike("%"+nameSearch.trim()+"%");
+        }
+        if (page != null && limit != null) {
+            PageHelper.startPage(page,limit);
+        }
         List<Dept> depts = deptMapper.selectByExample(deptExample);
         if (depts != null && depts.size() > 0) {
-            return LayUIResult.build(0,depts.size(),"success",depts);
+            long count = deptMapper.countByExample(deptExample);
+            return LayUIResult.build(0,(int)count, CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),depts);
         }
-        return LayUIResult.build(1,"无数据");
+        return LayUIResult.build(1,CustomizeErrorCode.NOT_DATA_EXIST.getMessage());
     }
 
     @Override

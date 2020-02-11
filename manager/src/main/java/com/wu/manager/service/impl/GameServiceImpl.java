@@ -86,16 +86,16 @@ public class GameServiceImpl implements GameService {
     public LayUIResult selectAllGames(String nameSearch, Integer page, Integer limit) {
         List<GameDTO> gameDTOS = new ArrayList<>();
         GameExample gameExample = new GameExample();
-        if (!StringUtils.isEmpty(nameSearch)){
+        if (!StringUtils.isEmpty(nameSearch)) {
             gameExample.createCriteria()
-                    .andNameLike("%"+nameSearch.trim()+"%");
+                    .andNameLike("%" + nameSearch.trim() + "%");
         }
-        if (page!=null && limit != null) {
-            PageHelper.startPage(page,limit);
+        if (page != null && limit != null) {
+            PageHelper.startPage(page, limit);
         }
         List<Game> games = gameMapper.selectByExample(gameExample);
         if (games != null && games.size() > 0) {
-            long count = gameMapper.countByExample(new GameExample());
+            long count = gameMapper.countByExample(gameExample);
             for (Game game : games) {
                 GameDTO gameDTO = new GameDTO();
                 BeanUtils.copyProperties(game, gameDTO);
@@ -107,7 +107,7 @@ public class GameServiceImpl implements GameService {
                 }
                 gameDTOS.add(gameDTO);
             }
-            return LayUIResult.build(0, (int)count, "success", gameDTOS);
+            return LayUIResult.build(0, (int) count, "success", gameDTOS);
         }
         return LayUIResult.fail("fail");
     }
@@ -180,16 +180,16 @@ public class GameServiceImpl implements GameService {
         List<GameDownloadDTO> gameDownloadDTOS = new ArrayList<>();
         GameDownloadExample gameDownloadExample = new GameDownloadExample();
         if (!StringUtils.isEmpty(nameSearch)) {
-            List<Integer> ids = gameExtMapper.selectIdsByNameSearch(nameSearch);
-            if (ids == null || ids.size()<10) {
+            List<Integer> ids = gameExtMapper.selectIdsByNameSearch(nameSearch.trim());
+            if (ids == null || ids.size() < 10) {
                 ids.add(-1);
             }
             gameDownloadExample.createCriteria().andGameIdIn(ids);
         }
-        PageHelper.startPage(page,limit);     //设置分页
+        PageHelper.startPage(page, limit);     //设置分页
         List<GameDownload> gameDownloads = gameDownloadMapper.selectByExample(gameDownloadExample);
         if (gameDownloads != null && gameDownloads.size() > 0) {
-            long count = gameDownloadMapper.countByExample(new GameDownloadExample());    //查询总记录数
+            long count = gameDownloadMapper.countByExample(gameDownloadExample);    //查询总记录数
             for (GameDownload gameDownload : gameDownloads) {
                 GameDownloadDTO gameDownloadDTO = new GameDownloadDTO();
                 BeanUtils.copyProperties(gameDownload, gameDownloadDTO);
@@ -238,7 +238,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public LayUIResult insertGameContact(GameContact gameContact) {
         if (gameContact == null) {
-            return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_NOT_FILL.getMessage());
+            return LayUIResult.build(1, CustomizeErrorCode.INSERT_DATA_NOT_FILL.getMessage());
         }
         //判断联系方式是否已存在
         GameContactExample gameContactExample = new GameContactExample();
@@ -247,29 +247,41 @@ public class GameServiceImpl implements GameService {
         long rows = gameContactMapper.countByExample(gameContactExample);
         //存在则返回已存在信息
         if (rows > 0) {
-            return LayUIResult.build(1,CustomizeErrorCode.DATA_ALREADY_EXIST.getMessage());
+            return LayUIResult.build(1, CustomizeErrorCode.DATA_ALREADY_EXIST.getMessage());
         }
         //不存在则添加
         int successRow = gameContactMapper.insertSelective(gameContact);
-        if (successRow > 0 ) {
-            return LayUIResult.build(0,CustomizeErrorCode.INSERT_DATA_SUCCESS.getMessage());
+        if (successRow > 0) {
+            return LayUIResult.build(0, CustomizeErrorCode.INSERT_DATA_SUCCESS.getMessage());
         }
-        return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_FAIL.getMessage());
+        return LayUIResult.build(1, CustomizeErrorCode.INSERT_DATA_FAIL.getMessage());
     }
 
     @Override
-    public LayUIResult selectAllGameContacts() {
-        List<GameContact> gameContacts = gameContactMapper.selectByExample(new GameContactExample());
+    public LayUIResult selectAllGameContacts(String nameSearch, Integer page, Integer limit) {
+        GameContactExample gameContactExample = new GameContactExample();
+        GameContactExample.Criteria gameContactExampleCriteria = gameContactExample.createCriteria();
+        if (!StringUtils.isEmpty(nameSearch)) {
+            List<Integer> gameIds = gameExtMapper.selectIdsByNameSearch(nameSearch.trim());
+            if (gameIds != null && gameIds.size() > 0) {
+                gameContactExampleCriteria.andGameIdIn(gameIds);
+            }
+        }
+        if (page != null && limit != null) {
+            PageHelper.startPage(page, limit);
+        }
+        List<GameContact> gameContacts = gameContactMapper.selectByExample(gameContactExample);
         List<GameContactDTO> gameContactDTOS = new ArrayList<>();
-        if (gameContacts!= null && gameContacts.size()>0) {
+        if (gameContacts != null && gameContacts.size() > 0) {
+            long count = gameContactMapper.countByExample(gameContactExample);
             for (GameContact gameContact : gameContacts) {
                 GameContactDTO gameContactDTO = new GameContactDTO();
-                BeanUtils.copyProperties(gameContact,gameContactDTO);
+                BeanUtils.copyProperties(gameContact, gameContactDTO);
                 if (gameContact.getGameId() != null) {
                     Game game = gameMapper.selectByPrimaryKey(gameContact.getGameId());
                     GameDTO gameDTO = new GameDTO();
                     if (game != null) {
-                        BeanUtils.copyProperties(game,gameDTO);
+                        BeanUtils.copyProperties(game, gameDTO);
                     }
                     if (game.getDeptId() != null) {
                         Dept dept = deptMapper.selectByPrimaryKey(game.getDeptId());
@@ -279,47 +291,47 @@ public class GameServiceImpl implements GameService {
                 }
                 gameContactDTOS.add(gameContactDTO);
             }
-            return LayUIResult.build(0,gameContactDTOS.size(),CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),gameContactDTOS);
+            return LayUIResult.build(0, (int) count, CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(), gameContactDTOS);
         }
-        return LayUIResult.build(1,CustomizeErrorCode.NOT_DATA_EXIST.getMessage());
+        return LayUIResult.build(1, CustomizeErrorCode.NOT_DATA_EXIST.getMessage());
     }
 
     @Override
     public LayUIResult deleteGameContactById(Integer id) {
         if (id == null) {
-            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+            return LayUIResult.build(1, CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
         }
         //判断当前数据库是否存在该条数据
         GameContact gameContact = gameContactMapper.selectByPrimaryKey(id);
         if (gameContact == null) {
-            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+            return LayUIResult.build(1, CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
         }
         int rows = gameContactMapper.deleteByPrimaryKey(id);
-        if (rows > 0 ) {
-            return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+        if (rows > 0) {
+            return LayUIResult.build(0, CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
         }
-        return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
+        return LayUIResult.build(1, CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
     }
 
     @Override
     @Transactional
     public LayUIResult deleteGameContactByGameContactIds(List<Integer> gameContactIds) {
         if (gameContactIds == null || gameContactIds.size() < 1) {
-            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+            return LayUIResult.build(1, CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
         }
         for (Integer gameContactId : gameContactIds) {
             int rows = gameContactMapper.deleteByPrimaryKey(gameContactId);
-            if (rows < 1 ) {
-                return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
+            if (rows < 1) {
+                return LayUIResult.build(1, CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
             }
         }
-        return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+        return LayUIResult.build(0, CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
     }
 
     @Override
     public LayUIResult updateGameContact(GameContact gameContact) {
         if (gameContact == null) {
-            return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+            return LayUIResult.build(1, CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
         }
         //当更新的游戏发生变化，判断数据库中是否已存在该游戏的联系方式
         GameContactExample gameContactExample = new GameContactExample();
@@ -330,14 +342,14 @@ public class GameServiceImpl implements GameService {
             criteria.andGameIdEqualTo(gameContact.getGameId());
         }
         List<GameContact> gameContacts = gameContactMapper.selectByExample(gameContactExample);
-        if (gameContacts !=null && gameContacts.size() > 0) {
-            return LayUIResult.build(1,CustomizeErrorCode.UPDATE_FAIL_DATA_EXIST.getMessage());
+        if (gameContacts != null && gameContacts.size() > 0) {
+            return LayUIResult.build(1, CustomizeErrorCode.UPDATE_FAIL_DATA_EXIST.getMessage());
         }
         int rows = gameContactMapper.updateByPrimaryKeySelective(gameContact);
-        if (rows > 0 ) {
-            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        if (rows > 0) {
+            return LayUIResult.build(0, CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
         }
-        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+        return LayUIResult.build(1, CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
     }
 
 }

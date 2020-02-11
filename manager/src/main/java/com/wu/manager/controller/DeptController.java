@@ -39,10 +39,10 @@ public class DeptController {
         return layUIResult;
     }
 
-    @RequestMapping("/depts")
+    @RequestMapping(value = "/depts",method = RequestMethod.GET)
     @ResponseBody
-    public LayUIResult selectDeptList() {
-        LayUIResult layUIResult = deptService.selectDeptList();
+    public LayUIResult selectDeptList(String nameSearch, Integer page, Integer limit) {
+        LayUIResult layUIResult = deptService.selectDeptList(nameSearch,page,limit);
         return layUIResult;
     }
 

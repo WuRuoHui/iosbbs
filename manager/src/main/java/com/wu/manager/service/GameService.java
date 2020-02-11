@@ -36,7 +36,7 @@ public interface GameService {
 
     LayUIResult insertGameContact(GameContact gameContact);
 
-    LayUIResult selectAllGameContacts();
+    LayUIResult selectAllGameContacts(String nameSearch, Integer page, Integer limit);
 
     LayUIResult deleteGameContactById(Integer id);
 

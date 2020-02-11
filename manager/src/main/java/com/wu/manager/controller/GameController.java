@@ -131,8 +131,8 @@ public class GameController {
 
     @RequestMapping(value = "/gameContacts",method = RequestMethod.GET)
     @ResponseBody
-    public LayUIResult selectAllGameContacts() {
-        LayUIResult layUIResult = gameService.selectAllGameContacts();
+    public LayUIResult selectAllGameContacts(String nameSearch, Integer page, Integer limit) {
+        LayUIResult layUIResult = gameService.selectAllGameContacts(nameSearch, page, limit);
         return layUIResult;
     }
 

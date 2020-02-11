@@ -166,6 +166,15 @@ layui.use(['bodyTab', 'form', 'element', 'layer', 'jquery'], function () {
         window.sessionStorage.removeItem("menu");
         window.sessionStorage.removeItem("curmenu");
     }
+
+    $.ajax({
+        method: 'GET',
+        url: '/systemSetting/basicParameter',
+        dataType: 'JSON',
+        success: function (callback) {
+            $("#copyright").text(callback.data.powerby);
+        }
+    })
 })
 
 //打开新窗口
