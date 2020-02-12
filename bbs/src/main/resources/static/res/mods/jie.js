@@ -19,6 +19,22 @@ layui.define('fly', function (exports) {
         , jiedaCount: $('#jiedaCount')
     };
 
+    //动态加载游戏主包
+    $.ajax({
+        url: 'http://127.0.0.1:8081/mainGamesOfiOS',
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (res) {
+            var data = res.data;
+            $(".gameId").empty();
+            for (var i = 0; i < data.length; i++) {
+                $(".gameId").append("<option></option>")
+                $(".gameId").append("<option value='" + data[i].id + "'>" + data[i].name + "</option>");
+            }
+            form.render();
+        }
+    })
+
     //监听专栏选择
     form.on('select(column)', function (obj) {
         var value = obj.value
