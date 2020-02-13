@@ -1,6 +1,7 @@
 package com.wu.bbs.pojo;
 
 public class UserGrade {
+
     private Integer id;
 
     private String gradeIcon;

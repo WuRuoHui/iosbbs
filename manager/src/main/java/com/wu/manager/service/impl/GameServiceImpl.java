@@ -1,6 +1,7 @@
 package com.wu.manager.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.GameContactDTO;
 import com.wu.manager.dto.GameDTO;
@@ -9,8 +10,10 @@ import com.wu.manager.enums.CustomizeErrorCode;
 import com.wu.manager.mapper.*;
 import com.wu.manager.pojo.*;
 import com.wu.manager.service.GameService;
+import com.wu.manager.utils.StringRedisService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -38,6 +41,10 @@ public class GameServiceImpl implements GameService {
     private GameExtMapper gameExtMapper;
     @Autowired
     private GameContactMapper gameContactMapper;
+    @Value(value = "BBS.GAME.MAIN")
+    private String BBS_GAME_MAIN;
+    @Autowired
+    private StringRedisService stringRedisService;
 
     @Override
     public LayUIResult insertGame(Game game) {
@@ -57,6 +64,9 @@ public class GameServiceImpl implements GameService {
             game.setGmtModify(System.currentTimeMillis());
             int rows = gameMapper.updateByPrimaryKeySelective(game);
             if (rows > 0) {
+                if (game.getIsParent()) {
+                    stringRedisService.setString(BBS_GAME_MAIN,"");
+                }
                 return LayUIResult.build(0, CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
             }
             return LayUIResult.build(1, CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
@@ -66,6 +76,9 @@ public class GameServiceImpl implements GameService {
         game.setGmtModify(System.currentTimeMillis());
         int rows = gameMapper.insertSelective(game);
         if (rows > 0) {
+            if (game.getIsParent()) {
+                stringRedisService.setString(BBS_GAME_MAIN,"");
+            }
             return LayUIResult.build(0, "添加成功！");
         }
         return LayUIResult.fail("添加失败");
@@ -73,10 +86,18 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public LayUIResult selectMainGames() {
+        String game_main_str = stringRedisService.getString(BBS_GAME_MAIN);
+        if (!StringUtils.isEmpty(game_main_str)) {
+            List<Game> games = JsonUtils.jsonToList(game_main_str, Game.class);
+            if (games != null && games.size() > 0 ) {
+                LayUIResult.build(0,CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),games);
+            }
+        }
         GameExample gameExample = new GameExample();
         gameExample.createCriteria().andIsParentEqualTo(true);
         List<Game> mainGames = gameMapper.selectByExample(gameExample);
         if (mainGames != null && mainGames.size() > 0) {
+            stringRedisService.setObject(BBS_GAME_MAIN,mainGames);
             return LayUIResult.build(0, "success", mainGames);
         }
         return LayUIResult.fail("fail");
@@ -123,6 +144,9 @@ public class GameServiceImpl implements GameService {
         }
         int rows = gameMapper.deleteByPrimaryKey(id);
         if (rows > 0) {
+            if (game.getIsParent()) {
+                stringRedisService.setString(BBS_GAME_MAIN,"");
+            }
             return LayUIResult.build(0, CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
         }
         return LayUIResult.build(1, CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
@@ -140,6 +164,7 @@ public class GameServiceImpl implements GameService {
                 return LayUIResult.build(1, CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
             }
         }
+        stringRedisService.setString(BBS_GAME_MAIN,"");
         return LayUIResult.build(0, CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
     }
 
