@@ -10,4 +10,5 @@ public class ErrorPageController {
     public String forbidden() {
         return "other/404";
     }
+
 }

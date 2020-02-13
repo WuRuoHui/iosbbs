@@ -19,29 +19,29 @@
   <div class="layui-row layui-col-space15">
     <div class="layui-col-md8 content detail">
       <div class="fly-panel detail-box">
-        <h1>Fly Template v3.0，基于 layui 的极简社区页面模版</h1>
+        <h1 th:text="${jie.title}"></h1>
         <div class="fly-detail-info">
           <!-- <span class="layui-badge">审核中</span> -->
-          <span class="layui-badge layui-bg-green fly-detail-column">动态</span>
+          <span class="layui-badge layui-bg-green fly-detail-column" th:text="${jie.getColumn(jie.getColumnId())}">动态</span>
           
-          <span class="layui-badge" style="background-color: #999;">未结</span>
-          <!-- <span class="layui-badge" style="background-color: #5FB878;">已结</span> -->
+          <span class="layui-badge" style="background-color: #999;" th:if="${!jie.isClosed}">未结</span>
+           <span class="layui-badge" style="background-color: #5FB878;" th:if="${jie.isClosed}">已结</span>
           
-          <span class="layui-badge layui-bg-black">置顶</span>
-          <span class="layui-badge layui-bg-red">精帖</span>
+          <span class="layui-badge layui-bg-black" th:if="${jie.isSticky}">置顶</span>
+          <span class="layui-badge layui-bg-red" th:if="${jie.isBoutique}">精帖</span>
           
           <div class="fly-admin-box" data-id="123">
             <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
             
-            <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1">置顶</span> 
-            <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
+            <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1" th:if="${!jie.isSticky}">置顶</span>
+            <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;" th:if="${jie.isSticky}">取消置顶</span>
             
-            <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1">加精</span> 
-            <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> -->
+            <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1" th:if="${!jie.isBoutique}">加精</span>
+            <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;" th:if="${jie.isBoutique}">取消加精</span>
           </div>
           <span class="fly-list-nums"> 
-            <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> 66</a>
-            <i class="iconfont" title="人气">&#xe60b;</i> 99999
+            <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> [[${jie.commentCount}]]</a>
+            <i class="iconfont" title="人气">&#xe60b;</i> [[${jie.viewCount}]]
           </span>
         </div>
         <div class="detail-about">
@@ -50,39 +50,18 @@
           </a>
           <div class="fly-detail-user">
             <a href="../user/home.html" class="fly-link">
-              <cite>贤心</cite>
-              <i class="iconfont icon-renzheng" title="认证信息：{{ rows.user.approve }}"></i>
-              <i class="layui-badge fly-badge-vip">VIP3</i>
+              <cite th:text="${jie.creator.name}"></cite>
+              <i class="iconfont icon-renzheng" th:title="${'认证信息：'+jie.creator.name}"></i>
+              <i class="layui-badge fly-badge-vip" th:text="${jie.creator.userGrade.gradeName}"></i>
             </a>
-            <span>2017-11-30</span>
+            <span>[[${#dates.format(jie.gmtCreate, 'yyyy-MM-dd HH:mm')}]]</span>
           </div>
           <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
-            <span style="padding-right: 10px; color: #FF7200">悬赏：60飞吻</span>  
+<!--            <span style="padding-right: 10px; color: #FF7200">悬赏：60飞吻</span>  -->
             <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="add.html">编辑此贴</a></span>
           </div>
         </div>
-        <div class="detail-body photos">
-          <p>
-            该模版由 layui官方社区（<a href="http://fly.layui.com/" target="_blank">fly.layui.com</a>）倾情提供，只为表明我们对 layui 执着的信念、以及对未来持续加强的承诺。该模版基于 layui 搭建而成，可作为极简通用型社区的页面支撑。
-          </p>
-          <p>更新日志：</p>
-<pre>
-# v3.0 2017-11-30
-* 采用 layui 2.2.3 作为 UI 支撑
-* 全面同步最新的 Fly 社区风格，各种细节得到大幅优化
-* 更友好的响应式适配能力
-</pre>
-          
-          下载<hr>
-          <p>
-            官网：<a href="http://www.layui.com/template/fly/" target="_blank">http://www.layui.com/template/fly/</a><br>
-            码云：<a href="https://gitee.com/sentsin/fly/" target="_blank">https://gitee.com/sentsin/fly/</a><br>
-            GitHub：<a href="https://github.com/layui/fly" target="_blank">https://github.com/layui/fly</a>
-          </p>
-          封面<hr>
-          <p>
-            <img src="../../res/images/fly.jpg" alt="Fly社区">
-          </p>
+        <div class="detail-body photos" th:text="${jie.content}">
         </div>
       </div>
 
@@ -106,11 +85,9 @@
                 </a>
                 
                 <span>(楼主)</span>
-                <!--
                 <span style="color:#5FB878">(管理员)</span>
                 <span style="color:#FF9E3F">（社区之光）</span>
                 <span style="color:#999">（该号已被封）</span>
-                -->
               </div>
 
               <div class="detail-hits">
@@ -247,12 +224,10 @@ layui.config({
   var $ = layui.$
   ,fly = layui.fly;
   //如果你是采用模版自带的编辑器，你需要开启以下语句来解析。
-  /*
   $('.detail-body').each(function(){
     var othis = $(this), html = othis.html();
     othis.html(fly.content(html));
   });
-  */
 });
 </script>
 

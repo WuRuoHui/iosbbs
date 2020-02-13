@@ -42,4 +42,26 @@ public class JieDTO {
 
     private String content;
 
+    public String getColumn(Integer columnId) {
+
+        if (columnId == 0) {
+            return "提问";
+        }
+        if (columnId == 99) {
+            return "分享";
+        }
+        if (columnId == 100) {
+            return "讨论";
+        }
+        if (columnId == 101) {
+            return "建议";
+        }
+        if (columnId == 168) {
+            return "公告";
+        }
+        if (columnId == 169) {
+            return "动态";
+        }
+        return "";
+    }
 }

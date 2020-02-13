@@ -73,10 +73,31 @@ public class JieServiceImpl implements JieService {
                         jieDTO.setCreator(userSimpleDTO);
                     }
                 }
-                System.out.println(jieDTO);
                 jieDTOS.add(jieDTO);
             }
         }
         return jieDTOS;
+    }
+
+    @Override
+    public JieDTO selectJieById(Integer jieId) {
+        Jie jie = jieMapper.selectByPrimaryKey(jieId);
+        JieDTO jieDTO = new JieDTO();
+        BeanUtils.copyProperties(jie,jieDTO);
+        if (jie.getCreator() != null) {
+            User user = userMapper.selectByPrimaryKey(jie.getCreator());
+            if (user != null) {
+                UserSimpleDTO userSimpleDTO = new UserSimpleDTO();
+                BeanUtils.copyProperties(user,userSimpleDTO);
+                //设置用户VIP等级
+                if (!StringUtils.isEmpty(user.getVipLevel())){
+                    UserGrade userGrade = userGradeMapper.selectByPrimaryKey(Integer.valueOf(user.getVipLevel()));
+                    userSimpleDTO.setUserGrade(userGrade);
+                }
+                //设置求解创建者
+                jieDTO.setCreator(userSimpleDTO);
+            }
+        }
+        return jieDTO;
     }
 }

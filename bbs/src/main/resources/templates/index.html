@@ -92,8 +92,8 @@
                                  alt="贤心">
                         </a>
                         <h2>
-                            <a class="layui-badge">动态</a>
-                            <a href="jie/detail" th:text="${jie.title}"></a>
+                            <a class="layui-badge" th:text="${jie.getColumn(jie.columnId)}">动态</a>
+                            <a th:href="${'/jie/'+jie.id}" th:text="${jie.title}"></a>
                         </h2>
                         <div class="fly-list-info">
                             <a href="user/home" link>
@@ -101,7 +101,7 @@
                                 <i class="iconfont icon-renzheng" th:if="${jie.creator.userGrade != null}" th:title="${'认证信息：'+jie.creator.name}"></i>
                                 <i class="layui-badge fly-badge-vip" th:if="${jie.creator.userGrade != null}" th:text="${jie.creator.userGrade.gradeName}">VIP3</i>
                             </a>
-                            <span th:text="${#dates.format(jie.gmtCreate, 'yyyy-MM-dd')}"></span>
+                            <span th:text="${#dates.format(jie.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
 
 <!--                            <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> 60</span>-->
                             <span class="layui-badge fly-badge-accept layui-hide-xs" th:if="${jie.isClosed}">已结</span>

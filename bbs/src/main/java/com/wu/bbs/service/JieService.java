@@ -20,4 +20,6 @@ public interface JieService {
     LayUIResult insertOrUpdate(Jie jie, Authentication authentication);
 
     List<JieDTO> selectAllJieList();
+
+    JieDTO selectJieById(Integer jieId);
 }
