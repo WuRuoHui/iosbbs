@@ -112,21 +112,44 @@ layui.define('fly', function (exports) {
         return false;
     })
 
+    //ajax请求时都带上csrf信息
+    $(function () {
+        var token = $("meta[name='_csrf']").attr("content")
+        var header = $("meta[name='_csrf_header']").attr("content")
+        $(document).ajaxSend(function (e, xhr, options) {
+        xhr.setRequestHeader(header,token)
+        })
+    })
+
+    // var token = $("meta[name='_csrf']").attr("content")
+    // var header = $("meta[name='_csrf_header']").attr("content")
+
     //求解管理
     gather.jieAdmin = {
         //删求解
         del: function (div) {
             layer.confirm('确认删除该求解么？', function (index) {
                 layer.close(index);
-                fly.json('/api/jie-delete/', {
-                    id: div.data('id')
-                }, function (res) {
-                    if (res.status === 0) {
-                        location.href = '/jie/';
-                    } else {
+                $.ajax({
+                    url: '/jie/'+div.data('id'),
+                    type: 'DELETE',
+                    // headers:headers,
+                    dataType: 'json',
+                    /*beforeSend: function(request) {
+                        request.setRequestHeader(header,token);
+                    },*/
+                    success: function (res) {
                         layer.msg(res.msg);
+                        setTimeout(function () {
+                            setTimeout(function () {
+                                if (res.code == '0') {
+                                    //刷新父页面
+                                    location.href='/'
+                                }
+                            }, 2000)
+                        }, 2000);
                     }
-                });
+                })
             });
         }
 

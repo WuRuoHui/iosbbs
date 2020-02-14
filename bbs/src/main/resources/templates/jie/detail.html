@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>Fly Template v3.0，基于 layui 的极简社区页面模版</title>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="keywords" content="fly,layui,前端社区">
   <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
@@ -30,7 +32,8 @@
           <span class="layui-badge layui-bg-black" th:if="${jie.isSticky}">置顶</span>
           <span class="layui-badge layui-bg-red" th:if="${jie.isBoutique}">精帖</span>
           
-          <div class="fly-admin-box" data-id="123">
+          <div class="fly-admin-box" th:data-id="${jie.id}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <span class="layui-btn layui-btn-xs jie-admin" type="del">删除</span>
             
             <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1" th:if="${!jie.isSticky}">置顶</span>

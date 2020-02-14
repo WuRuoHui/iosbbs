@@ -22,4 +22,6 @@ public interface JieService {
     List<JieDTO> selectAllJieList();
 
     JieDTO selectJieById(Integer jieId);
+
+    LayUIResult deleteJieById(Integer jieId);
 }

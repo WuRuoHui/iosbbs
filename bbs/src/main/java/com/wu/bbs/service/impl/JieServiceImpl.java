@@ -10,6 +10,7 @@ import com.wu.bbs.pojo.JieExample;
 import com.wu.bbs.pojo.User;
 import com.wu.bbs.pojo.UserGrade;
 import com.wu.bbs.service.JieService;
+import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.LayUIResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,5 +100,21 @@ public class JieServiceImpl implements JieService {
             }
         }
         return jieDTO;
+    }
+
+    @Override
+    public LayUIResult deleteJieById(Integer jieId) {
+        if (jieId == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
+        }
+        Jie jie = jieMapper.selectByPrimaryKey(jieId);
+        if (jie == null) {
+            return LayUIResult.build(1, CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        int rows = jieMapper.deleteByPrimaryKey(jieId);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
     }
 }

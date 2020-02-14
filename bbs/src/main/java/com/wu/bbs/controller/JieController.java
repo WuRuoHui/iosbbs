@@ -50,4 +50,11 @@ public class JieController {
         return "jie/detail";
     }
 
+    @RequestMapping(value = "/jie/{jieId}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteJieById(@PathVariable(name = "jieId") Integer jieId) {
+        LayUIResult layUIResult = jieService.deleteJieById(jieId);
+        return layUIResult;
+    }
+
 }
