@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
-  <title>发表问题 编辑问题 公用</title>
+  <title>编辑问题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="keywords" content="fly,layui,前端社区">
   <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
@@ -20,11 +20,12 @@
     <div class="layui-form layui-form-pane">
       <div class="layui-tab layui-tab-brief" lay-filter="user">
         <ul class="layui-tab-title">
-          <li class="layui-this">发表新帖<!-- 编辑帖子 --></li>
+          <li class="layui-this"> 编辑帖子 </li>
         </ul>
         <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
           <div class="layui-tab-item layui-show">
-            <form action="" method="POST" class="addJie" lay-filter="addJie">
+            <form action="" method="POST" class="updateJie">
+              <input type="hidden" name="id">
               <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
               <div class="layui-row layui-col-space15 layui-form-item">
                 <div class="layui-col-md3">
@@ -32,19 +33,19 @@
                   <div class="layui-input-block">
                     <select lay-verify="required" name="columnId" lay-filter="column">
                       <option></option>
-                      <option value="0">提问</option> 
-                      <option value="99">分享</option> 
-                      <option value="100">讨论</option> 
-                      <option value="101">建议</option> 
-                      <option value="168">公告</option> 
-                      <option value="169">动态</option> 
+                      <option value="0" th:field="*{jie.columnId}">提问</option>
+                      <option value="99" th:field="*{jie.columnId}">分享</option>
+                      <option value="100" th:field="*{jie.columnId}">讨论</option>
+                      <option value="101" th:field="*{jie.columnId}">建议</option>
+                      <option value="168" th:field="*{jie.columnId}">公告</option>
+                      <option value="169" th:field="*{jie.columnId}">动态</option>
                     </select>
                   </div>
                 </div>
                 <div class="layui-col-md9">
                   <label for="L_title" class="layui-form-label">标题</label>
                   <div class="layui-input-block">
-                    <input type="text" id="L_title" name="title" required lay-verify="required" autocomplete="off" class="layui-input">
+                    <input type="text" id="L_title" th:value="${jie.title}" name="title" required lay-verify="required" autocomplete="off" class="layui-input">
                     <!-- <input type="hidden" name="id" value="{{d.edit.id}}"> -->
                   </div>
                 </div>
@@ -79,7 +80,7 @@
               </div>
               <div class="layui-form-item layui-form-text">
                 <div class="layui-input-block">
-                  <textarea id="L_content" name="content" required lay-verify="required" placeholder="详细描述" class="layui-textarea fly-editor" style="height: 260px;"></textarea>
+                  <textarea id="L_content" name="content" th:text="${jie.content}" required lay-verify="required" placeholder="详细描述" class="layui-textarea fly-editor" style="height: 260px;"></textarea>
                 </div>
               </div>
               <!--<div class="layui-form-item">
@@ -107,7 +108,7 @@
                 </div>
               </div>-->
               <div class="layui-form-item">
-                <button class="layui-btn" lay-filter="addJie" lay-submit>立即发布</button>
+                <button class="layui-btn" lay-filter="addJie" lay-submit>立即更新</button>
               </div>
             </form>
           </div>
@@ -120,6 +121,7 @@
 <div th:replace="common/footer::bbsFooter"></div>
 
 <script th:src="@{/res/layui/layui.js}"></script>
+<script th:src="@{/res/mods/getUrlParam.js}"></script>
 <script>
 layui.cache.page = 'jie';
 layui.cache.user = {

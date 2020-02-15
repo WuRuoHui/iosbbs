@@ -19,6 +19,8 @@ layui.define('fly', function (exports) {
         , jiedaCount: $('#jiedaCount')
     };
 
+    var projectId = UrlParm.parm("callback");
+
     //动态加载游戏主包
     $.ajax({
         url: 'http://127.0.0.1:8081/mainGames',
@@ -30,6 +32,9 @@ layui.define('fly', function (exports) {
             for (var i = 0; i < data.length; i++) {
                 $(".projectId").append("<option></option>")
                 $(".projectId").append("<option value='" + data[i].id + "'>" + data[i].name + "</option>");
+                if (projectId == data[i].id) {
+                    $(".projectId option[value=" + projectId + "]").prop("selected", true);    //用户状态
+                }
             }
             form.render();
         }

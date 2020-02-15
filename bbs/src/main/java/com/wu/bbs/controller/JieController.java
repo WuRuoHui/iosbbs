@@ -26,9 +26,11 @@ public class JieController {
         return "jie/add";
     }
 
-    @RequestMapping("/jie/detail")
-    public String jieDetail() {
-        return "jie/detail";
+    @RequestMapping("/jie/edit/{jieId}")
+    public String jieDetail(@PathVariable (name = "jieId") Integer jieId, Model model) {
+        JieDTO jieDTO = jieService.selectJieById(jieId);
+        model.addAttribute("jie",jieDTO);
+        return "jie/edit";
     }
 
     @RequestMapping("/jie/index")
