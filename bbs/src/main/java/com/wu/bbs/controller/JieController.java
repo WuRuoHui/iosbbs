@@ -59,4 +59,11 @@ public class JieController {
         return layUIResult;
     }
 
+    @RequestMapping(value = "/jie",method = RequestMethod.PUT)
+    @ResponseBody
+    public LayUIResult updateJie(Jie jie) {
+        LayUIResult layUIResult = jieService.updateJie(jie);
+        return layUIResult;
+    }
+
 }

@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <title>编辑问题</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
   <meta name="keywords" content="fly,layui,前端社区">
   <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
   <link rel="stylesheet" th:href="@{/res/layui/css/layui.css}">
@@ -25,7 +27,7 @@
         <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
           <div class="layui-tab-item layui-show">
             <form action="" method="POST" class="updateJie">
-              <input type="hidden" name="id">
+              <input type="hidden" class="id" name="id" th:value="${jie.id}">
               <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
               <div class="layui-row layui-col-space15 layui-form-item">
                 <div class="layui-col-md3">
@@ -65,18 +67,6 @@
                     </select>
                   </div>
                 </div>
-                <!--<div class="layui-col-md3">
-                  <label class="layui-form-label" for="L_version">版本号</label>
-                  <div class="layui-input-block">
-                    <input type="text" id="L_version" value="" name="version" autocomplete="off" class="layui-input">
-                  </div>
-                </div>-->
-                <!--<div class="layui-col-md6">
-                  <label class="layui-form-label" for="L_browser">浏览器</label>
-                  <div class="layui-input-block">
-                    <input type="text" id="L_browser"  value="" name="browser" placeholder="浏览器名称及版本，如：IE 11" autocomplete="off" class="layui-input">
-                  </div>
-                </div>-->
               </div>
               <div class="layui-form-item layui-form-text">
                 <div class="layui-input-block">
@@ -108,7 +98,7 @@
                 </div>
               </div>-->
               <div class="layui-form-item">
-                <button class="layui-btn" lay-filter="addJie" lay-submit>立即更新</button>
+                <button class="layui-btn" lay-filter="updateJie" lay-submit>立即更新</button>
               </div>
             </form>
           </div>

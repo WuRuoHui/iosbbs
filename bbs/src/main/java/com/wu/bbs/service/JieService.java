@@ -24,4 +24,6 @@ public interface JieService {
     JieDTO selectJieById(Integer jieId);
 
     LayUIResult deleteJieById(Integer jieId);
+
+    LayUIResult updateJie(Jie jie);
 }

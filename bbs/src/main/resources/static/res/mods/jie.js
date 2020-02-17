@@ -117,6 +117,32 @@ layui.define('fly', function (exports) {
         return false;
     })
 
+    //更新求解
+    form.on("submit(updateJie)", function (data) {
+        //弹出loading
+        var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
+        // 实际使用时的提交信息
+        $.ajax({
+            url: '/jie',
+            type: 'PUT',
+            data: $(".updateJie").serialize(),
+            dataType: 'json',
+            success: function (res) {
+                setTimeout(function () {
+                    top.layer.close(index);
+                    top.layer.msg(res.msg);
+                    setTimeout(function () {
+                        if (res.code == '0') {
+                            //刷新父页面
+                            window.location.href='/jie/'+$('.id').val();
+                        }
+                    }, 2000)
+                }, 2000);
+            }
+        })
+        return false;
+    })
+
     //ajax请求时都带上csrf信息
     $(function () {
         var token = $("meta[name='_csrf']").attr("content")

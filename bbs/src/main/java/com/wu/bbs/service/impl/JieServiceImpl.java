@@ -117,4 +117,23 @@ public class JieServiceImpl implements JieService {
         }
         return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
     }
+
+    @Override
+    public LayUIResult updateJie(Jie jie) {
+        System.out.println(jie);
+        if (jie == null || jie.getId() == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+        }
+        Jie isExist = jieMapper.selectByPrimaryKey(jie.getId());
+        if (isExist == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        //设置修改时间
+        jie.setGmtModify(System.currentTimeMillis());
+        int rows = jieMapper.updateByPrimaryKeySelective(jie);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
 }
