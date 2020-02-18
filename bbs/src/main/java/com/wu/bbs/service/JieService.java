@@ -19,7 +19,7 @@ public interface JieService {
 
     LayUIResult insertOrUpdate(Jie jie, Authentication authentication);
 
-    List<JieDTO> selectAllJieList();
+    List<JieDTO> selectAllJieListWithoutStick();
 
     JieDTO selectJieById(Integer jieId);
 
@@ -30,4 +30,6 @@ public interface JieService {
     LayUIResult updateJieStickById(Integer jieId, Boolean rank);
 
     LayUIResult updateJieBoutiqueById(Integer jieId, Boolean rank);
+
+    List<JieDTO> selectAllJieListIfStick();
 }

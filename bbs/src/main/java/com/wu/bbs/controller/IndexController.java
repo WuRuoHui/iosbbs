@@ -25,8 +25,10 @@ public class IndexController {
 
     @RequestMapping("/")
     public String showIndex(Model model) {
-        List<JieDTO> jieList = jieService.selectAllJieList();
-        model.addAttribute("jieList",jieList);
+        List<JieDTO> jieListWithoutStick = jieService.selectAllJieListWithoutStick();
+        List<JieDTO> jieListIfStick = jieService.selectAllJieListIfStick();
+        model.addAttribute("jieList",jieListWithoutStick);
+        model.addAttribute("jieListIfStick",jieListIfStick);
         return "index";
     }
 

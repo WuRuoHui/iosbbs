@@ -53,9 +53,13 @@ public class JieServiceImpl implements JieService {
     }
 
     @Override
-    public List<JieDTO> selectAllJieList() {
-        List<JieDTO> jieDTOS = new ArrayList<>();
-        List<Jie> jies = jieMapper.selectByExample(new JieExample());
+    public List<JieDTO> selectAllJieListWithoutStick() {
+//        List<JieDTO> jieDTOS = new ArrayList<>();
+        JieExample jieExample = new JieExample();
+        jieExample.createCriteria()
+                .andIsStickyEqualTo(false);
+        jieExample.setOrderByClause("gmt_create DESC");
+        /*List<Jie> jies = jieMapper.selectByExample(jieExample);
         if (jies != null && jies.size() > 0) {
             for (Jie jie : jies) {
                 JieDTO jieDTO = new JieDTO();
@@ -67,6 +71,34 @@ public class JieServiceImpl implements JieService {
                         BeanUtils.copyProperties(user,userSimpleDTO);
                         //设置用户VIP等级
                         if (!StringUtils.isEmpty(user.getVipLevel())){
+                            UserGrade userGrade = userGradeMapper.selectByPrimaryKey(Integer.valueOf(user.getVipLevel()));
+                            userSimpleDTO.setUserGrade(userGrade);
+                        }
+                        //设置求解创建者
+                        jieDTO.setCreator(userSimpleDTO);
+                    }
+                }
+                jieDTOS.add(jieDTO);
+            }
+        }*/
+        List<JieDTO> jieDTOS = selectJieList(jieExample);
+        return jieDTOS;
+    }
+
+    public List<JieDTO> selectJieList(JieExample jieExample) {
+        List<JieDTO> jieDTOS = new ArrayList<>();
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        if (jies != null && jies.size() > 0) {
+            for (Jie jie : jies) {
+                JieDTO jieDTO = new JieDTO();
+                BeanUtils.copyProperties(jie, jieDTO);
+                if (jie.getCreator() != null) {
+                    User user = userMapper.selectByPrimaryKey(jie.getCreator());
+                    if (user != null) {
+                        UserSimpleDTO userSimpleDTO = new UserSimpleDTO();
+                        BeanUtils.copyProperties(user, userSimpleDTO);
+                        //设置用户VIP等级
+                        if (!StringUtils.isEmpty(user.getVipLevel())) {
                             UserGrade userGrade = userGradeMapper.selectByPrimaryKey(Integer.valueOf(user.getVipLevel()));
                             userSimpleDTO.setUserGrade(userGrade);
                         }
@@ -173,5 +205,15 @@ public class JieServiceImpl implements JieService {
             }
         }
         return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
+    @Override
+    public List<JieDTO> selectAllJieListIfStick() {
+        JieExample jieExample = new JieExample();
+        jieExample.createCriteria()
+                .andIsStickyEqualTo(true);
+        jieExample.setOrderByClause("gmt_create DESC");
+        List<JieDTO> jieDTOS = selectJieList(jieExample);
+        return jieDTOS;
     }
 }

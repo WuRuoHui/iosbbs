@@ -37,6 +37,19 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     }
   };
 
+  $.ajax({
+    url: 'http://127.0.0.1:8081/systemSetting/linkList',
+    type: 'GET',
+    dataType: 'JSON',
+    success: function (res) {
+      var data = res.data;
+      $(".linkPar").empty();
+      for (var i = 0; i < data.length; i++) {
+        $(".linkPar").append("<dd><a href='"+data[i].websiteUrl+"' target='_blank'>"+data[i].websiteName+"</a></dd>");
+      }
+      // form.render();
+    }
+  })
 
   //数字前置补零
   layui.laytpl.digit = function(num, length, end){

@@ -1,7 +1,6 @@
 package com.wu.manager.controller;
 
 import com.wu.common.utils.LayUIResult;
-import com.wu.manager.mapper.FriendlyLinkMapper;
 import com.wu.manager.pojo.FriendlyLink;
 import com.wu.manager.service.SystemSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +41,7 @@ public class SystemSettingController {
         return "page/systemSetting/linksAdd";
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:8080",maxAge = 3600)
     @RequestMapping(value = "/systemSetting/linkList",method = RequestMethod.GET)
     @ResponseBody
     public LayUIResult getLinkList(String search) {
@@ -89,5 +89,10 @@ public class SystemSettingController {
     public LayUIResult deleteLinkList(@PathVariable(name = "linkId")Integer linkId) {
         LayUIResult layUIResult = systemSettingService.deleteLinkListById(linkId);
         return layUIResult;
+    }
+
+    @RequestMapping("/page/systemSetting/passageway")
+    public String showPassagewayPage() {
+        return "page/passageway/passagewayList";
     }
 }
