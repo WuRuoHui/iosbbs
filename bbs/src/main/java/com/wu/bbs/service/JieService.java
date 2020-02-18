@@ -26,4 +26,8 @@ public interface JieService {
     LayUIResult deleteJieById(Integer jieId);
 
     LayUIResult updateJie(Jie jie);
+
+    LayUIResult updateJieStickById(Integer jieId, Boolean rank);
+
+    LayUIResult updateJieBoutiqueById(Integer jieId, Boolean rank);
 }

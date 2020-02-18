@@ -39,8 +39,8 @@
             <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="1" th:if="${!jie.isSticky}">置顶</span>
             <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;" th:if="${jie.isSticky}">取消置顶</span>
             
-            <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="1" th:if="${!jie.isBoutique}">加精</span>
-            <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;" th:if="${jie.isBoutique}">取消加精</span>
+            <span class="layui-btn layui-btn-xs jie-admin" type="set" field="boutique" rank="1" th:if="${!jie.isBoutique}">加精</span>
+            <span class="layui-btn layui-btn-xs jie-admin" type="set" field="boutique" rank="0" style="background-color:#ccc;" th:if="${jie.isBoutique}">取消加精</span>
           </div>
           <span class="fly-list-nums"> 
             <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> [[${jie.commentCount}]]</a>
@@ -209,6 +209,7 @@
 
 <script th:src="@{/res/layui/layui.js}"></script>
 <script th:src="@{/res/js/column.js}"></script>
+<script th:src="@{/res/mods/getUrlParam.js}"></script>
 <script>
 layui.cache.page = 'jie';
 layui.cache.user = {

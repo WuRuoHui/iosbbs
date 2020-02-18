@@ -66,4 +66,18 @@ public class JieController {
         return layUIResult;
     }
 
+    @RequestMapping("/jie/stick/{jieId}")
+    @ResponseBody
+    public LayUIResult updateJieStickById(@PathVariable(name = "jieId") Integer jieId,Boolean rank) {
+        LayUIResult layUIResult = jieService.updateJieStickById(jieId,rank);
+        return layUIResult;
+    }
+
+    @RequestMapping("/jie/boutique/{jieId}")
+    @ResponseBody
+    public LayUIResult updateJieBoutiqueById(@PathVariable(name = "jieId") Integer jieId,Boolean rank) {
+        LayUIResult layUIResult = jieService.updateJieBoutiqueById(jieId,rank);
+        return layUIResult;
+    }
+
 }

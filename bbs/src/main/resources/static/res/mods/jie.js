@@ -187,6 +187,43 @@ layui.define('fly', function (exports) {
         //设置置顶、状态
         , set: function (div) {
             var othis = $(this);
+            var field = othis.attr('field');
+            var rank = othis.attr('rank');
+            var confirmMsg;
+            var url;
+            if ( field === 'stick') {
+                rank = '0' ? confirmMsg ='取消置顶' : confirmMsg = '置顶';
+                url = 'stick';
+            } else if (field === 'boutique') {
+                rank = '0' ? confirmMsg ='取消加精' : confirmMsg = '加精';
+                url = 'boutique';
+            }
+            layer.confirm('确认'+confirmMsg+'该求解么？', function (index) {
+                layer.close(index);
+                $.ajax({
+                    url: '/jie/'+field+'/'+div.data('id'),
+                    type: 'PUT',
+                    data: {
+                        rank : othis.attr('rank')
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        layer.msg(res.msg);
+                        setTimeout(function () {
+                            setTimeout(function () {
+                                if (res.code == '0') {
+                                    //刷新父页面
+                                    location.reload();
+                                    // window.location.href='/jie/'+div.data('id');
+                                    // location.href='/'
+                                }
+                            }, 2000)
+                        }, 2000);
+                    }
+                })
+            });
+            /*var othis = $(this);
+            console.log(othis.attr('field'));
             fly.json('/api/jie-set/', {
                 id: div.data('id')
                 , rank: othis.attr('rank')
@@ -195,7 +232,7 @@ layui.define('fly', function (exports) {
                 if (res.status === 0) {
                     location.reload();
                 }
-            });
+            });*/
         }
 
         //收藏

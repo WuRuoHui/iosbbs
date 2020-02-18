@@ -136,4 +136,42 @@ public class JieServiceImpl implements JieService {
         }
         return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
     }
+
+    @Override
+    public LayUIResult updateJieStickById(Integer jieId, Boolean rank) {
+        if (jieId != null && rank != null ) {
+            Jie jie = jieMapper.selectByPrimaryKey(jieId);
+            if (jie == null) {
+                return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+            }
+            Jie newJie = new Jie();
+            newJie.setId(jieId);
+            newJie.setIsSticky(rank);
+            newJie.setGmtModify(System.currentTimeMillis());
+            int rows = jieMapper.updateByPrimaryKeySelective(newJie);
+            if (rows > 0 ) {
+                return LayUIResult.build(0, CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+            }
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
+    @Override
+    public LayUIResult updateJieBoutiqueById(Integer jieId, Boolean rank) {
+        if (jieId != null && rank != null ) {
+            Jie jie = jieMapper.selectByPrimaryKey(jieId);
+            if (jie == null) {
+                return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+            }
+            Jie newJie = new Jie();
+            newJie.setId(jieId);
+            newJie.setIsBoutique(rank);
+            newJie.setGmtModify(System.currentTimeMillis());
+            int rows = jieMapper.updateByPrimaryKeySelective(newJie);
+            if (rows > 0 ) {
+                return LayUIResult.build(0, CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+            }
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
 }
