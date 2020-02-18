@@ -95,4 +95,11 @@ public class SystemSettingController {
     public String showPassagewayPage() {
         return "page/passageway/passagewayList";
     }
+
+    @RequestMapping(value = "/passageways",method = RequestMethod.GET)
+    @ResponseBody
+    public LayUIResult selectAllPassageway() {
+        LayUIResult layUIResult = systemSettingService.selectAllPassageway();
+        return layUIResult;
+    }
 }

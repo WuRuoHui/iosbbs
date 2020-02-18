@@ -41,7 +41,7 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         <!-- 指定数据库表 -->
-        <table schema="" tableName="bbs_game_contact" domainObjectName="GameContact">
+        <table schema="" tableName="bbs_passageway" domainObjectName="Passageway">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

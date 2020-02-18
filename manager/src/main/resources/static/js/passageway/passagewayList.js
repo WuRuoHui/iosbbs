@@ -7,30 +7,34 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //用户列表
     var tableIns = table.render({
-        elem: '#gameContactList',
-        url : '/gameContacts',
+        elem: '#passagewayList',
+        url : '/passageways',
         cellMinWidth : 95,
         page : true,
         height : "full-125",
         limits : [10,15,20,25],
         limit : 20,
-        id : "gameContactListTable",
+        id : "passagewayListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
             {field: '', title: '序号', width:80, sort: true, align:"center",templet:function (d) {
                     return (d.LAY_INDEX);
-                }},
+            }},
             {field:'id',width:0},
-            {field: 'game', title: '游戏名', minWidth:100, align:"center",templet:function (d) {
-                    return d.game.name;
+            {field: 'logo', title: 'LOGO', width: 180, align: "center", templet: function (d) {
+                    return '<a href="' + d.url + '" target="_blank"><img src="' + d.logo + '" height="26" /></a>';
             }},
-            {field: 'dept', title: '部门', minWidth:100, align:"center",templet:function (d) {
-                    return d.game.dept.name;
+            {field: 'name', title: '温馨通道名', minWidth:100, align:"center"},
+            {field: 'url', title: '温馨通道地址', width: 300, templet: function (d) {
+                    return '<a class="layui-blue" href="' + d.url + '" target="_blank">' + d.url + '</a>';
             }},
-            {field: 'qq', title: 'QQ', align:'center'},
-            {field: 'phone', title: '电话', align:'center'},
-            {field: 'description', title: '描述', align:'center'},
-            {title: '操作', minWidth:150, toolbar:'#gameContactListBar',fixed:"right",align:"center"}
+            {field: 'showAddress', title: '展示位置', align: 'center', templet: function (d) {
+                    return d.showAddress == "checked" ? "首页" : "子页";
+            }},
+            {field: 'gmtCreate', title: '添加时间', align: 'center', minWidth: 110, templet: function (d) {
+                    return formatDate(new Date(d.gmtCreate));
+            }},
+            {title: '操作', minWidth:150, toolbar:'#passagewayListBar',fixed:"right",align:"center"}
         ]],done: function () {
             $("[data-field='id']").css('display','none');
         }

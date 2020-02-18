@@ -1,9 +1,13 @@
 package com.wu.manager.service.impl;
 
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.enums.CustomizeErrorCode;
 import com.wu.manager.mapper.FriendlyLinkMapper;
+import com.wu.manager.mapper.PassagewayMapper;
 import com.wu.manager.pojo.FriendlyLink;
 import com.wu.manager.pojo.FriendlyLinkExample;
+import com.wu.manager.pojo.Passageway;
+import com.wu.manager.pojo.PassagewayExample;
 import com.wu.manager.service.SystemSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,8 @@ public class SystemSettingServiceImpl implements SystemSettingService {
 
     @Autowired
     private FriendlyLinkMapper friendlyLinkMapper;
+    @Autowired
+    private PassagewayMapper passagewayMapper;
 
     /**
      * @Description: 删除单个友链
@@ -142,5 +148,14 @@ public class SystemSettingServiceImpl implements SystemSettingService {
         } else {
             return LayUIResult.build(1,"删除失败");
         }
+    }
+
+    @Override
+    public LayUIResult selectAllPassageway() {
+        List<Passageway> passageways = passagewayMapper.selectByExample(new PassagewayExample());
+        if (passageways != null && passageways.size() > 0) {
+            return LayUIResult.build(0,passageways.size(), CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),passageways);
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.NOT_DATA_EXIST.getMessage());
     }
 }

@@ -20,4 +20,6 @@ public interface SystemSettingService {
     LayUIResult deleteLinkListById(Integer linkId);
 
     LayUIResult deleteLinkListByIds(List<Integer> linkIds);
+
+    LayUIResult selectAllPassageway();
 }

@@ -23,22 +23,22 @@
 				<a class="layui-btn search_btn" data-type="reload">搜索</a>
 			</div>
 			<div class="layui-inline">
-				<a class="layui-btn layui-btn-normal addGameContact_btn">添加联系方式</a>
+				<a class="layui-btn layui-btn-normal addPassageway_btn">添加联系方式</a>
 			</div>
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
 			</div>
 		</form>
 	</blockquote>
-	<table id="gameContactList" lay-filter="gameContactList"></table>
+	<table id="passagewayList" lay-filter="passagewayList"></table>
 
 	<!--操作-->
-	<script type="text/html" id="gameContactListBar">
+	<script type="text/html" id="passagewayListBar">
 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 	</script>
 </form>
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
-<script type="text/javascript" th:src="@{/js/gameContact/gameContactList.js}"></script>
+<script type="text/javascript" th:src="@{/js/passageway/passagewayList.js}"></script>
 </body>
 </html>
