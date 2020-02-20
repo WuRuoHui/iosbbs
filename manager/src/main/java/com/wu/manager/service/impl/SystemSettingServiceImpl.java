@@ -194,4 +194,21 @@ public class SystemSettingServiceImpl implements SystemSettingService {
         }
         return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_FAIL.getMessage());
     }
+
+    @Override
+    public LayUIResult deletePassagewayById(Integer id) {
+        if (id == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        //判断要删除的数据是否存在
+        Passageway passageway = passagewayMapper.selectByPrimaryKey(id);
+        if (passageway == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        int rows = passagewayMapper.deleteByPrimaryKey(id);
+        if (rows > 0) {
+            return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
+    }
 }

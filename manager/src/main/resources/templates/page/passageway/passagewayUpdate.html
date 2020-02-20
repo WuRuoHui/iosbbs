@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 	<meta charset="utf-8">
 	<title>文章列表--layui后台管理模板 2.0</title>
@@ -28,19 +28,13 @@
 	<div class="layui-form-item">
 		<label class="layui-form-label">网站名称</label>
 		<div class="layui-input-block">
-			<input type="text" class="layui-input linkName" lay-verify="required" placeholder="请输入网站名称" />
+			<input type="text" class="layui-input name" lay-verify="required" placeholder="请输入网站名称" />
 		</div>
 	</div>
 	<div class="layui-form-item">
 		<label class="layui-form-label">网站地址</label>
 		<div class="layui-input-block">
-			<input type="text" class="layui-input linkUrl" lay-verify="required|url" placeholder="请输入网站地址" />
-		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">站长邮箱</label>
-		<div class="layui-input-block">
-			<input type="text" class="layui-input masterEmail" lay-verify="required|email" placeholder="请输入站长邮箱" />
+			<input type="text" class="layui-input url" lay-verify="required|url" placeholder="请输入网站地址" />
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -50,10 +44,10 @@
 		</div>
 	</div>
 	<div class="layui-form-item">
-		<button class="layui-btn layui-block" lay-filter="addLink" lay-submit>提交</button>
+		<button class="layui-btn layui-block" lay-filter="addPassageway" lay-submit>提交</button>
 	</div>
 </form>
 <script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript" src="../../js/linkList.js"></script>
+<script type="text/javascript" src="../../js/passageway/passagewayList.js"></script>
 </body>
 </html>

@@ -25,4 +25,6 @@ public interface SystemSettingService {
     LayUIResult selectAllPassageway();
 
     LayUIResult insertPassageway(Passageway passageway);
+
+    LayUIResult deletePassagewayById(Integer id);
 }
