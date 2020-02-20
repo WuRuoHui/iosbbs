@@ -158,4 +158,40 @@ public class SystemSettingServiceImpl implements SystemSettingService {
         }
         return LayUIResult.build(1,CustomizeErrorCode.NOT_DATA_EXIST.getMessage());
     }
+
+    @Override
+    public LayUIResult insertPassageway(Passageway passageway) {
+        if (passageway == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_NOT_FILL.getMessage());
+        }
+        PassagewayExample passagewayExample = new PassagewayExample();
+        //检查名称是否已经存在
+        if (!StringUtils.isEmpty(passageway.getName())) {
+            passagewayExample.createCriteria()
+                    .andNameEqualTo(passageway.getName().trim());
+            List<Passageway> passageways = passagewayMapper.selectByExample(passagewayExample);
+            if (passageways != null && passageways.size() > 0 ) {
+                return LayUIResult.build(1,CustomizeErrorCode.DATA_ALREADY_EXIST.getMessage());
+            }
+        }
+        //检查网址是否已经存在
+        if (!StringUtils.isEmpty(passageway.getUrl())) {
+            passagewayExample.clear();
+            passagewayExample.createCriteria()
+                    .andUrlEqualTo(passageway.getUrl().trim());
+            List<Passageway> passageways = passagewayMapper.selectByExample(passagewayExample);
+            if (passageways != null && passageways.size() > 0 ) {
+                return LayUIResult.build(1,CustomizeErrorCode.DATA_ALREADY_EXIST.getMessage());
+            }
+        }
+        //设置创建时间
+        passageway.setGmtCreate(System.currentTimeMillis());
+        //设置修改时间
+        passageway.setGmtModify(System.currentTimeMillis());
+        int rows = passagewayMapper.insertSelective(passageway);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.INSERT_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_FAIL.getMessage());
+    }
 }

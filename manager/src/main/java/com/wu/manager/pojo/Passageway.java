@@ -1,9 +1,12 @@
 package com.wu.manager.pojo;
 
+import lombok.ToString;
+
+@ToString
 public class Passageway {
     private Integer id;
 
-    private String logo;
+    private String passagewayLogo;
 
     private String name;
 
@@ -23,12 +26,12 @@ public class Passageway {
         this.id = id;
     }
 
-    public String getLogo() {
-        return logo;
+    public String getPassagewayLogo() {
+        return passagewayLogo;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo == null ? null : logo.trim();
+    public void setPassagewayLogo(String passagewayLogo) {
+        this.passagewayLogo = passagewayLogo == null ? null : passagewayLogo.trim();
     }
 
     public String getName() {

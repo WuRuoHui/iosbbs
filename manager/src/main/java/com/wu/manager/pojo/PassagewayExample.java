@@ -164,73 +164,73 @@ public class PassagewayExample {
             return (Criteria) this;
         }
 
-        public Criteria andLogoIsNull() {
-            addCriterion("logo is null");
+        public Criteria andPassagewayLogoIsNull() {
+            addCriterion("passageway_logo is null");
             return (Criteria) this;
         }
 
-        public Criteria andLogoIsNotNull() {
-            addCriterion("logo is not null");
+        public Criteria andPassagewayLogoIsNotNull() {
+            addCriterion("passageway_logo is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLogoEqualTo(String value) {
-            addCriterion("logo =", value, "logo");
+        public Criteria andPassagewayLogoEqualTo(String value) {
+            addCriterion("passageway_logo =", value, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoNotEqualTo(String value) {
-            addCriterion("logo <>", value, "logo");
+        public Criteria andPassagewayLogoNotEqualTo(String value) {
+            addCriterion("passageway_logo <>", value, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoGreaterThan(String value) {
-            addCriterion("logo >", value, "logo");
+        public Criteria andPassagewayLogoGreaterThan(String value) {
+            addCriterion("passageway_logo >", value, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoGreaterThanOrEqualTo(String value) {
-            addCriterion("logo >=", value, "logo");
+        public Criteria andPassagewayLogoGreaterThanOrEqualTo(String value) {
+            addCriterion("passageway_logo >=", value, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoLessThan(String value) {
-            addCriterion("logo <", value, "logo");
+        public Criteria andPassagewayLogoLessThan(String value) {
+            addCriterion("passageway_logo <", value, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoLessThanOrEqualTo(String value) {
-            addCriterion("logo <=", value, "logo");
+        public Criteria andPassagewayLogoLessThanOrEqualTo(String value) {
+            addCriterion("passageway_logo <=", value, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoLike(String value) {
-            addCriterion("logo like", value, "logo");
+        public Criteria andPassagewayLogoLike(String value) {
+            addCriterion("passageway_logo like", value, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoNotLike(String value) {
-            addCriterion("logo not like", value, "logo");
+        public Criteria andPassagewayLogoNotLike(String value) {
+            addCriterion("passageway_logo not like", value, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoIn(List<String> values) {
-            addCriterion("logo in", values, "logo");
+        public Criteria andPassagewayLogoIn(List<String> values) {
+            addCriterion("passageway_logo in", values, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoNotIn(List<String> values) {
-            addCriterion("logo not in", values, "logo");
+        public Criteria andPassagewayLogoNotIn(List<String> values) {
+            addCriterion("passageway_logo not in", values, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoBetween(String value1, String value2) {
-            addCriterion("logo between", value1, value2, "logo");
+        public Criteria andPassagewayLogoBetween(String value1, String value2) {
+            addCriterion("passageway_logo between", value1, value2, "passagewayLogo");
             return (Criteria) this;
         }
 
-        public Criteria andLogoNotBetween(String value1, String value2) {
-            addCriterion("logo not between", value1, value2, "logo");
+        public Criteria andPassagewayLogoNotBetween(String value1, String value2) {
+            addCriterion("passageway_logo not between", value1, value2, "passagewayLogo");
             return (Criteria) this;
         }
 

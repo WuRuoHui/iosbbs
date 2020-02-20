@@ -2,6 +2,7 @@ package com.wu.manager.service;
 
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.pojo.FriendlyLink;
+import com.wu.manager.pojo.Passageway;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface SystemSettingService {
     LayUIResult deleteLinkListByIds(List<Integer> linkIds);
 
     LayUIResult selectAllPassageway();
+
+    LayUIResult insertPassageway(Passageway passageway);
 }

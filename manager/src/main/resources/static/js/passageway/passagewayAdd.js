@@ -3,43 +3,33 @@ layui.use(['form', 'layer'], function () {
     layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery;
 
-    form.on("submit(addGameContact)", function (data) {
+    form.on("submit(addPassageway)", function (data) {
         //弹出loading
         var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
         // 实际使用时的提交信息
         $.ajax({
-            url: '/gameContact',
+            url: '/systemSetting/passageway',
             type: 'POST',
-            data : $(".addGameContact").serialize(),
+            data :{
+                logo: $(".linkLogo").attr("src"),  //logo
+                name: $(".name").val(),  //网站名称
+                url: $(".url").val(),    //网址
+                showAddress: $('.showAddress + .layui-form-switch em').text() == "首页" ? "checked" : "",    //展示位置
+            },
             dataType: 'json',
             success: function (res) {
                 setTimeout(function () {
-                    top.layer.close(index);
-                    top.layer.msg(res.msg);
-                    if (res.code == '0') {
+                    layer.close(index);
+                    layer.msg(res.msg);
+                    if (res.code == 0) {
                         layer.closeAll("iframe");
                         //刷新父页面
-                        parent.location.reload();
+                        $(".layui-tab-item.layui-show", parent.document).find("iframe")[0].contentWindow.location.reload();
                     }
-                }, 2000);
+                }, 500);
             }
         })
         return false;
-    })
-
-    //动态加载游戏下拉框
-    $.ajax({
-        url: '/games',
-        type: 'GET',
-        dataType: 'json',
-        success: function (res) {
-            var data = res.data;
-            $(".gameId").empty();
-            for (var i = 0; i < data.length; i++) {
-                $(".gameId").append("<option value='" + data[i].id + "'>" + data[i].name + "</option>");
-            }
-            form.render();
-        }
     })
 
     //格式化时间

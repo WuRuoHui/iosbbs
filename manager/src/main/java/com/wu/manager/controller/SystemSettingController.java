@@ -2,6 +2,7 @@ package com.wu.manager.controller;
 
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.pojo.FriendlyLink;
+import com.wu.manager.pojo.Passageway;
 import com.wu.manager.service.SystemSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -96,10 +97,27 @@ public class SystemSettingController {
         return "page/passageway/passagewayList";
     }
 
+    @RequestMapping("/page/systemSetting/passagewayAdd")
+    public String showPassagewayAddPage() {
+        return "page/passageway/passagewayAdd";
+    }
+
+    @RequestMapping("/page/systemSetting/passagewayUpdate")
+    public String showPassagewayUpdatePage() {
+        return "page/passageway/passagewayUpdate";
+    }
+
     @RequestMapping(value = "/passageways",method = RequestMethod.GET)
     @ResponseBody
     public LayUIResult selectAllPassageway() {
         LayUIResult layUIResult = systemSettingService.selectAllPassageway();
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/systemSetting/passageway",method = RequestMethod.POST)
+    @ResponseBody
+    public LayUIResult insertPassageway(Passageway passageway) {
+        LayUIResult layUIResult = systemSettingService.insertPassageway(passageway);
         return layUIResult;
     }
 }
