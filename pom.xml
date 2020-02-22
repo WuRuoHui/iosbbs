@@ -28,6 +28,7 @@
         <fastjson.version>1.2.62</fastjson.version>
         <pagehelper-spring-boot.version>1.2.13</pagehelper-spring-boot.version>
         <okhttp.version>3.14.1</okhttp.version>
+        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -47,6 +48,13 @@
                 <groupId>org.thymeleaf.extras</groupId>
                 <artifactId>thymeleaf-extras-springsecurity5</artifactId>
                 <version>${thymeleaf-extras-springsecurity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <!-- 开启热部署 -->
             <dependency>
