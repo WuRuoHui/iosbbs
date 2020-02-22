@@ -1,8 +1,5 @@
 package com.wu.manager.pojo;
 
-import lombok.ToString;
-
-@ToString
 public class Passageway {
     private Integer id;
 
