@@ -107,6 +107,7 @@ public class SystemSettingController {
         return "page/passageway/passagewayUpdate";
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:8080",maxAge = 3600)
     @RequestMapping(value = "/systemSetting/passageways",method = RequestMethod.GET)
     @ResponseBody
     public LayUIResult selectAllPassageway() {

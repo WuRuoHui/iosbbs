@@ -13,7 +13,7 @@
 
 <!-- 引入header -->
 <div th:replace="common/header::bbsHeader"></div>
-<div th:replace="common/column::bbsColumn(value='jie')"></div>
+<div th:replace="common/column::bbsColumn(value= 'jie')"></div>
 
 <div class="layui-container">
   <div class="layui-row layui-col-space15">
@@ -108,6 +108,7 @@
 
 <script th:src="@{/res/layui/layui.js}"></script>
 <script th:src="@{/res/js/column.js}"></script>
+<script th:src="@{/res/mods/getUrlParam.js}"></script>
 <script>
 layui.cache.page = 'jie';
 layui.cache.user = {

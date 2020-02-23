@@ -1,5 +1,6 @@
 package com.wu.manager.service.impl;
 
+import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.enums.CustomizeErrorCode;
 import com.wu.manager.mapper.FriendlyLinkMapper;
@@ -9,7 +10,9 @@ import com.wu.manager.pojo.FriendlyLinkExample;
 import com.wu.manager.pojo.Passageway;
 import com.wu.manager.pojo.PassagewayExample;
 import com.wu.manager.service.SystemSettingService;
+import com.wu.manager.utils.StringRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -28,6 +31,10 @@ public class SystemSettingServiceImpl implements SystemSettingService {
     private FriendlyLinkMapper friendlyLinkMapper;
     @Autowired
     private PassagewayMapper passagewayMapper;
+    @Autowired
+    private StringRedisService stringRedisService;
+    @Value("${BBS.PASSAGEWAY}")
+    private String BBS_PASSAGEWAY;
 
     /**
      * @Description: 删除单个友链
@@ -152,8 +159,14 @@ public class SystemSettingServiceImpl implements SystemSettingService {
 
     @Override
     public LayUIResult selectAllPassageway() {
+        String passageway_from_redis = stringRedisService.getString(BBS_PASSAGEWAY);
+        if (!StringUtils.isEmpty(passageway_from_redis)) {
+            List<Passageway> passageways = JsonUtils.jsonToList(passageway_from_redis, Passageway.class);
+            return LayUIResult.build(0,passageways.size(),CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),passageways);
+        }
         List<Passageway> passageways = passagewayMapper.selectByExample(new PassagewayExample());
         if (passageways != null && passageways.size() > 0) {
+            stringRedisService.setObject(BBS_PASSAGEWAY,passageways);
             return LayUIResult.build(0,passageways.size(), CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),passageways);
         }
         return LayUIResult.build(1,CustomizeErrorCode.NOT_DATA_EXIST.getMessage());
@@ -190,6 +203,7 @@ public class SystemSettingServiceImpl implements SystemSettingService {
         passageway.setGmtModify(System.currentTimeMillis());
         int rows = passagewayMapper.insertSelective(passageway);
         if (rows > 0 ) {
+            stringRedisService.setString(BBS_PASSAGEWAY,"");
             return LayUIResult.build(0,CustomizeErrorCode.INSERT_DATA_SUCCESS.getMessage());
         }
         return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_FAIL.getMessage());
@@ -207,6 +221,7 @@ public class SystemSettingServiceImpl implements SystemSettingService {
         }
         int rows = passagewayMapper.deleteByPrimaryKey(id);
         if (rows > 0) {
+            stringRedisService.setString(BBS_PASSAGEWAY,"");
             return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
         }
         return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
@@ -241,6 +256,7 @@ public class SystemSettingServiceImpl implements SystemSettingService {
         }
         int rows = passagewayMapper.updateByPrimaryKeySelective(passageway);
         if (rows > 0) {
+            stringRedisService.setString(BBS_PASSAGEWAY,"");
             return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
         }
         return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
@@ -262,6 +278,7 @@ public class SystemSettingServiceImpl implements SystemSettingService {
                 return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
             }
         }
+        stringRedisService.setString(BBS_PASSAGEWAY,"");
         return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
     }
 }

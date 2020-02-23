@@ -37,6 +37,18 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     }
   };
 
+  /*$(function () {
+      var type = UrlParm.parm('type');
+      console.log(type)
+      $('ul .layui-this').removeClass('layui-this');
+      $('.'+type).addClass('layui-this');
+  })*/
+  /*$(document).on("click",'li',function(){
+    $('ul .layui-this').removeClass('layui-this');
+    $(this).addClass('layui-this');
+  })*/
+
+  //动态添加友情链接
   $.ajax({
     url: 'http://127.0.0.1:8081/systemSetting/linkList',
     type: 'GET',
@@ -48,6 +60,20 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
         $(".linkPar").append("<dd><a href='"+data[i].websiteUrl+"' target='_blank'>"+data[i].websiteName+"</a></dd>");
       }
       // form.render();
+    }
+  })
+
+  //动态添加温馨通道
+  $.ajax({
+    url: 'http://127.0.0.1:8081/systemSetting/passageways',
+    type: 'GET',
+    dataType: 'JSON',
+    success: function (res) {
+      var data = res.data;
+      $(".passagewayPar").empty();
+      for (var i = 0; i < data.length; i++) {
+        $(".passagewayPar").append("<li><a href='"+data[i].url+"' target='_blank'>"+data[i].name+"</a></li>");
+      }
     }
   })
 
