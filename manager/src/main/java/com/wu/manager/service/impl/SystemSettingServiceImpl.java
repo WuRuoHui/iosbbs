@@ -211,4 +211,57 @@ public class SystemSettingServiceImpl implements SystemSettingService {
         }
         return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
     }
+
+    @Override
+    public LayUIResult updatePassageway(Passageway passageway) {
+        if (passageway == null || passageway.getId() == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+        }
+        Passageway passagewayFromDB = passagewayMapper.selectByPrimaryKey(passageway.getId());
+        if (passagewayFromDB == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        //检查是否有相同的网站名称或者url
+        PassagewayExample passagewayExample = new PassagewayExample();
+        PassagewayExample.Criteria urlCriteria = new PassagewayExample().createCriteria();
+        if (!StringUtils.isEmpty(passageway.getName())) {
+            passagewayExample.createCriteria()
+                    .andNameEqualTo(passageway.getName().trim())
+                    .andIdNotEqualTo(passageway.getId());
+        }
+        if (!StringUtils.isEmpty(passageway.getUrl())) {
+            urlCriteria
+                    .andUrlEqualTo(passageway.getUrl().trim())
+                    .andIdNotEqualTo(passageway.getId());
+        }
+        passagewayExample.or(urlCriteria);
+        List<Passageway> passageways = passagewayMapper.selectByExample(passagewayExample);
+        if (passageway != null && passageways.size() > 0 ) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_ALREADY_EXIST.getMessage());
+        }
+        int rows = passagewayMapper.updateByPrimaryKeySelective(passageway);
+        if (rows > 0) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
+    @Override
+    @Transactional
+    public LayUIResult deletePassagewayByIds(List<Integer> ids) {
+        if (ids == null || ids.size() < 1) {
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        for (Integer id : ids) {
+            Passageway passageway = passagewayMapper.selectByPrimaryKey(id);
+            if (passageway == null) {
+                return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+            }
+            int rows = passagewayMapper.deleteByPrimaryKey(id);
+            if (rows < 1) {
+                return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
+            }
+        }
+        return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+    }
 }

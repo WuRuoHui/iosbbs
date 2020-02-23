@@ -15,15 +15,15 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
         height: "full-104",
         limit: 20,
         limits: [10, 15, 20, 25],
-        id: "linkListTab",
+        id: "passagewayListTable",
         cols: [[
             {type: "checkbox", fixed: "left", width: 50},
             {field: 'id', width: 0, type: 'space', style: 'display:none'},
             {field: 'logo', title: 'LOGO', width: 180, align: "center", templet: function (d) {
                     return '<a href="' + d.url + '" target="_blank"><img src="' + d.passagewayLogo + '" height="26" /></a>';
             }},
-            {field: 'name', title: '网站名称', minWidth: 240},
-            {field: 'url', title: '网站地址', width: 300, templet: function (d) {
+            {field: 'name', title: '温馨通道名称', minWidth: 240},
+            {field: 'url', title: '温馨通道地址', width: 300, templet: function (d) {
                     return '<a class="layui-blue" href="' + d.url + '" target="_blank">' + d.url + '</a>';
             }},
             {field: 'showAddress', title: '展示位置', align: 'center', templet: function (d) {
@@ -114,20 +114,20 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
 
     //批量删除
     $(".delAll_btn").click(function () {
-        var checkStatus = table.checkStatus('linkListTab'),
+        var checkStatus = table.checkStatus('passagewayListTable'),
             data = checkStatus.data,
-            linkIds = [];
+            ids = [];
         if (data.length > 0) {
             for (var i in data) {
-                linkIds[i] = data[i].linkId;
+                ids[i] = data[i].id;
             }
-            layer.confirm('确定删除选中的友链？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除选中的温馨通道？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/systemSetting/linkList',
+                    url: '/systemSetting/passageways',
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',
-                    data: JSON.stringify(linkIds),
+                    data: JSON.stringify(ids),
                     success: function (res) {
                         top.layer.msg(res.msg)
                         if (res.code == 0) {
@@ -138,7 +138,7 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
                 })
             })
         } else {
-            layer.msg("请选择需要删除的友链");
+            layer.msg("请选择需要删除的温馨通道");
         }
     })
 
@@ -221,5 +221,39 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
         })
         return false;
     })
+
+    form.on("submit(updatePassageway)", function (data) {
+        //弹出loading
+        var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
+        // 实际使用时的提交信息
+        $.ajax({
+            url:'/systemSetting/passageway',
+            type:'PUT',
+            dataType:'json',
+            data: {
+                logo: $(".linkLogo").attr("src"),  //logo
+                id: $(".id").val(),
+                name: $(".name").val(),  //网站名称
+                url: $(".url").val(),    //网址
+                showAddress: $('.showAddress + .layui-form-switch em').text() == "首页" ? "checked" : "",    //展示位置
+            },
+            success:function (res) {
+                setTimeout(function () {
+                    if (res.code == 0) {
+                        top.layer.close(index);
+                        top.layer.msg(res.msg);
+                        layer.closeAll("iframe");
+                        //刷新父页面
+                        $(".layui-tab-item.layui-show", parent.document).find("iframe")[0].contentWindow.location.reload();
+                    } else {
+                        top.layer.close(index);
+                        top.layer.msg(res.msg)
+                    }
+                }, 500);
+            }
+        })
+        return false;
+    })
+
 
 })

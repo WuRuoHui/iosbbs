@@ -127,4 +127,18 @@ public class SystemSettingController {
         LayUIResult layUIResult = systemSettingService.deletePassagewayById(id);
         return layUIResult;
     }
+
+    @RequestMapping(value = "/systemSetting/passageway",method = RequestMethod.PUT)
+    @ResponseBody
+    public LayUIResult updatePassageway(Passageway passageway) {
+        LayUIResult layUIResult = systemSettingService.updatePassageway(passageway);
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/systemSetting/passageways",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deletePassagewayByIds(@RequestBody List<Integer> ids) {
+        LayUIResult layUIResult = systemSettingService.deletePassagewayByIds(ids);
+        return layUIResult;
+    }
 }
