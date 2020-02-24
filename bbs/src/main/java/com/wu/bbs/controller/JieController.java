@@ -9,10 +9,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_MANAGER')")
@@ -34,7 +33,9 @@ public class JieController {
     }
 
     @RequestMapping("/jie/index")
-    public String jieIndex() {
+    public String jieIndex(@RequestParam(name = "type") String type, Model model) {
+        List<JieDTO> jieListWithType = jieService.selectJieByType(type);
+        model.addAttribute("jieList",jieListWithType);
         return "jie/index";
     }
 

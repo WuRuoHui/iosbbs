@@ -32,4 +32,6 @@ public interface JieService {
     LayUIResult updateJieBoutiqueById(Integer jieId, Boolean rank);
 
     List<JieDTO> selectAllJieListIfStick();
+
+    List<JieDTO> selectJieByType(String type);
 }

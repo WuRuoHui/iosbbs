@@ -13,8 +13,7 @@
 
 <!-- 引入header -->
 <div th:replace="common/header::bbsHeader"></div>
-<div th:replace="common/column::bbsColumn(value= 'jie')"></div>
-
+<div th:replace="common/column::bbsColumn('jie')">[[${#request.getParameter('type')}]]</div>
 <div class="layui-container">
   <div class="layui-row layui-col-space15">
     <div class="layui-col-md8">
@@ -22,13 +21,13 @@
 
         <div th:replace="common/filter::bbsFilter"></div>
 
-        <ul class="fly-list">          
-          <li>
+        <ul class="fly-list" th:if="${ jieList != null}">
+          <li th:each="jie : ${jieList}">
             <a href="user/home.html" class="fly-avatar">
               <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">
             </a>
             <h2>
-              <a class="layui-badge">分享</a>
+              <a class="layui-badge" th:text="${jie.getColumn(jie.columnId)}"></a>
               <a href="detail.html">基于 layui 的极简社区页面模版</a>
             </h2>
             <div class="fly-list-info">
@@ -52,9 +51,9 @@
           </li>
         </ul>
         
-        <!-- <div class="fly-none">没有相关数据</div> -->
+        <div th:if="${#lists.isEmpty(jieList)}" class="fly-none">没有相关数据</div>
     
-        <div style="text-align: center">
+        <div style="text-align: center" th:if="${!#lists.isEmpty(jieList)}">
           <div class="laypage-main"><span class="laypage-curr">1</span><a href="/jie/page/2/">2</a><a href="/jie/page/3/">3</a><a href="/jie/page/4/">4</a><a href="/jie/page/5/">5</a><span>…</span><a href="/jie/page/148/" class="laypage-last" title="尾页">尾页</a><a href="/jie/page/2/" class="laypage-next">下一页</a></div>
         </div>
 

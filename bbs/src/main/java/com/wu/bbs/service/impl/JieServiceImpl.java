@@ -86,8 +86,14 @@ public class JieServiceImpl implements JieService {
     }
 
     public List<JieDTO> selectJieList(JieExample jieExample) {
-        List<JieDTO> jieDTOS = new ArrayList<>();
         List<Jie> jies = jieMapper.selectByExample(jieExample);
+        List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
+        return jieDTOS;
+    }
+
+    //将jie封装到jieDTO
+    public List<JieDTO> copyJieToJieDTO(List<Jie> jies) {
+        List<JieDTO> jieDTOS = new ArrayList<>();
         if (jies != null && jies.size() > 0) {
             for (Jie jie : jies) {
                 JieDTO jieDTO = new JieDTO();
@@ -111,6 +117,7 @@ public class JieServiceImpl implements JieService {
         }
         return jieDTOS;
     }
+
 
     @Override
     public JieDTO selectJieById(Integer jieId) {
@@ -215,5 +222,38 @@ public class JieServiceImpl implements JieService {
         jieExample.setOrderByClause("gmt_create DESC");
         List<JieDTO> jieDTOS = selectJieList(jieExample);
         return jieDTOS;
+    }
+
+    @Override
+    public List<JieDTO> selectJieByType(String type) {
+        Integer integerType = getIntegerType(type);
+        JieExample jieExample = new JieExample();
+        jieExample.createCriteria().andColumnIdEqualTo(integerType);
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
+        return jieDTOS;
+    }
+
+    public Integer getIntegerType(String type) {
+        /*<option value="0">提问</option>
+        <option value="99">分享</option>
+        <option value="100">讨论</option>
+        <option value="101">建议</option>
+        <option value="168">公告</option>
+        <option value="169">动态</option>*/
+        if (type.equals("jie")) {
+            return 0;
+        } else if (type.equals("discussion")){
+            return 100;
+        } else if (type.equals("share")) {
+            return 99;
+        } else if (type.equals("advice")) {
+            return 101;
+        } else if (type.equals("notice")) {
+            return 168;
+        } else if (type.equals("condition")) {
+            return 169;
+        }
+        return null;
     }
 }

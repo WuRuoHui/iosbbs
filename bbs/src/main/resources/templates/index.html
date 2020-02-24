@@ -11,7 +11,7 @@
 <!-- 引入header -->
 <div th:replace="common/header::bbsHeader"></div>
 <!-- 引入顶部工具条 -->
-<div th:value="${param.type}" th:replace="common/column::bbsColumn(value = param.type)"></div>
+<div th:replace="common/column::bbsColumn('index')"></div>
 
 <div class="layui-container">
     <div class="layui-row layui-col-space15">
