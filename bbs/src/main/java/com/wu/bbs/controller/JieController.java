@@ -56,9 +56,23 @@ public class JieController {
         return "jie/index";
     }
 
+    @RequestMapping("/jie/share/{status}")
+    public String selectShareJieWithStatus(@PathVariable(name = "status")String status, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectShareJieWithStatus(status);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
     @RequestMapping("/jie/discussion")
     public String selectDiscussionJie(Model model) {
         List<JieDTO> jieDTOS = jieService.selectDiscussionJie();
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping("/jie/discussion/{status}")
+    public String selectDiscussionJieWithStatus(@PathVariable(name = "status")String status, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectDiscussionJieWithStatus(status);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
@@ -70,6 +84,13 @@ public class JieController {
         return "jie/index";
     }
 
+    @RequestMapping("/jie/advice/{status}")
+    public String selectAdviceJieWithStatus(@PathVariable(name = "status")String status, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectAdviceJieWithStatus(status);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
     @RequestMapping("/jie/notice")
     public String selectNoticeJie(Model model) {
         List<JieDTO> jieDTOS = jieService.selectNoticeJie();
@@ -77,9 +98,23 @@ public class JieController {
         return "jie/index";
     }
 
+    @RequestMapping("/jie/notice/{status}")
+    public String selectNoticeJieWithStatus(@PathVariable(name = "status")String status, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectNoticeJieWithStatus(status);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
     @RequestMapping("/jie/condition")
     public String selectConditionJie(Model model) {
         List<JieDTO> jieDTOS = jieService.selectConditionJie();
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping("/jie/condition/{status}")
+    public String selectConditionJieWithStatus(@PathVariable(name = "status")String status, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectConditionJieWithStatus(status);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }

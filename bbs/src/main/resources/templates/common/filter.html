@@ -1,20 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div class="fly-panel-title fly-filter" th:fragment="bbsFilter" th:with="url = ${#request.getRequestURL()},urlArr= ${#strings.arraySplit(#request.getRequestURL(),'/')}">
-  <a th:if="${#lists.size(urlArr) > 4}" th:href="${#strings.substringBefore(url,urlArr[4])}" class="layui-this">综合</a>
+  <a th:if="${#lists.size(urlArr) > 4}" th:classappend="${!#lists.contains(urlArr,'unsolved') && !#lists.contains(urlArr,'solved') && !#lists.contains(urlArr,'boutique')? 'layui-this': ''}" th:href="${#strings.substring(#strings.substringBefore(url,urlArr[4]),0,#strings.substringBefore(url,urlArr[4]).length()-1)}">综合</a>
+  <a th:if="${#lists.size(urlArr) <= 4}" th:href="@{${#strings.endsWith(url,'/') ? ''+#strings.substring(url,0,url.length()-1)+'' :''}}" class="layui-this">综合</a>
   <span class="fly-mid"></span>
-  <a th:href="@{${#request.getRequestURL()}+'/unsolved'}">未结</a>
+  <a th:if="${#lists.size(urlArr) > 4}" th:classappend="${#lists.contains(urlArr,'unsolved') ? 'layui-this': ''}" th:href="${#strings.substringBefore(url,urlArr[4])+'unsolved'}">未结</a>
+  <a th:if="${#lists.size(urlArr) <= 4}" th:classappend="${#lists.contains(urlArr,'unsolved') ? 'layui-this': ''}" th:href="${url+'/unsolved'}">未结</a>
   <span class="fly-mid"></span>
-  <a th:href="@{${#request.getRequestURL()}+'/solved'}">已结</a>
+  <a th:if="${#lists.size(urlArr) > 4}" th:classappend="${#lists.contains(urlArr,'solved') ? 'layui-this': ''}" th:href="${#strings.substringBefore(url,urlArr[4])+'solved'}">已结</a>
+  <a th:if="${#lists.size(urlArr) <= 4}" th:classappend="${#lists.contains(urlArr,'solved') ? 'layui-this': ''}" th:href="${url+'/solved'}">已结</a>
   <span class="fly-mid"></span>
-  <a th:href="@{${#request.getRequestURL()}+'/sticky'}">精华</a>
+  <a th:if="${#lists.size(urlArr) > 4}" th:classappend="${#lists.contains(urlArr,'boutique') ? 'layui-this': ''}" th:href="@{${#strings.substringBefore(url,urlArr[4])}+'boutique'}">精华</a>
+  <a th:if="${#lists.size(urlArr) <= 4}" th:classappend="${#lists.contains(urlArr,'boutique') ? 'layui-this': ''}" th:href="@{${url}+'/boutique'}">精华</a>
   <span class="fly-filter-right layui-hide-xs">
-    <a href="" class="layui-this">按最新</a>
+    <a href="#" class="layui-this">按最新</a>
     <span class="fly-mid"></span>
-    <a href="">按热议</a>
+    <a href="#">按热议</a>
   </span>
-<!--  <span th:with="url = ${#request.getRequestURL()},urlArr= ${#strings.arraySplit(#request.getRequestURL(),'/')}" th:text="${url}"></span>-->
-<!--  <span th:text="${#strings.arraySplit(#request.getRequestURL(),'/')[3]}"></span>-->
-<!--  <span th:text="${#lists.size(#strings.arraySplit(#request.getRequestURL(),'/'))}"></span>-->
-<!--  <span th:text="${#strings.arraySplit(#request.getRequestURL(),'/')}"></span>-->
-<!--  <span th:if="${#request.getRequestURL().length() >=30}" th:text="${#strings.substring(#request.getRequestURL(),0,30)}"></span>-->
 </div>

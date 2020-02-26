@@ -192,10 +192,10 @@ layui.define('fly', function (exports) {
             var confirmMsg;
             var url;
             if ( field === 'stick') {
-                rank = '0' ? confirmMsg ='取消置顶' : confirmMsg = '置顶';
+                rank === '0' ? confirmMsg ='取消置顶' : confirmMsg = '置顶';
                 url = 'stick';
             } else if (field === 'boutique') {
-                rank = '0' ? confirmMsg ='取消加精' : confirmMsg = '加精';
+                rank === '0' ? confirmMsg ='取消加精' : confirmMsg = '加精';
                 url = 'boutique';
             }
             layer.confirm('确认'+confirmMsg+'该求解么？', function (index) {

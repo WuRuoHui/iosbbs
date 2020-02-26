@@ -243,8 +243,7 @@ public class JieServiceImpl implements JieService {
     @Override
     public List<JieDTO> selectQuizJieWithStatus(String status) {
         isRightStatus(status);
-        System.out.println(1);
-        List<JieDTO> jieDTOS = selectJieByCondition(0);
+        List<JieDTO> jieDTOS = selectJieByCondition(0,status);
         return jieDTOS;
     }
 
@@ -255,8 +254,21 @@ public class JieServiceImpl implements JieService {
     }
 
     @Override
+    public List<JieDTO> selectShareJieWithStatus(String status) {
+        List<JieDTO> jieDTOS = selectJieByCondition(99,status);
+        return jieDTOS;
+    }
+
+    @Override
     public List<JieDTO> selectDiscussionJie() {
         List<JieDTO> jieDTOS = selectJieByCondition(100);
+        return jieDTOS;
+    }
+
+    @Override
+    public List<JieDTO> selectDiscussionJieWithStatus(String status) {
+        List<JieDTO> jieDTOS = selectJieByCondition(100,status);
+        System.out.println(jieDTOS);
         return jieDTOS;
     }
 
@@ -267,8 +279,20 @@ public class JieServiceImpl implements JieService {
     }
 
     @Override
+    public List<JieDTO> selectAdviceJieWithStatus(String status) {
+        List<JieDTO> jieDTOS = selectJieByCondition(101,status);
+        return jieDTOS;
+    }
+
+    @Override
     public List<JieDTO> selectNoticeJie() {
         List<JieDTO> jieDTOS = selectJieByCondition(168);
+        return jieDTOS;
+    }
+
+    @Override
+    public List<JieDTO> selectNoticeJieWithStatus(String status) {
+        List<JieDTO> jieDTOS = selectJieByCondition(168,status);
         return jieDTOS;
     }
 
@@ -278,9 +302,34 @@ public class JieServiceImpl implements JieService {
         return jieDTOS;
     }
 
+    @Override
+    public List<JieDTO> selectConditionJieWithStatus(String status) {
+        List<JieDTO> jieDTOS = selectJieByCondition(169,status);
+        return jieDTOS;
+    }
+
     List<JieDTO> selectJieByCondition(Integer columnId) {
         JieExample jieExample = new JieExample();
         jieExample.createCriteria().andColumnIdEqualTo(columnId);
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
+        return jieDTOS;
+    }
+
+    List<JieDTO> selectJieByCondition(Integer columnId,String status) {
+        JieExample jieExample = new JieExample();
+        JieExample.Criteria criteria = jieExample.createCriteria().andColumnIdEqualTo(columnId);
+        if (!StringUtils.isEmpty(status)) {
+            if (status.equals("unsolved")) {
+                criteria.andIsClosedEqualTo(false);
+            }
+            if (status.equals("solved")) {
+                criteria.andIsClosedEqualTo(true);
+            }
+            if (status.equals("boutique")) {
+                criteria.andIsBoutiqueEqualTo(true);
+            }
+        }
         List<Jie> jies = jieMapper.selectByExample(jieExample);
         List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
         return jieDTOS;

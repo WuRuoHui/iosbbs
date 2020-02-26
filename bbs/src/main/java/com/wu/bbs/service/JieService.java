@@ -48,4 +48,14 @@ public interface JieService {
     List<JieDTO> selectConditionJie();
 
     List<JieDTO> selectQuizJieWithStatus(String status);
+
+    List<JieDTO> selectShareJieWithStatus(String status);
+
+    List<JieDTO> selectDiscussionJieWithStatus(String status);
+
+    List<JieDTO> selectAdviceJieWithStatus(String status);
+
+    List<JieDTO> selectNoticeJieWithStatus(String status);
+
+    List<JieDTO> selectConditionJieWithStatus(String status);
 }
