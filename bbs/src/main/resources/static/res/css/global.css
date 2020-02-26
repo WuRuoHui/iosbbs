@@ -13,6 +13,12 @@ html body{margin-top: 61px;}
 html{background-color: #F2F2F2;}
 i{font-style: normal;}
 
+layui-laypage  {
+  border: 1px solid #009E94;
+  border-right: none;
+  border-bottom: none;
+}
+
 /* 图标 */
 
 @font-face {font-family: "layui-icon-fly";

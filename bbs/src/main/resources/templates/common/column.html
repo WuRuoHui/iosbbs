@@ -1,16 +1,16 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div class="fly-panel fly-column" th:fragment="bbsColumn(value)">
+<div class="fly-panel fly-column" th:fragment="bbsColumn()">
   <div class="layui-container">
-    <ul class="layui-clear" th:with="value = ${param.type}+''">
-      <li th:classappend="${(value =='null')?'layui-this':''}" class="layui-hide-xs"><a href="/">首页</a></li>
-      <li th:classappend="${(value=='jie')?'layui-this':''}" ><a href="/jie/index?type=jie">提问</a></li>
-      <li th:classappend="${(value=='share')?'layui-this':''}" ><a href="/jie/index?type=share">分享<!--<span class="layui-badge-dot"></span>--></a></li>
-      <li th:classappend="${(value=='discussion')?'layui-this':''}"><a href="/jie/index?type=discussion">讨论</a></li>
-      <li th:classappend="${(value=='advice')?'layui-this':''}"><a href="/jie/index?type=advice">建议</a></li>
-      <li th:classappend="${(value=='notice')?'layui-this':''}"><a href="/jie/index?type=notice">公告</a></li>
-      <li th:classappend="${(value=='condition')?'layui-this':''}"><a href="/jie/index?type=condition">动态</a></li>
+    <ul class="layui-clear">
+      <li th:classappend="${(value =='index')?'layui-this':''}" class="layui-hide-xs"><a href="/">首页</a></li>
+      <li th:classappend="${#strings.contains(#request.getRequestURL(),'quiz')?'layui-this':''}" ><a href="/jie/quiz">提问</a></li>
+      <li th:classappend="${#strings.contains(#request.getRequestURL(),'share')?'layui-this':''}" ><a href="/jie/share">分享<!--<span class="layui-badge-dot"></span>--></a></li>
+      <li th:classappend="${#strings.contains(#request.getRequestURL(),'discussion')?'layui-this':''}"><a href="/jie/discussion">讨论</a></li>
+      <li th:classappend="${#strings.contains(#request.getRequestURL(),'advice')?'layui-this':''}"><a href="/jie/advice">建议</a></li>
+      <li th:classappend="${#strings.contains(#request.getRequestURL(),'notice')?'layui-this':''}"><a href="/jie/notice">公告</a></li>
+      <li th:classappend="${#strings.contains(#request.getRequestURL(),'condition')?'layui-this':''}"><a href="/jie/condition">动态</a></li>
       <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li> 
       
       <!-- 用户登入后显示 -->

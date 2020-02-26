@@ -234,6 +234,65 @@ public class JieServiceImpl implements JieService {
         return jieDTOS;
     }
 
+    @Override
+    public List<JieDTO> selectQuizJie() {
+        List<JieDTO> jieDTOS = selectJieByCondition(0);
+        return jieDTOS;
+    }
+
+    @Override
+    public List<JieDTO> selectQuizJieWithStatus(String status) {
+        isRightStatus(status);
+        System.out.println(1);
+        List<JieDTO> jieDTOS = selectJieByCondition(0);
+        return jieDTOS;
+    }
+
+    @Override
+    public List<JieDTO> selectShareJie() {
+        List<JieDTO> jieDTOS = selectJieByCondition(99);
+        return jieDTOS;
+    }
+
+    @Override
+    public List<JieDTO> selectDiscussionJie() {
+        List<JieDTO> jieDTOS = selectJieByCondition(100);
+        return jieDTOS;
+    }
+
+    @Override
+    public List<JieDTO> selectAdviceJie() {
+        List<JieDTO> jieDTOS = selectJieByCondition(101);
+        return jieDTOS;
+    }
+
+    @Override
+    public List<JieDTO> selectNoticeJie() {
+        List<JieDTO> jieDTOS = selectJieByCondition(168);
+        return jieDTOS;
+    }
+
+    @Override
+    public List<JieDTO> selectConditionJie() {
+        List<JieDTO> jieDTOS = selectJieByCondition(169);
+        return jieDTOS;
+    }
+
+    List<JieDTO> selectJieByCondition(Integer columnId) {
+        JieExample jieExample = new JieExample();
+        jieExample.createCriteria().andColumnIdEqualTo(columnId);
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
+        return jieDTOS;
+    }
+
+    public void isRightStatus(String status) {
+        if (!status.equals("unsolved") || !status.equals("solved") || !status.equals("sticky")) {
+            return;
+        }
+        throw new RuntimeException();
+    }
+
     public Integer getIntegerType(String type) {
         /*<option value="0">提问</option>
         <option value="99">分享</option>

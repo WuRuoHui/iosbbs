@@ -9,7 +9,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -32,10 +35,52 @@ public class JieController {
         return "jie/edit";
     }
 
-    @RequestMapping("/jie/index")
-    public String jieIndex(@RequestParam(name = "type") String type, Model model) {
-        List<JieDTO> jieListWithType = jieService.selectJieByType(type);
-        model.addAttribute("jieList",jieListWithType);
+    @RequestMapping("/jie/quiz")
+    public String selectQuizJie(Model model) {
+        List<JieDTO> jieDTOS = jieService.selectQuizJie();
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping("/jie/quiz/{status}")
+    public String selectQuizJieWithStatus(@PathVariable(name = "status")String status, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectQuizJieWithStatus(status);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping("/jie/share")
+    public String selectShareJie(Model model) {
+        List<JieDTO> jieDTOS = jieService.selectShareJie();
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping("/jie/discussion")
+    public String selectDiscussionJie(Model model) {
+        List<JieDTO> jieDTOS = jieService.selectDiscussionJie();
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping("/jie/advice")
+    public String selectAdviceJie(Model model) {
+        List<JieDTO> jieDTOS = jieService.selectAdviceJie();
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping("/jie/notice")
+    public String selectNoticeJie(Model model) {
+        List<JieDTO> jieDTOS = jieService.selectNoticeJie();
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping("/jie/condition")
+    public String selectConditionJie(Model model) {
+        List<JieDTO> jieDTOS = jieService.selectConditionJie();
+        model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
 

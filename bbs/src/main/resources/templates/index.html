@@ -11,7 +11,7 @@
 <!-- 引入header -->
 <div th:replace="common/header::bbsHeader"></div>
 <!-- 引入顶部工具条 -->
-<div th:replace="common/column::bbsColumn('index')"></div>
+<div th:replace="common/column::bbsColumn(value = 'index')"></div>
 
 <div class="layui-container">
     <div class="layui-row layui-col-space15">
@@ -90,7 +90,7 @@
                 </ul>
                 <div style="text-align: center">
                     <div class="laypage-main">
-                        <a href="jie/index" class="laypage-next">更多求解</a>
+                        <a href="/jie/index?type=jie" class="laypage-next">更多求解</a>
                     </div>
                 </div>
             </div>

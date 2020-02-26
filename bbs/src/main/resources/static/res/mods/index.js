@@ -5,7 +5,7 @@
  */
  
 
-layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(exports){
+layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util','laypage'], function(exports){
   
   var $ = layui.jquery
   ,layer = layui.layer
@@ -17,7 +17,9 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
   ,device = layui.device()
 
   ,DISABLED = 'layui-btn-disabled';
-  
+
+  var laypage = layui.laypage;
+
   //阻止IE7以下访问
   if(device.ie && device.ie < 8){
     layer.alert('如果您非得使用 IE 浏览器访问Fly社区，那么请使用 IE8+');
@@ -37,16 +39,10 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
     }
   };
 
-  /*$(function () {
-      var type = UrlParm.parm('type');
-      console.log(type)
-      $('ul .layui-this').removeClass('layui-this');
-      $('.'+type).addClass('layui-this');
-  })*/
-  /*$(document).on("click",'li',function(){
-    $('ul .layui-this').removeClass('layui-this');
-    $(this).addClass('layui-this');
-  })*/
+  laypage.render({
+    elem: 'paging' //注意，这里的 test1 是 ID，不用加 # 号
+    ,count: 1000 //数据总数，从服务端得到
+  });
 
   //动态添加友情链接
   $.ajax({

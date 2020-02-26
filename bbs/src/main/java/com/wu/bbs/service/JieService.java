@@ -34,4 +34,18 @@ public interface JieService {
     List<JieDTO> selectAllJieListIfStick();
 
     List<JieDTO> selectJieByType(String type);
+
+    List<JieDTO> selectQuizJie();
+
+    List<JieDTO> selectShareJie();
+
+    List<JieDTO> selectDiscussionJie();
+
+    List<JieDTO> selectAdviceJie();
+
+    List<JieDTO> selectNoticeJie();
+
+    List<JieDTO> selectConditionJie();
+
+    List<JieDTO> selectQuizJieWithStatus(String status);
 }
