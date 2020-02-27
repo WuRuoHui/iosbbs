@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<title>文章列表--layui后台管理模板 2.0</title>
@@ -99,6 +99,6 @@
 	</div>
 </form>
 <script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript" src="newsAdd.js"></script>
+<script type="text/javascript" th:src="@{/js/news/newsAdd.js}"></script>
 </body>
 </html>

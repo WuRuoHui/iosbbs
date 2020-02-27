@@ -9,7 +9,7 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
     //新闻列表
     var tableIns = table.render({
         elem: '#newsList',
-        url : '../../json/newsList.json',
+        url : '/news',
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -18,17 +18,49 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
         id : "newsListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
-            {field: 'newsId', title: 'ID', width:60, align:"center"},
-            {field: 'newsName', title: '文章标题', width:350},
-            {field: 'newsAuthor', title: '发布者', align:'center'},
-            {field: 'newsStatus', title: '发布状态',  align:'center',templet:"#newsStatus"},
-            {field: 'newsLook', title: '浏览权限', align:'center'},
-            {field: 'newsTop', title: '是否置顶', align:'center', templet:function(d){
-                return '<input type="checkbox" name="newsTop" lay-filter="newsTop" lay-skin="switch" lay-text="是|否" '+d.newsTop+'>'
+            {field: 'id', title: 'ID', width:60, align:"center"},
+            {field: 'title', title: '文章标题', width:250},
+            {field: 'newsAuthor', title: '发布者', align:'center',templet:function(d) {
+                return d.creator.name;
             }},
-            {field: 'newsTime', title: '发布时间', align:'center', minWidth:110, templet:function(d){
-                return d.newsTime.substring(0,10);
+            {field: 'columnId', title: '专栏', align:'center', templet:function(d){
+                var column = d.columnId;
+                if (column == '0') {
+                    return '提问';
+                } else if (column == '99'){
+                    return '分享';
+                } else if (column == '100') {
+                    return '讨论';
+                } else if (column == '101') {
+                    return '建议';
+                } else if (column == '168') {
+                    return '公告';
+                } else if (column == '169') {
+                    return '动态';
+                }
             }},
+            {field: 'project', title: '产品', align:'center', minWidth:110, templet:function(d){
+                if (d.project != null)
+                    return d.project.name;
+            }},
+            {field: 'isClose', title: '是否已结', align:'center', templet:function(d){
+                newsClose = d.isClose ? 'checked' :'';
+                return '<input type="checkbox" name="newsClose" lay-filter="newsClose" lay-skin="switch" lay-text="是|否" '+newsClose+'>'
+            }},
+            {field: 'isBoutique', title: '是否加精', align:'center', templet:function(d){
+                newsBoutique = d.isBoutique ? 'checked' :'';
+                return '<input type="checkbox" name="newsBoutique" lay-filter="newsBoutique" lay-skin="switch" lay-text="是|否" '+newsBoutique+'>'
+            }},
+            {field: 'isSticky', title: '是否置顶', align:'center', templet:function(d){
+                newsTop = d.isSticky ? 'checked' :'';
+                return '<input type="checkbox" name="newsTop" lay-filter="newsTop" lay-skin="switch" lay-text="是|否" '+newsTop+'>'
+            }},
+            {field: 'gmtCreate', title: '发布时间', align:'center', minWidth:110, templet:function(d){
+                return formatDate(new Date(d.gmtCreate));
+            }},
+            {field: 'viewCount', title: '查看数', align:'center'},
+            {field: 'likeCount', title: '点赞数', align:'center'},
+            {field: 'commentCount', title: '留言数', align:'center'},
             {title: '操作', width:170, templet:'#newsListBar',fixed:"right",align:"center"}
         ]]
     });
@@ -104,14 +136,28 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
             newsId = [];
         if(data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].newsId);
+                newsId.push(data[i].id);
             }
             layer.confirm('确定删除选中的文章？', {icon: 3, title: '提示信息'}, function (index) {
+                $.ajax({
+                    url: '/news',
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify(newsId),
+                    success: function (res) {
+                        top.layer.msg(res.msg)
+                        if (res.code == 0) {
+                            tableIns.reload();
+                        }
+                        layer.close(index);
+                    }
+                })
                 // $.get("删除文章接口",{
                 //     newsId : newsId  //将需要删除的newsId作为参数传入
                 // },function(data){
-                tableIns.reload();
-                layer.close(index);
+                // tableIns.reload();
+                // layer.close(index);
                 // })
             })
         }else{
@@ -128,12 +174,19 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
             addNews(data);
         } else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此文章？',{icon:3, title:'提示信息'},function(index){
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                    tableIns.reload();
-                    layer.close(index);
-                // })
+                $.ajax({
+                    url: '/news/' + data.id,
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (res) {
+                        top.layer.msg(res.msg)
+                        if (res.code == 0) {
+                            tableIns.reload();
+                        }
+                        layer.close(index);
+                    }
+                })
             });
         } else if(layEvent === 'look'){ //预览
             layer.alert("此功能需要前台展示，实际开发中传入对应的必要参数进行文章内容页面访问")
@@ -141,3 +194,18 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
     });
 
 })
+
+//格式化时间
+function filterTime(val) {
+    if (val < 10) {
+        return "0" + val;
+    } else {
+        return val;
+    }
+}
+
+//日期格式化
+function formatDate(time) {
+    var submitTime = time.getFullYear() + '-' + filterTime(time.getMonth() + 1) + '-' + filterTime(time.getDate()) + ' ' + filterTime(time.getHours()) + ':' + filterTime(time.getMinutes()) + ':' + filterTime(time.getSeconds());
+    return submitTime;
+}

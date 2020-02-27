@@ -217,22 +217,11 @@ layui.define('fly', function (exports) {
                                     // window.location.href='/jie/'+div.data('id');
                                     // location.href='/'
                                 }
-                            }, 2000)
-                        }, 2000);
+                            }, 1000)
+                        }, 1000);
                     }
                 })
             });
-            /*var othis = $(this);
-            console.log(othis.attr('field'));
-            fly.json('/api/jie-set/', {
-                id: div.data('id')
-                , rank: othis.attr('rank')
-                , field: othis.attr('field')
-            }, function (res) {
-                if (res.status === 0) {
-                    location.reload();
-                }
-            });*/
         }
 
         //收藏
