@@ -5,7 +5,7 @@
  */
  
 
-layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util','laypage'], function(exports){
+layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(exports){
   
   var $ = layui.jquery
   ,layer = layui.layer
@@ -17,8 +17,6 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util','laypage'],
   ,device = layui.device()
 
   ,DISABLED = 'layui-btn-disabled';
-
-  var laypage = layui.laypage;
 
   //阻止IE7以下访问
   if(device.ie && device.ie < 8){
@@ -38,11 +36,6 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util','laypage'],
       obj.value = result.join('');
     }
   };
-
-  laypage.render({
-    elem: 'paging' //注意，这里的 test1 是 ID，不用加 # 号
-    ,count: 1000 //数据总数，从服务端得到
-  });
 
   //动态添加友情链接
   $.ajax({

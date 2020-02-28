@@ -1,8 +1,8 @@
 package com.wu.manager.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.LayUIResult;
-import com.wu.manager.enums.CustomizeErrorCode;
 import com.wu.manager.mapper.DeptMapper;
 import com.wu.manager.pojo.Dept;
 import com.wu.manager.pojo.DeptExample;

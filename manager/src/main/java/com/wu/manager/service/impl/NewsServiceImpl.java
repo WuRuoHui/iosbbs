@@ -1,9 +1,10 @@
 package com.wu.manager.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.JieDTO;
 import com.wu.manager.dto.UserSimpleDTO;
-import com.wu.manager.enums.CustomizeErrorCode;
 import com.wu.manager.mapper.GameMapper;
 import com.wu.manager.mapper.JieMapper;
 import com.wu.manager.mapper.UserMapper;
@@ -89,9 +90,75 @@ public class NewsServiceImpl implements NewsService {
             }
             int rows = jieMapper.deleteByPrimaryKey(id);
             if (rows < 1) {
-                return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+                return LayUIResult.build(1, CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
             }
         }
         return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+    }
+
+    @Override
+    public LayUIResult selectRecentNews() {
+        PageHelper.startPage(1,5);
+        JieExample jieExample = new JieExample();
+        jieExample.setOrderByClause("gmt_create DESC");
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        return LayUIResult.build(0,CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),jies);
+    }
+
+    @Override
+    public LayUIResult updateStickyById(Integer id) {
+        if (id == null ){
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        Jie jie = jieMapper.selectByPrimaryKey(id);
+        if (jie == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        Jie jieNew = new Jie();
+        jieNew.setId(id);
+        jieNew.setIsSticky(!jie.getIsSticky());
+        int rows = jieMapper.updateByPrimaryKeySelective(jieNew);
+        if (rows > 0) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
+    @Override
+    public LayUIResult updateBoutiqueById(Integer id) {
+        if (id == null ){
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        Jie jie = jieMapper.selectByPrimaryKey(id);
+        if (jie == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        Jie jieNew = new Jie();
+        jieNew.setId(id);
+        jieNew.setIsBoutique(!jie.getIsBoutique());
+        int rows = jieMapper.updateByPrimaryKeySelective(jieNew);
+        if (rows > 0) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
+    @Override
+    public LayUIResult updateClosedById(Integer id) {
+        if (id == null ){
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        Jie jie = jieMapper.selectByPrimaryKey(id);
+        if (jie == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        Jie jieNew = new Jie();
+        jieNew.setId(id);
+        jieNew.setIsClosed(!jie.getIsClosed());
+        int rows = jieMapper.updateByPrimaryKeySelective(jieNew);
+        if (rows > 0) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
     }
 }

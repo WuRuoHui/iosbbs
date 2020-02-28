@@ -45,15 +45,15 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
             }},
             {field: 'isClose', title: '是否已结', align:'center', templet:function(d){
                 newsClose = d.isClose ? 'checked' :'';
-                return '<input type="checkbox" name="newsClose" lay-filter="newsClose" lay-skin="switch" lay-text="是|否" '+newsClose+'>'
+                return '<input type="checkbox" data-id="'+d.id+'" name="newsClose" lay-filter="newsClose" lay-skin="switch" lay-text="是|否" '+newsClose+'>'
             }},
             {field: 'isBoutique', title: '是否加精', align:'center', templet:function(d){
                 newsBoutique = d.isBoutique ? 'checked' :'';
-                return '<input type="checkbox" name="newsBoutique" lay-filter="newsBoutique" lay-skin="switch" lay-text="是|否" '+newsBoutique+'>'
+                return '<input type="checkbox" data-id="'+d.id+'" name="newsBoutique" lay-filter="newsBoutique" lay-skin="switch" lay-text="是|否" '+newsBoutique+'>'
             }},
             {field: 'isSticky', title: '是否置顶', align:'center', templet:function(d){
                 newsTop = d.isSticky ? 'checked' :'';
-                return '<input type="checkbox" name="newsTop" lay-filter="newsTop" lay-skin="switch" lay-text="是|否" '+newsTop+'>'
+                return '<input type="checkbox" data-id="'+d.id+'" name="newsTop" lay-filter="newsTop" lay-skin="switch" lay-text="是|否" '+newsTop+'>'
             }},
             {field: 'gmtCreate', title: '发布时间', align:'center', minWidth:110, templet:function(d){
                 return formatDate(new Date(d.gmtCreate));
@@ -68,15 +68,59 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
     //是否置顶
     form.on('switch(newsTop)', function(data){
         var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
-        setTimeout(function(){
-            layer.close(index);
-            if(data.elem.checked){
-                layer.msg("置顶成功！");
-            }else{
-                layer.msg("取消置顶成功！");
+        // 实际使用时的提交信息
+        $.ajax({
+            url: '/news/sticky/'+$(data.elem).data('id'),
+            type: 'PATCH',
+            dataType: 'json',
+            success: function (res) {
+                updateNewsRenderCheckbox(res,index,data);
             }
-        },500);
+        })
+        return false;
     })
+
+    //是否加精
+    form.on('switch(newsBoutique)', function(data){
+        var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
+        // 实际使用时的提交信息
+        $.ajax({
+            url: '/news/boutique/'+$(data.elem).data('id'),
+            type: 'PATCH',
+            dataType: 'json',
+            success: function (res) {
+                updateNewsRenderCheckbox(res,index,data);
+            }
+        })
+        return false;
+    })
+
+    //是否已结
+    form.on('switch(newsClose)', function(data){
+        var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
+        // 实际使用时的提交信息
+        $.ajax({
+            url: '/news/closed/'+$(data.elem).data('id'),
+            type: 'PATCH',
+            dataType: 'json',
+            success: function (res) {
+                updateNewsRenderCheckbox(res,index,data);
+            }
+        })
+        return false;
+    })
+
+    function updateNewsRenderCheckbox(res,index,data) {
+        setTimeout(function () {
+            top.layer.close(index);
+            top.layer.msg(res.msg);
+            if (res.code == '0') {
+            } else {
+                $(data.elem).prop('checked',!$(data.elem).prop('checked'))
+                form.render('checkbox');
+            }
+        }, 1000);
+    }
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
@@ -153,12 +197,6 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
                         layer.close(index);
                     }
                 })
-                // $.get("删除文章接口",{
-                //     newsId : newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                // tableIns.reload();
-                // layer.close(index);
-                // })
             })
         }else{
             layer.msg("请选择需要删除的文章");
@@ -171,7 +209,7 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
             data = obj.data;
 
         if(layEvent === 'edit'){ //编辑
-            addNews(data);
+            window.open('http://localhost:8080/jie/'+data.id,'_blank')
         } else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此文章？',{icon:3, title:'提示信息'},function(index){
                 $.ajax({
@@ -189,7 +227,8 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
                 })
             });
         } else if(layEvent === 'look'){ //预览
-            layer.alert("此功能需要前台展示，实际开发中传入对应的必要参数进行文章内容页面访问")
+            window.open('http://localhost:8080/jie/'+data.id,'_blank')
+            // layer.alert("此功能需要前台展示，实际开发中传入对应的必要参数进行文章内容页面访问")
         }
     });
 

@@ -1,8 +1,8 @@
 package com.wu.manager.service.impl;
 
+import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
-import com.wu.manager.enums.CustomizeErrorCode;
 import com.wu.manager.mapper.FriendlyLinkMapper;
 import com.wu.manager.mapper.PassagewayMapper;
 import com.wu.manager.pojo.FriendlyLink;
@@ -162,7 +162,7 @@ public class SystemSettingServiceImpl implements SystemSettingService {
         String passageway_from_redis = stringRedisService.getString(BBS_PASSAGEWAY);
         if (!StringUtils.isEmpty(passageway_from_redis)) {
             List<Passageway> passageways = JsonUtils.jsonToList(passageway_from_redis, Passageway.class);
-            return LayUIResult.build(0,passageways.size(),CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),passageways);
+            return LayUIResult.build(0,passageways.size(), CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),passageways);
         }
         List<Passageway> passageways = passagewayMapper.selectByExample(new PassagewayExample());
         if (passageways != null && passageways.size() > 0) {

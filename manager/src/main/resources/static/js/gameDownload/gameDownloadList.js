@@ -40,7 +40,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     }
                 }
             },
-            {title: '操作', minWidth: 150, toolbar: '#gameDownloadListBar', fixed: "right", align: "center"}
+            {title: '操作',width :150,toolbar: '#gameDownloadListBar', fixed: "right", align: "center"}
         ]], done: function () {
             $("[data-field='id']").css('display', 'none');
         }

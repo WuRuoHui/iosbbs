@@ -78,12 +78,12 @@ layui.use(['form', 'element', 'layer', 'jquery'], function () {
     }
 
     //最新文章列表
-    $.get("../json/newsList.json", function (data) {
+    $.get("/news/recent", function (data) {
         var hotNewsHtml = '';
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < data.data.length; i++) {
             hotNewsHtml += '<tr>'
-                + '<td align="left"><a href="javascript:;"> ' + data.data[i].newsName + '</a></td>'
-                + '<td>' + data.data[i].newsTime.substring(0, 10) + '</td>'
+                + '<td align="left"><a href="javascript:;"> ' + data.data[i].title + '</a></td>'
+                + '<td>' + formatDate(new Date(data.data[i].gmtCreate)) + '</td>'
                 + '</tr>';
         }
         $(".hot_news").html(hotNewsHtml);
@@ -101,3 +101,18 @@ layui.use(['form', 'element', 'layer', 'jquery'], function () {
     })
 
 })
+
+//格式化时间
+function filterTime(val) {
+    if (val < 10) {
+        return "0" + val;
+    } else {
+        return val;
+    }
+}
+
+//日期格式化
+function formatDate(time) {
+    var submitTime = time.getFullYear() + '-' + filterTime(time.getMonth() + 1) + '-' + filterTime(time.getDate());
+    return submitTime;
+}

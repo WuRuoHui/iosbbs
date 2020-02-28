@@ -98,10 +98,15 @@
   </div>
 </div>
 
+
+<script th:inline="javascript">
+  var jList = [[${jieList}]];
+
+</script>
 <div th:replace="common/footer::bbsFooter"></div>
 
 <script th:src="@{/res/layui/layui.js}"></script>
-<!--<script th:src="@{/res/js/column.js}"></script>-->
+<script th:src="@{/res/js/column.js}"></script>
 <script th:src="@{/res/mods/getUrlParam.js}"></script>
 <script>
 layui.cache.page = 'jie';

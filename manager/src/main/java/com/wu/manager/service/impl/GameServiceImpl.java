@@ -1,12 +1,12 @@
 package com.wu.manager.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.GameContactDTO;
 import com.wu.manager.dto.GameDTO;
 import com.wu.manager.dto.GameDownloadDTO;
-import com.wu.manager.enums.CustomizeErrorCode;
 import com.wu.manager.mapper.*;
 import com.wu.manager.pojo.*;
 import com.wu.manager.service.GameService;

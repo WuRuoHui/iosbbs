@@ -32,6 +32,13 @@ public class NewsController {
         return layUIResult;
     }
 
+    @RequestMapping(value = "/news/recent",method = RequestMethod.GET)
+    @ResponseBody
+    public LayUIResult selectRecentNews() {
+        LayUIResult layUIResult = newsService.selectRecentNews();
+        return layUIResult;
+    }
+
     @RequestMapping(value = "/news/{id}",method = RequestMethod.DELETE)
     @ResponseBody
     public LayUIResult deleteNewsById(@PathVariable(name = "id")Integer id) {
@@ -43,6 +50,39 @@ public class NewsController {
     @ResponseBody
     public LayUIResult deleteNewsByIds(@RequestBody List<Integer> ids) {
         LayUIResult layUIResult = newsService.deleteNewsByIds(ids);
+        return layUIResult;
+    }
+
+    /**
+     * @Description: 更新置顶状态
+     * @Param: [id]
+     * @return: com.wu.common.utils.LayUIResult
+     * @Date: 2020/2/28
+     */
+    @RequestMapping(value = "/news/sticky/{id}",method = RequestMethod.PATCH)
+    @ResponseBody
+    public LayUIResult updateStickyById(@PathVariable(name = "id") Integer id) {
+        LayUIResult layUIResult = newsService.updateStickyById(id);
+        return layUIResult;
+    }
+
+    /**
+     * @Description: 更新jie是否加精
+     * @Param: [id]
+     * @return: com.wu.common.utils.LayUIResult
+     * @Date: 2020/2/28
+     */
+    @RequestMapping(value = "/news/boutique/{id}",method = RequestMethod.PATCH)
+    @ResponseBody
+    public LayUIResult updateBoutiqueById(@PathVariable (name = "id") Integer id) {
+        LayUIResult layUIResult = newsService.updateBoutiqueById(id);
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/news/closed/{id}",method = RequestMethod.PATCH)
+    @ResponseBody
+    public LayUIResult updateClosedById(@PathVariable (name = "id") Integer id) {
+        LayUIResult layUIResult = newsService.updateClosedById(id);
         return layUIResult;
     }
 }

@@ -18,4 +18,12 @@ public interface NewsService {
     LayUIResult deleteNewsById(Integer id);
 
     LayUIResult deleteNewsByIds(List<Integer> ids);
+
+    LayUIResult selectRecentNews();
+
+    LayUIResult updateStickyById(Integer id);
+
+    LayUIResult updateBoutiqueById(Integer id);
+
+    LayUIResult updateClosedById(Integer id);
 }
