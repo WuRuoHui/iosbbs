@@ -1,5 +1,6 @@
 package com.wu.bbs.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.wu.bbs.DTO.JieDTO;
 import com.wu.bbs.DTO.UserSimpleDTO;
 import com.wu.bbs.mapper.JieMapper;
@@ -233,16 +234,29 @@ public class JieServiceImpl implements JieService {
         return jieDTOS;
     }
 
+
     @Override
-    public List<JieDTO> selectQuizJie() {
-        List<JieDTO> jieDTOS = selectJieByCondition(0);
+    public List<JieDTO> selectQuizJie(Integer curr) {
+        List<JieDTO> jieDTOS = selectJieByCondition(0,curr);
         return jieDTOS;
     }
 
     @Override
-    public List<JieDTO> selectQuizJieWithStatus(String status) {
+    public Integer selectQuizJieCount() {
+        Integer jieCount = countJieByColumnId(0);
+        return jieCount;
+    }
+
+    @Override
+    public Integer selectQuizJieWithStatusCount(String status) {
+        Integer jCount = countJieByColumnIdAndStatus(0, status);
+        return jCount;
+    }
+
+    @Override
+    public List<JieDTO> selectQuizJieWithStatus(String status,Integer curr) {
         isRightStatus(status);
-        List<JieDTO> jieDTOS = selectJieByCondition(0,status);
+        List<JieDTO> jieDTOS = selectJieByCondition(0,status,curr);
         return jieDTOS;
     }
 
@@ -267,7 +281,6 @@ public class JieServiceImpl implements JieService {
     @Override
     public List<JieDTO> selectDiscussionJieWithStatus(String status) {
         List<JieDTO> jieDTOS = selectJieByCondition(100,status);
-        System.out.println(jieDTOS);
         return jieDTOS;
     }
 
@@ -315,7 +328,69 @@ public class JieServiceImpl implements JieService {
         return jieDTOS;
     }
 
+    List<JieDTO> selectJieByCondition(Integer columnId,Integer curr) {
+        PageHelper.startPage(curr,10);
+        JieExample jieExample = new JieExample();
+        jieExample.createCriteria().andColumnIdEqualTo(columnId);
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
+        return jieDTOS;
+    }
+
+    /**
+     * @Description: 根据columnId计算总记录数
+     * @Param: [columnId]
+     * @return: java.lang.Integer
+     * @Date: 2020/3/1
+     */
+    Integer countJieByColumnId(Integer columnId) {
+        JieExample jieExample = new JieExample();
+        jieExample.createCriteria()
+                .andColumnIdEqualTo(columnId);
+        long count = jieMapper.countByExample(jieExample);
+        return (int)count;
+    }
+
+    Integer countJieByColumnIdAndStatus(Integer columnId,String status) {
+        JieExample jieExample = new JieExample();
+        JieExample.Criteria criteria = jieExample.createCriteria()
+                .andColumnIdEqualTo(columnId);
+        if (!StringUtils.isEmpty(status)) {
+            if (status.equals("unsolved")) {
+                criteria.andIsClosedEqualTo(false);
+            }
+            if (status.equals("solved")) {
+                criteria.andIsClosedEqualTo(true);
+            }
+            if (status.equals("boutique")) {
+                criteria.andIsBoutiqueEqualTo(true);
+            }
+        }
+        long count = jieMapper.countByExample(jieExample);
+        return (int)count;
+    }
+
     List<JieDTO> selectJieByCondition(Integer columnId,String status) {
+        JieExample jieExample = new JieExample();
+        JieExample.Criteria criteria = jieExample.createCriteria().andColumnIdEqualTo(columnId);
+        if (!StringUtils.isEmpty(status)) {
+            if (status.equals("unsolved")) {
+                criteria.andIsClosedEqualTo(false);
+            }
+            if (status.equals("solved")) {
+                criteria.andIsClosedEqualTo(true);
+            }
+            if (status.equals("boutique")) {
+                criteria.andIsBoutiqueEqualTo(true);
+            }
+        }
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
+        return jieDTOS;
+    }
+
+    List<JieDTO> selectJieByCondition(Integer columnId,String status,Integer curr) {
+        PageHelper.startPage(curr,10);
         JieExample jieExample = new JieExample();
         JieExample.Criteria criteria = jieExample.createCriteria().andColumnIdEqualTo(columnId);
         if (!StringUtils.isEmpty(status)) {

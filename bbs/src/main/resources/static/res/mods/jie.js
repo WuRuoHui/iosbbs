@@ -155,7 +155,7 @@ layui.define('fly', function (exports) {
     // var token = $("meta[name='_csrf']").attr("content")
     // var header = $("meta[name='_csrf_header']").attr("content")
 
-    console.log(window.location.pathname)
+    // console.log(window.location.pathname)
 
     //求解管理
     gather.jieAdmin = {
@@ -356,10 +356,10 @@ layui.define('fly', function (exports) {
 
 
     //定位分页
-    if (/\/page\//.test(location.href) && !location.hash) {
+    /*if (/\/page\//.test(location.href) && !location.hash) {
         var replyTop = $('#flyReply').offset().top - 80;
         $('html,body').scrollTop(replyTop);
-    }
+    }*/
 
     exports('jie', null);
 });

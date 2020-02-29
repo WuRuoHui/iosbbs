@@ -37,15 +37,40 @@ public class JieController {
 
     @RequestMapping("/jie/quiz")
     public String selectQuizJie(Model model) {
-        List<JieDTO> jieDTOS = jieService.selectQuizJie();
+        List<JieDTO> jieDTOS = jieService.selectQuizJie(1);
+        Integer jieCount = jieService.selectQuizJieCount();
         model.addAttribute("jieList",jieDTOS);
+        model.addAttribute("jieCount",jieCount);
         return "jie/index";
+    }
+
+    @RequestMapping("/jie/quiz/page/{curr}")
+    public String selectQuizJieWithCurr(@PathVariable (name = "curr") Integer curr,Model model) {
+        List<JieDTO> jieDTOS = jieService.selectQuizJie(curr);
+        Integer jieCount = jieService.selectQuizJieCount();
+        model.addAttribute("jieList",jieDTOS);
+        model.addAttribute("jieCount",jieCount);
+        return "/jie/index";
     }
 
     @RequestMapping("/jie/quiz/{status}")
     public String selectQuizJieWithStatus(@PathVariable(name = "status")String status, Model model) {
-        List<JieDTO> jieDTOS = jieService.selectQuizJieWithStatus(status);
+        List<JieDTO> jieDTOS = jieService.selectQuizJieWithStatus(status,1);
+        Integer jieCount = jieService.selectQuizJieWithStatusCount(status);
         model.addAttribute("jieList",jieDTOS);
+        model.addAttribute("jieCount",jieCount);
+        return "jie/index";
+    }
+
+    @RequestMapping("/jie/quiz/{status}/page/{curr}")
+    public String selectQuizJieWithStatus(
+            @PathVariable(name = "status")String status,
+            @PathVariable(name="curr") Integer curr,
+            Model model) {
+        List<JieDTO> jieDTOS = jieService.selectQuizJieWithStatus(status,curr);
+        Integer jieCount = jieService.selectQuizJieWithStatusCount(status);
+        model.addAttribute("jieList",jieDTOS);
+        model.addAttribute("jieCount",jieCount);
         return "jie/index";
     }
 

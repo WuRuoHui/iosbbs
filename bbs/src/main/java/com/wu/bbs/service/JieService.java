@@ -35,7 +35,7 @@ public interface JieService {
 
     List<JieDTO> selectJieByType(String type);
 
-    List<JieDTO> selectQuizJie();
+    List<JieDTO> selectQuizJie(Integer curr);
 
     List<JieDTO> selectShareJie();
 
@@ -47,7 +47,7 @@ public interface JieService {
 
     List<JieDTO> selectConditionJie();
 
-    List<JieDTO> selectQuizJieWithStatus(String status);
+    List<JieDTO> selectQuizJieWithStatus(String status,Integer curr);
 
     List<JieDTO> selectShareJieWithStatus(String status);
 
@@ -58,4 +58,8 @@ public interface JieService {
     List<JieDTO> selectNoticeJieWithStatus(String status);
 
     List<JieDTO> selectConditionJieWithStatus(String status);
+
+    Integer selectQuizJieCount();
+
+    Integer selectQuizJieWithStatusCount(String status);
 }

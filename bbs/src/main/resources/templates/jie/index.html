@@ -99,8 +99,8 @@
 </div>
 
 
-<script th:inline="javascript">
-  var jList = [[${jieList}]];
+<script th:if="${jieCount != null}" th:inline="javascript">
+  var jCount = [[${jieCount}]];
 
 </script>
 <div th:replace="common/footer::bbsFooter"></div>
@@ -119,7 +119,7 @@ layui.cache.user = {
 };
 layui.config({
   version: "3.0.0"
-  ,base: '../../res/mods/'
+  ,base: '/res/mods/'
 }).extend({
   fly: 'index'
 }).use('fly');
