@@ -22,12 +22,19 @@ layui.define(['laypage'], function (exports) {
                     var winUrl = window.location.href;
                     if (window.location.pathname.indexOf('page') != -1){
                         if (obj.curr == '1') {
-                            window.location.href = winUrl.substring(0,winUrl.indexOf('page')-1)
+                            if (winUrl.indexOf('all') != -1) {
+                                window.location.href = winUrl.substring(0,winUrl.indexOf('page')+5)+obj.curr
+                            } else {
+                                window.location.href = winUrl.substring(0,winUrl.indexOf('page')-1)
+                            }
                         } else {
-                            window.location.href = winUrl.substring(0,winUrl.indexOf('page')+4)
+                            if (winUrl.indexOf('all') != -1) {
+                                window.location.href = winUrl.substring(0,winUrl.indexOf('page')+5)+obj.curr
+                            } else {
+                                window.location.href = winUrl.substring(0,winUrl.indexOf('page')+4)
+                            }
                         }
                     }else {
-                        console.log('page')
                         window.location.href = window.location.pathname+'/page/'+obj.curr
                     }
                     laypage.render({

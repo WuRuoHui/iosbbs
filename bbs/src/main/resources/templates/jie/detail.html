@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
-  <title>Fly Template v3.0，基于 layui 的极简社区页面模版</title>
+  <title th:text="${jie.title}"></title>
   <meta name="_csrf" th:content="${_csrf.token}"/>
   <meta name="_csrf_header" th:content="${_csrf.headerName}">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">

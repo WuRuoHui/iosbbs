@@ -15,6 +15,7 @@ import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.LayUIResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -38,6 +39,10 @@ public class JieServiceImpl implements JieService {
     private UserMapper userMapper;
     @Autowired
     private UserGradeMapper userGradeMapper;
+    @Value("${BBS_INDEX_JIE_STICKY_SIZE}")
+    private Integer BBS_INDEX_JIE_STICKY_SIZE;
+    @Value("${BBS_INDEX_JIE_NOT_STICKY_SIZE}")
+    private Integer BBS_INDEX_JIE_NOT_STICKY_SIZE;
 
     @Override
     public LayUIResult insertOrUpdate(Jie jie, Authentication authentication) {
@@ -56,6 +61,7 @@ public class JieServiceImpl implements JieService {
     @Override
     public List<JieDTO> selectAllJieListWithoutStick() {
 //        List<JieDTO> jieDTOS = new ArrayList<>();
+        PageHelper.startPage(1,BBS_INDEX_JIE_NOT_STICKY_SIZE);
         JieExample jieExample = new JieExample();
         jieExample.createCriteria()
                 .andIsStickyEqualTo(false);
@@ -216,107 +222,12 @@ public class JieServiceImpl implements JieService {
 
     @Override
     public List<JieDTO> selectAllJieListIfStick() {
+        PageHelper.startPage(1,BBS_INDEX_JIE_STICKY_SIZE);
         JieExample jieExample = new JieExample();
         jieExample.createCriteria()
                 .andIsStickyEqualTo(true);
         jieExample.setOrderByClause("gmt_create DESC");
         List<JieDTO> jieDTOS = selectJieList(jieExample);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectJieByType(String type) {
-        Integer integerType = getIntegerType(type);
-        JieExample jieExample = new JieExample();
-        jieExample.createCriteria().andColumnIdEqualTo(integerType);
-        List<Jie> jies = jieMapper.selectByExample(jieExample);
-        List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
-        return jieDTOS;
-    }
-
-
-    @Override
-    public List<JieDTO> selectQuizJie(Integer curr) {
-        List<JieDTO> jieDTOS = selectJieByCondition(0,curr);
-        return jieDTOS;
-    }
-
-    @Override
-    public Integer selectQuizJieCount() {
-        Integer jieCount = countJieByColumnId(0);
-        return jieCount;
-    }
-
-    @Override
-    public Integer selectQuizJieWithStatusCount(String status) {
-        Integer jCount = countJieByColumnIdAndStatus(0, status);
-        return jCount;
-    }
-
-    @Override
-    public List<JieDTO> selectQuizJieWithStatus(String status,Integer curr) {
-        isRightStatus(status);
-        List<JieDTO> jieDTOS = selectJieByCondition(0,status,curr);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectShareJie() {
-        List<JieDTO> jieDTOS = selectJieByCondition(99);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectShareJieWithStatus(String status) {
-        List<JieDTO> jieDTOS = selectJieByCondition(99,status);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectDiscussionJie() {
-        List<JieDTO> jieDTOS = selectJieByCondition(100);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectDiscussionJieWithStatus(String status) {
-        List<JieDTO> jieDTOS = selectJieByCondition(100,status);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectAdviceJie() {
-        List<JieDTO> jieDTOS = selectJieByCondition(101);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectAdviceJieWithStatus(String status) {
-        List<JieDTO> jieDTOS = selectJieByCondition(101,status);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectNoticeJie() {
-        List<JieDTO> jieDTOS = selectJieByCondition(168);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectNoticeJieWithStatus(String status) {
-        List<JieDTO> jieDTOS = selectJieByCondition(168,status);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectConditionJie() {
-        List<JieDTO> jieDTOS = selectJieByCondition(169);
-        return jieDTOS;
-    }
-
-    @Override
-    public List<JieDTO> selectConditionJieWithStatus(String status) {
-        List<JieDTO> jieDTOS = selectJieByCondition(169,status);
         return jieDTOS;
     }
 
@@ -328,9 +239,16 @@ public class JieServiceImpl implements JieService {
         return jieDTOS;
     }
 
+    /**
+     * @Description: 根据columnId和当前页码查询jie集合
+     * @Param: [columnId, curr]
+     * @return: java.util.List<com.wu.bbs.DTO.JieDTO>
+     * @Date: 2020/3/1
+     */
     List<JieDTO> selectJieByCondition(Integer columnId,Integer curr) {
         PageHelper.startPage(curr,10);
         JieExample jieExample = new JieExample();
+        jieExample.setOrderByClause("gmt_create DESC");
         jieExample.createCriteria().andColumnIdEqualTo(columnId);
         List<Jie> jies = jieMapper.selectByExample(jieExample);
         List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
@@ -343,7 +261,8 @@ public class JieServiceImpl implements JieService {
      * @return: java.lang.Integer
      * @Date: 2020/3/1
      */
-    Integer countJieByColumnId(Integer columnId) {
+    @Override
+    public Integer countJieByColumnId(Integer columnId) {
         JieExample jieExample = new JieExample();
         jieExample.createCriteria()
                 .andColumnIdEqualTo(columnId);
@@ -351,7 +270,73 @@ public class JieServiceImpl implements JieService {
         return (int)count;
     }
 
-    Integer countJieByColumnIdAndStatus(Integer columnId,String status) {
+    @Override
+    public List<JieDTO> selectJieByCurr(Integer curr) {
+        PageHelper.startPage(curr,10);
+        JieExample jieExample = new JieExample();
+        jieExample.setOrderByClause("gmt_create DESC");
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
+        return jieDTOS;
+    }
+
+    @Override
+    public Integer countJie() {
+        long count = jieMapper.countByExample(new JieExample());
+        return (int)count;
+    }
+
+    @Override
+    public List<JieDTO> selectJieByStatusAndCurr(String status, Integer curr) {
+        isRightStatus(status);
+        PageHelper.startPage(curr,10);
+        JieExample jieExample = new JieExample();
+        JieExample.Criteria criteria = jieExample.createCriteria();
+        if (!StringUtils.isEmpty(status)) {
+            if (status.equals("unsolved")) {
+                criteria.andIsClosedEqualTo(false);
+            }
+            if (status.equals("solved")) {
+                criteria.andIsClosedEqualTo(true);
+            }
+            if (status.equals("boutique")) {
+                criteria.andIsBoutiqueEqualTo(true);
+            }
+        }
+        jieExample.setOrderByClause("gmt_create DESC");
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
+        return jieDTOS;
+    }
+
+    @Override
+    public Integer countJieByStatus(String status) {
+        isRightStatus(status);
+        JieExample jieExample = new JieExample();
+        JieExample.Criteria criteria = jieExample.createCriteria();
+        if (!StringUtils.isEmpty(status)) {
+            if (status.equals("unsolved")) {
+                criteria.andIsClosedEqualTo(false);
+            }
+            if (status.equals("solved")) {
+                criteria.andIsClosedEqualTo(true);
+            }
+            if (status.equals("boutique")) {
+                criteria.andIsBoutiqueEqualTo(true);
+            }
+        }
+        long count = jieMapper.countByExample(jieExample);
+        return (int)count;
+    }
+
+    /**
+     * @Description: 根据columnId和status查询对应的总记录数
+     * @Param: [columnId, status]
+     * @return: java.lang.Integer
+     * @Date: 2020/3/1
+     */
+    @Override
+    public Integer countJieByColumnIdAndStatus(Integer columnId, String status) {
         JieExample jieExample = new JieExample();
         JieExample.Criteria criteria = jieExample.createCriteria()
                 .andColumnIdEqualTo(columnId);
@@ -368,6 +353,19 @@ public class JieServiceImpl implements JieService {
         }
         long count = jieMapper.countByExample(jieExample);
         return (int)count;
+    }
+
+    @Override
+    public List<JieDTO> selectJieByColumnIdAndCurr(Integer columnId, Integer curr) {
+        List<JieDTO> jieDTOS = selectJieByCondition(columnId, curr);
+        return jieDTOS;
+    }
+
+    @Override
+    public List<JieDTO> selectJieByColumnIdAndStatusAndCurr(Integer columnId, String status, Integer curr) {
+        isRightStatus(status);
+        List<JieDTO> jieDTOS = selectJieByCondition(columnId, status, curr);
+        return jieDTOS;
     }
 
     List<JieDTO> selectJieByCondition(Integer columnId,String status) {
@@ -404,6 +402,7 @@ public class JieServiceImpl implements JieService {
                 criteria.andIsBoutiqueEqualTo(true);
             }
         }
+        jieExample.setOrderByClause("gmt_create DESC");
         List<Jie> jies = jieMapper.selectByExample(jieExample);
         List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
         return jieDTOS;

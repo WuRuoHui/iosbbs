@@ -33,33 +33,19 @@ public interface JieService {
 
     List<JieDTO> selectAllJieListIfStick();
 
-    List<JieDTO> selectJieByType(String type);
+    Integer countJieByColumnIdAndStatus(Integer columnId, String status);
 
-    List<JieDTO> selectQuizJie(Integer curr);
+    List<JieDTO> selectJieByColumnIdAndCurr(Integer columnId, Integer curr);
 
-    List<JieDTO> selectShareJie();
+    List<JieDTO> selectJieByColumnIdAndStatusAndCurr(Integer columnId, String status ,Integer curr);
 
-    List<JieDTO> selectDiscussionJie();
+    Integer countJieByColumnId(Integer columnId);
 
-    List<JieDTO> selectAdviceJie();
+    List<JieDTO> selectJieByCurr(Integer curr);
 
-    List<JieDTO> selectNoticeJie();
+    Integer countJie();
 
-    List<JieDTO> selectConditionJie();
+    List<JieDTO> selectJieByStatusAndCurr(String status, Integer curr);
 
-    List<JieDTO> selectQuizJieWithStatus(String status,Integer curr);
-
-    List<JieDTO> selectShareJieWithStatus(String status);
-
-    List<JieDTO> selectDiscussionJieWithStatus(String status);
-
-    List<JieDTO> selectAdviceJieWithStatus(String status);
-
-    List<JieDTO> selectNoticeJieWithStatus(String status);
-
-    List<JieDTO> selectConditionJieWithStatus(String status);
-
-    Integer selectQuizJieCount();
-
-    Integer selectQuizJieWithStatusCount(String status);
+    Integer countJieByStatus(String status);
 }

@@ -3,6 +3,7 @@ package com.wu.bbs.controller;
 import com.wu.bbs.DTO.JieDTO;
 import com.wu.bbs.pojo.Jie;
 import com.wu.bbs.service.JieService;
+import com.wu.common.enums.impl.CustomizeJieTypeCode;
 import com.wu.common.utils.LayUIResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,111 +36,236 @@ public class JieController {
         return "jie/edit";
     }
 
-    @RequestMapping("/jie/quiz")
+    @RequestMapping(value = "/jie/quiz",method = RequestMethod.GET)
     public String selectQuizJie(Model model) {
-        List<JieDTO> jieDTOS = jieService.selectQuizJie(1);
-        Integer jieCount = jieService.selectQuizJieCount();
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_JIE.getCode(),1);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_JIE.getCode());
         model.addAttribute("jieList",jieDTOS);
         model.addAttribute("jieCount",jieCount);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/quiz/page/{curr}")
+    @RequestMapping(value = "/jie/quiz/page/{curr}",method = RequestMethod.GET)
     public String selectQuizJieWithCurr(@PathVariable (name = "curr") Integer curr,Model model) {
-        List<JieDTO> jieDTOS = jieService.selectQuizJie(curr);
-        Integer jieCount = jieService.selectQuizJieCount();
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_JIE.getCode(),curr);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_JIE.getCode());
         model.addAttribute("jieList",jieDTOS);
         model.addAttribute("jieCount",jieCount);
         return "/jie/index";
     }
 
-    @RequestMapping("/jie/quiz/{status}")
+    @RequestMapping(value = "/jie/quiz/{status}",method = RequestMethod.GET)
     public String selectQuizJieWithStatus(@PathVariable(name = "status")String status, Model model) {
-        List<JieDTO> jieDTOS = jieService.selectQuizJieWithStatus(status,1);
-        Integer jieCount = jieService.selectQuizJieWithStatusCount(status);
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_JIE.getCode(),status,1);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_JIE.getCode(),status);
         model.addAttribute("jieList",jieDTOS);
         model.addAttribute("jieCount",jieCount);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/quiz/{status}/page/{curr}")
+    @RequestMapping(value = "/jie/quiz/{status}/page/{curr}",method = RequestMethod.GET)
     public String selectQuizJieWithStatus(
             @PathVariable(name = "status")String status,
             @PathVariable(name="curr") Integer curr,
             Model model) {
-        List<JieDTO> jieDTOS = jieService.selectQuizJieWithStatus(status,curr);
-        Integer jieCount = jieService.selectQuizJieWithStatusCount(status);
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_JIE.getCode(),status,curr);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_JIE.getCode(),status);
         model.addAttribute("jieList",jieDTOS);
         model.addAttribute("jieCount",jieCount);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/share")
+    @RequestMapping(value = "/jie/share",method = RequestMethod.GET)
     public String selectShareJie(Model model) {
-        List<JieDTO> jieDTOS = jieService.selectShareJie();
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_SHARE.getCode(),1);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_SHARE.getCode());
         model.addAttribute("jieList",jieDTOS);
+        model.addAttribute("jieCount",jieCount);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/share/{status}")
+    @RequestMapping(value = "/jie/share/page/{curr}",method = RequestMethod.GET)
+    public String selectShareJieWithCurr(@PathVariable(name = "curr") Integer curr, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_SHARE.getCode(),curr);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_SHARE.getCode());
+        model.addAttribute("jieList",jieDTOS);
+        model.addAttribute("jieCount",jieCount);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/share/{status}",method = RequestMethod.GET)
     public String selectShareJieWithStatus(@PathVariable(name = "status")String status, Model model) {
-        List<JieDTO> jieDTOS = jieService.selectShareJieWithStatus(status);
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_SHARE.getCode(),status,1);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_SHARE.getCode(),status);
+        model.addAttribute("jieCount",jieCount);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/discussion")
+    @RequestMapping(value = "/jie/share/{status}/page/{curr}",method = RequestMethod.GET)
+    public String selectShareJieWithStatus(
+            @PathVariable(name = "status")String status,
+            @PathVariable(name="curr")Integer curr,
+            Model model) {
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_SHARE.getCode(),status,curr);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_SHARE.getCode(),status);
+        model.addAttribute("jieCount",jieCount);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/discussion",method = RequestMethod.GET)
     public String selectDiscussionJie(Model model) {
-        List<JieDTO> jieDTOS = jieService.selectDiscussionJie();
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_DISCUSSION.getCode(),1);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_DISCUSSION.getCode());
+        model.addAttribute("jieCount",jieCount);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/discussion/{status}")
+    @RequestMapping(value = "/jie/discussion/page/{curr}",method = RequestMethod.GET)
+    public String selectDiscussionJie(@PathVariable(name = "curr") Integer curr, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_DISCUSSION.getCode(),curr);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_DISCUSSION.getCode());
+        model.addAttribute("jieCount",jieCount);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/discussion/{status}",method = RequestMethod.GET)
     public String selectDiscussionJieWithStatus(@PathVariable(name = "status")String status, Model model) {
-        List<JieDTO> jieDTOS = jieService.selectDiscussionJieWithStatus(status);
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_DISCUSSION.getCode(),status,1);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_DISCUSSION.getCode(),status);
+        model.addAttribute("jieCount",jieCount);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/advice")
+    @RequestMapping(value = "/jie/discussion/{status}/page/{curr}",method = RequestMethod.GET)
+    public String selectDiscussionJieWithStatus(
+            @PathVariable(name = "status")String status,
+            @PathVariable(name = "curr") Integer curr,
+            Model model) {
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_DISCUSSION.getCode(),status,curr);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_DISCUSSION.getCode(),status);
+        model.addAttribute("jieCount",jieCount);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/advice",method = RequestMethod.GET)
     public String selectAdviceJie(Model model) {
-        List<JieDTO> jieDTOS = jieService.selectAdviceJie();
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_ADVICE.getCode(),1);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_ADVICE.getCode());
+        model.addAttribute("jieCount",jieCount);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/advice/{status}")
+    @RequestMapping(value = "/jie/advice/page/{curr}",method = RequestMethod.GET)
+    public String selectAdviceJie(@PathVariable (name = "curr") Integer curr, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_ADVICE.getCode(),curr);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_ADVICE.getCode());
+        model.addAttribute("jieCount",jieCount);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/advice/{status}",method = RequestMethod.GET)
     public String selectAdviceJieWithStatus(@PathVariable(name = "status")String status, Model model) {
-        List<JieDTO> jieDTOS = jieService.selectAdviceJieWithStatus(status);
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_ADVICE.getCode(),status,1);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_ADVICE.getCode(),status);
+        model.addAttribute("jieCount",jieCount);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/notice")
+    @RequestMapping(value = "/jie/advice/{status}/page/{curr}",method = RequestMethod.GET)
+    public String selectAdviceJieWithStatus(
+            @PathVariable(name = "status")String status,
+            @PathVariable(name = "curr") Integer curr,
+            Model model) {
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_ADVICE.getCode(),status,curr);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_ADVICE.getCode(),status);
+        model.addAttribute("jieCount",jieCount);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/notice",method = RequestMethod.GET)
     public String selectNoticeJie(Model model) {
-        List<JieDTO> jieDTOS = jieService.selectNoticeJie();
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_NOTICE.getCode(),1);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_NOTICE.getCode());
+        model.addAttribute("jieCount",jieCount);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/notice/{status}")
+    @RequestMapping(value = "/jie/notice/page/{curr}",method = RequestMethod.GET)
+    public String selectNoticeJie(@PathVariable(name = "curr")Integer curr, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_NOTICE.getCode(),1);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_NOTICE.getCode());
+        model.addAttribute("jieCount",jieCount);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/notice/{status}",method = RequestMethod.GET)
     public String selectNoticeJieWithStatus(@PathVariable(name = "status")String status, Model model) {
-        List<JieDTO> jieDTOS = jieService.selectNoticeJieWithStatus(status);
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_NOTICE.getCode(),status,1);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_NOTICE.getCode(),status);
+        model.addAttribute("jieCount",jieCount);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/condition")
+    @RequestMapping(value = "/jie/notice/{status}/page/{curr}",method = RequestMethod.GET)
+    public String selectNoticeJieWithStatus(
+            @PathVariable(name = "status")String status,
+            @PathVariable(name = "curr")Integer curr,
+            Model model) {
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_NOTICE.getCode(),status,curr);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_NOTICE.getCode(),status);
+        model.addAttribute("jieCount",jieCount);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/condition",method = RequestMethod.GET)
     public String selectConditionJie(Model model) {
-        List<JieDTO> jieDTOS = jieService.selectConditionJie();
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_CONDITION.getCode(),1);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_NOTICE.getCode());
+        model.addAttribute("jieCount",jieCount);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
 
-    @RequestMapping("/jie/condition/{status}")
+    @RequestMapping(value = "/jie/condition/page/{curr}",method = RequestMethod.GET)
+    public String selectConditionJie(@PathVariable(name = "curr") Integer curr, Model model) {
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndCurr(CustomizeJieTypeCode.JIE_CONDITION.getCode(),curr);
+        Integer jieCount = jieService.countJieByColumnId(CustomizeJieTypeCode.JIE_NOTICE.getCode());
+        model.addAttribute("jieCount",jieCount);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/condition/{status}",method = RequestMethod.GET)
     public String selectConditionJieWithStatus(@PathVariable(name = "status")String status, Model model) {
-        List<JieDTO> jieDTOS = jieService.selectConditionJieWithStatus(status);
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_CONDITION.getCode(),status,1);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_NOTICE.getCode(),status);
+        model.addAttribute("jieCount",jieCount);
+        model.addAttribute("jieList",jieDTOS);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/condition/{status}/page/{curr}",method = RequestMethod.GET)
+    public String selectConditionJieWithStatus(
+            @PathVariable(name = "status")String status,
+            @PathVariable(name = "curr") Integer curr,
+            Model model) {
+        List<JieDTO> jieDTOS = jieService.selectJieByColumnIdAndStatusAndCurr(CustomizeJieTypeCode.JIE_CONDITION.getCode(),status,curr);
+        Integer jieCount = jieService.countJieByColumnIdAndStatus(CustomizeJieTypeCode.JIE_NOTICE.getCode(),status);
+        model.addAttribute("jieCount",jieCount);
         model.addAttribute("jieList",jieDTOS);
         return "jie/index";
     }
@@ -172,18 +298,57 @@ public class JieController {
         return layUIResult;
     }
 
-    @RequestMapping("/jie/stick/{jieId}")
+    @RequestMapping(value = "/jie/stick/{jieId}",method = RequestMethod.PUT)
     @ResponseBody
     public LayUIResult updateJieStickById(@PathVariable(name = "jieId") Integer jieId,Boolean rank) {
         LayUIResult layUIResult = jieService.updateJieStickById(jieId,rank);
         return layUIResult;
     }
 
-    @RequestMapping("/jie/boutique/{jieId}")
+    @RequestMapping(value = "/jie/boutique/{jieId}",method = RequestMethod.PUT)
     @ResponseBody
     public LayUIResult updateJieBoutiqueById(@PathVariable(name = "jieId") Integer jieId,Boolean rank) {
         LayUIResult layUIResult = jieService.updateJieBoutiqueById(jieId,rank);
         return layUIResult;
+    }
+
+    @RequestMapping(value = "/jie/all/{status}",method = RequestMethod.GET)
+    public String selectJieByCurr(@PathVariable (name = "status") String status,Model model){
+        List<JieDTO> jieDTOS = jieService.selectJieByStatusAndCurr(status,1);
+        Integer jieCount = jieService.countJieByStatus(status);
+        model.addAttribute("jieList",jieDTOS);
+        model.addAttribute("jieCount",jieCount);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/all/{status}/page/{curr}",method = RequestMethod.GET)
+    public String selectJieByCurr(
+            @PathVariable (name = "status") String status,
+            @PathVariable (name = "curr") Integer curr,
+            Model model){
+        List<JieDTO> jieDTOS = jieService.selectJieByStatusAndCurr(status,curr);
+        Integer jieCount = jieService.countJieByStatus(status);
+        model.addAttribute("jieList",jieDTOS);
+        model.addAttribute("jieCount",jieCount);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/all",method = RequestMethod.GET)
+    public String selectJieByCurr(Model model){
+        List<JieDTO> jieDTOS = jieService.selectJieByCurr(1);
+        Integer jieCount = jieService.countJie();
+        model.addAttribute("jieList",jieDTOS);
+        model.addAttribute("jieCount",jieCount);
+        return "jie/index";
+    }
+
+    @RequestMapping(value = "/jie/all/page/{curr}",method = RequestMethod.GET)
+    public String selectJieByCurr(@PathVariable (name = "curr") Integer curr,Model model){
+        List<JieDTO> jieDTOS = jieService.selectJieByCurr(curr);
+        Integer jieCount = jieService.countJie();
+        model.addAttribute("jieList",jieDTOS);
+        model.addAttribute("jieCount",jieCount);
+        return "jie/index";
     }
 
 }
