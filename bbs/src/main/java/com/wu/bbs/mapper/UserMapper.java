@@ -1,9 +1,8 @@
 package com.wu.bbs.mapper;
 
-import java.util.List;
-
 import com.wu.bbs.pojo.User;
 import com.wu.bbs.pojo.UserExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {

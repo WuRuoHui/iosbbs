@@ -48,4 +48,6 @@ public interface JieService {
     List<JieDTO> selectJieByStatusAndCurr(String status, Integer curr);
 
     Integer countJieByStatus(String status);
+
+    List<Jie> selectQuizJieByCreator(Integer id);
 }

@@ -23,7 +23,7 @@
 
         <ul class="fly-list" th:if="${ jieList != null}">
           <li th:each="jie : ${jieList}">
-            <a href="/user/home.html" class="fly-avatar">
+            <a th:href="@{'/user/'+${jie.creator.id}}" class="fly-avatar">
               <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" alt="贤心">
             </a>
             <h2>

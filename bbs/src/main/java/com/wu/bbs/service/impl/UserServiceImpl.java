@@ -6,6 +6,7 @@
  **/
 package com.wu.bbs.service.impl;
 
+import com.wu.bbs.DTO.UserDTO;
 import com.wu.bbs.mapper.RoleMapper;
 import com.wu.bbs.mapper.UserGradeMapper;
 import com.wu.bbs.mapper.UserMapper;
@@ -13,6 +14,7 @@ import com.wu.bbs.mapper.UserRoleMapper;
 import com.wu.bbs.pojo.*;
 import com.wu.bbs.service.UserService;
 import com.wu.common.utils.LayUIResult;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,8 +43,8 @@ public class UserServiceImpl implements UserService {
         example.createCriteria().andUsernameEqualTo(username);
         com.wu.bbs.pojo.User user = userMapper.selectByExample(example).get(0);
         user.getVipLevel();
-        UserGrade userGrade = userGradeMapper.selectByPrimaryKey(Integer.valueOf(user.getVipLevel()));
-        user.setVipLevel(userGrade.getGradeName());
+        UserGrade userGrade = userGradeMapper.selectByPrimaryKey(user.getVipLevel());
+        user.setVipName(userGrade.getGradeName());
         if (user == null) return null;
         List<Role> authorities = authorities(user.getId());
         user.setRoleList(authorities);
@@ -90,5 +92,16 @@ public class UserServiceImpl implements UserService {
         } else {
             return LayUIResult.build(3, "添加失败");
         }
+    }
+
+    @Override
+    public UserDTO selectUserById(Integer id) {
+        User user = userMapper.selectByPrimaryKey(id);
+        user.setPassword(null);
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user,userDTO);
+        UserGrade userGrade = userGradeMapper.selectByPrimaryKey(Integer.valueOf(user.getVipLevel()));
+        userDTO.setUserGrade(userGrade);
+        return userDTO;
     }
 }

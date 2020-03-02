@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user" th:fragment="bbsUserNav">
   <li class="layui-nav-item">
-    <a th:href="@{/user/home}">
+    <a th:href="@{'/user/'+${#authentication.principal.id}}">
       <i class="layui-icon">&#xe609;</i>
       我的主页
     </a>

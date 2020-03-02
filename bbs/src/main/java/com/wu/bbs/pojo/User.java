@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Data
 @ToString
+@Data
 public class User implements UserDetails {
     private Integer id;
 
@@ -25,11 +25,17 @@ public class User implements UserDetails {
 
     private String avatarUrl;
 
-    private String vipLevel;
+    private Integer vipLevel;
+
+    private String vipName;
 
     private Boolean status;
 
     private String name;
+
+    private Integer sex;
+
+    private String description;
 
     private List<Role> roleList = new ArrayList();
 

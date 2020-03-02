@@ -12,6 +12,7 @@ import com.wu.bbs.pojo.User;
 import com.wu.bbs.pojo.UserGrade;
 import com.wu.bbs.service.JieService;
 import com.wu.common.enums.CustomizeErrorCode;
+import com.wu.common.enums.impl.CustomizeJieTypeCode;
 import com.wu.common.utils.LayUIResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -327,6 +328,16 @@ public class JieServiceImpl implements JieService {
         }
         long count = jieMapper.countByExample(jieExample);
         return (int)count;
+    }
+
+    @Override
+    public List<Jie> selectQuizJieByCreator(Integer id) {
+        JieExample jieExample = new JieExample();
+        jieExample.createCriteria()
+                .andColumnIdEqualTo(CustomizeJieTypeCode.JIE_JIE.getCode())
+                .andCreatorEqualTo(id);
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        return jies;
     }
 
     /**
