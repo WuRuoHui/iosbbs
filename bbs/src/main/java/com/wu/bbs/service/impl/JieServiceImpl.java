@@ -2,14 +2,14 @@ package com.wu.bbs.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.wu.bbs.DTO.JieDTO;
+import com.wu.bbs.DTO.ReplyDTO;
+import com.wu.bbs.DTO.UserDTO;
 import com.wu.bbs.DTO.UserSimpleDTO;
 import com.wu.bbs.mapper.JieMapper;
+import com.wu.bbs.mapper.ReplyMapper;
 import com.wu.bbs.mapper.UserGradeMapper;
 import com.wu.bbs.mapper.UserMapper;
-import com.wu.bbs.pojo.Jie;
-import com.wu.bbs.pojo.JieExample;
-import com.wu.bbs.pojo.User;
-import com.wu.bbs.pojo.UserGrade;
+import com.wu.bbs.pojo.*;
 import com.wu.bbs.service.JieService;
 import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.enums.impl.CustomizeJieTypeCode;
@@ -44,6 +44,8 @@ public class JieServiceImpl implements JieService {
     private Integer BBS_INDEX_JIE_STICKY_SIZE;
     @Value("${BBS_INDEX_JIE_NOT_STICKY_SIZE}")
     private Integer BBS_INDEX_JIE_NOT_STICKY_SIZE;
+    @Autowired
+    private ReplyMapper replyMapper;
 
     @Override
     public LayUIResult insertOrUpdate(Jie jie, Authentication authentication) {
@@ -332,12 +334,60 @@ public class JieServiceImpl implements JieService {
 
     @Override
     public List<Jie> selectQuizJieByCreator(Integer id) {
+        PageHelper.startPage(1,10);
         JieExample jieExample = new JieExample();
         jieExample.createCriteria()
                 .andColumnIdEqualTo(CustomizeJieTypeCode.JIE_JIE.getCode())
                 .andCreatorEqualTo(id);
         List<Jie> jies = jieMapper.selectByExample(jieExample);
         return jies;
+    }
+
+    @Override
+    public List<Jie> selectJieByUserId(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        JieExample jieExample = new JieExample();
+        jieExample.createCriteria()
+                .andCreatorEqualTo(user.getId());
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        return jies;
+    }
+
+    @Override
+    public LayUIResult insertReply(Integer jid, String content, Authentication authentication) {
+        if (jid == null || StringUtils.isEmpty(content)) {
+            return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_NOT_FILL.getMessage());
+        }
+        User user = (User) authentication.getPrincipal();
+        Reply reply = new Reply();
+        reply.setCreator(user.getId());
+        reply.setContent(content);
+        reply.setGmtCreate(System.currentTimeMillis());
+        reply.setGmtModify(System.currentTimeMillis());
+        reply.setParentId(jid);
+        replyMapper.insertSelective(reply);
+        return LayUIResult.build(0,CustomizeErrorCode.REPLY_SUCCESS.getMessage());
+    }
+
+    @Override
+    public List<ReplyDTO> selectJieReply(Integer jieId) {
+        ReplyExample replyExample = new ReplyExample();
+        replyExample.createCriteria()
+                .andParentIdEqualTo(jieId);
+        List<Reply> replies = replyMapper.selectByExample(replyExample);
+        List<ReplyDTO> replyDTOS = new ArrayList<>();
+        for (Reply reply :replies) {
+            ReplyDTO replyDTO = new ReplyDTO();
+            BeanUtils.copyProperties(reply,replyDTO);
+            User user = userMapper.selectByPrimaryKey(reply.getCreator());
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(user,userDTO);
+            UserGrade userGrade = userGradeMapper.selectByPrimaryKey(user.getVipLevel());
+            userDTO.setUserGrade(userGrade);
+            replyDTO.setCreator(userDTO);
+            replyDTOS.add(replyDTO);
+        }
+        return replyDTOS;
     }
 
     /**

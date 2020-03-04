@@ -1,6 +1,7 @@
 package com.wu.bbs.service;
 
 import com.wu.bbs.DTO.JieDTO;
+import com.wu.bbs.DTO.ReplyDTO;
 import com.wu.bbs.pojo.Jie;
 import com.wu.common.utils.LayUIResult;
 import org.springframework.security.core.Authentication;
@@ -50,4 +51,10 @@ public interface JieService {
     Integer countJieByStatus(String status);
 
     List<Jie> selectQuizJieByCreator(Integer id);
+
+    List<Jie> selectJieByUserId(Authentication authentication);
+
+    LayUIResult insertReply(Integer jid, String content, Authentication authentication);
+
+    List<ReplyDTO> selectJieReply(Integer jieId);
 }

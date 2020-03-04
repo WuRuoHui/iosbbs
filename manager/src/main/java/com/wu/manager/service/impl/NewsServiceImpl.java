@@ -161,4 +161,15 @@ public class NewsServiceImpl implements NewsService {
         }
         return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
     }
+
+    @Override
+    public LayUIResult selectNewsWithPaging(Integer page, Integer limit) {
+        if (page != null && limit != null) {
+            PageHelper.startPage(page,limit);
+        }
+        LayUIResult layUIResult = selectAllNews();
+        long count = jieMapper.countByExample(new JieExample());
+        layUIResult.setCount((int)count);
+        return layUIResult;
+    }
 }

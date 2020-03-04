@@ -27,8 +27,8 @@ public class NewsController {
 
     @RequestMapping(value = "/news",method = RequestMethod.GET)
     @ResponseBody
-    public LayUIResult  selectAllNews() {
-        LayUIResult layUIResult = newsService.selectAllNews();
+    public LayUIResult  selectAllNews(Integer limit,Integer page) {
+        LayUIResult layUIResult = newsService.selectNewsWithPaging(page,limit);
         return layUIResult;
     }
 

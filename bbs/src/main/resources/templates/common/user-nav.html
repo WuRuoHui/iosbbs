@@ -6,19 +6,19 @@
       我的主页
     </a>
   </li>
-  <li class="layui-nav-item layui-this">
+  <li class="layui-nav-item" th:classappend="${#strings.contains(#request.getRequestURL(),'index')?'layui-this':''}">
     <a th:href="@{/user/index}">
       <i class="layui-icon">&#xe612;</i>
       用户中心
     </a>
   </li>
-  <li class="layui-nav-item">
+  <li class="layui-nav-item" th:classappend="${#strings.contains(#request.getRequestURL(),'set')?'layui-this':''}">
     <a th:href="@{/user/set}">
       <i class="layui-icon">&#xe620;</i>
       基本设置
     </a>
   </li>
-  <li class="layui-nav-item">
+  <li class="layui-nav-item" th:classappend="${#strings.contains(#request.getRequestURL(),'message')?'layui-this':''}">
     <a th:href="@{/user/message}">
       <i class="layui-icon">&#xe611;</i>
       我的消息

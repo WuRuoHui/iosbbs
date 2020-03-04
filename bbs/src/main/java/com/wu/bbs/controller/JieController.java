@@ -1,6 +1,7 @@
 package com.wu.bbs.controller;
 
 import com.wu.bbs.DTO.JieDTO;
+import com.wu.bbs.DTO.ReplyDTO;
 import com.wu.bbs.pojo.Jie;
 import com.wu.bbs.service.JieService;
 import com.wu.common.enums.impl.CustomizeJieTypeCode;
@@ -280,7 +281,9 @@ public class JieController {
     @RequestMapping(value = "/jie/{jieId}",method = RequestMethod.GET)
     public String selectJieById(@PathVariable(name = "jieId") Integer jieId, Model model) {
         JieDTO jieDTO = jieService.selectJieById(jieId);
+        List<ReplyDTO> replies = jieService.selectJieReply(jieId);
         model.addAttribute("jie",jieDTO);
+        model.addAttribute("jieReplies",replies);
         return "jie/detail";
     }
 
@@ -350,5 +353,13 @@ public class JieController {
         model.addAttribute("jieCount",jieCount);
         return "jie/index";
     }
+
+    @RequestMapping("/jie/reply")
+    @ResponseBody
+    public LayUIResult reply(String content,Integer jid,Authentication authentication) {
+        LayUIResult layUIResult = jieService.insertReply(jid,content,authentication);
+        return layUIResult;
+    }
+
 
 }

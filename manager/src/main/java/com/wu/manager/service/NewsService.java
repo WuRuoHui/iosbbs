@@ -26,4 +26,6 @@ public interface NewsService {
     LayUIResult updateBoutiqueById(Integer id);
 
     LayUIResult updateClosedById(Integer id);
+
+    LayUIResult selectNewsWithPaging(Integer page, Integer limit);
 }

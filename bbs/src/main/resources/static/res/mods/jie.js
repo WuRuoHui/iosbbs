@@ -59,7 +59,19 @@ layui.define('fly', function (exports) {
     });
 
     //提交回答
-    fly.form['/jie/reply/'] = function (data, required) {
+    form.on('submit(jie-reply)',function () {
+        $.ajax({
+            url: '/jie/reply',
+            type: 'POST',
+            data: $("#jie-reply").serialize(),
+            dataType: 'JSON',
+            success: function (res) {
+
+            }
+        })
+        return false;
+    })
+    /*fly.form['/jie/reply/'] = function (data, required) {
         var tpl = '<li>\
       <div class="detail-about detail-about-reply">\
         <a class="fly-avatar" href="/u/{{ layui.cache.user.uid }}" target="_blank">\
@@ -89,7 +101,7 @@ layui.define('fly', function (exports) {
             var count = dom.jiedaCount.text() | 0;
             dom.jiedaCount.html(++count);
         });
-    };
+    };*/
 
     //提交求解
     form.on("submit(addJie)", function (data) {

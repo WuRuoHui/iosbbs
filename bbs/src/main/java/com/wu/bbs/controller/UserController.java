@@ -6,6 +6,7 @@ import com.wu.bbs.service.JieService;
 import com.wu.bbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,9 @@ public class UserController {
     private JieService jieService;
 
     @RequestMapping(value = "/user/index",method = RequestMethod.GET)
-    public String showUserPage() {
+    public String showUserPage(Authentication authentication,Model model) {
+        List<Jie> jies = jieService.selectJieByUserId(authentication);
+        model.addAttribute("jieList",jies);
         return "user/index";
     }
 

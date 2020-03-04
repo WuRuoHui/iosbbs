@@ -25,6 +25,7 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     DATA_NOT_FOUND(2014,"对应信息不存在或已删除，刷新试试！"),
     NOT_DATA_EXIST(2015,"无数据"),
     UPDATE_FAIL_DATA_EXIST(2016,"更新失败，当前游戏联系方式已存在！"),
+    REPLY_SUCCESS(2017,"评论成功"),
     ;
 
     private Integer code;
