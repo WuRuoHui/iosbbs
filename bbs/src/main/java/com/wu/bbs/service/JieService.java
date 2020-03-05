@@ -57,4 +57,6 @@ public interface JieService {
     LayUIResult insertReply(Integer jid, String content, Authentication authentication);
 
     List<ReplyDTO> selectJieReply(Integer jieId);
+
+    LayUIResult deleteReplyById(Integer id);
 }

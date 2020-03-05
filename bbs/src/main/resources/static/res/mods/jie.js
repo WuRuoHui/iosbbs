@@ -60,13 +60,23 @@ layui.define('fly', function (exports) {
 
     //提交回答
     form.on('submit(jie-reply)',function () {
+        var index = top.layer.msg('评论中，请稍候', {icon: 16, time: false, shade: 0.8});
         $.ajax({
             url: '/jie/reply',
             type: 'POST',
             data: $("#jie-reply").serialize(),
             dataType: 'JSON',
             success: function (res) {
-
+                setTimeout(function () {
+                    top.layer.msg(res.msg);
+                    setTimeout(function () {
+                        if (res.code == '0') {
+                            top.layer.close(index);
+                            //刷新父页面
+                            location.reload();
+                        }
+                    }, 2000)
+                }, 2000);
             }
         })
         return false;
@@ -342,7 +352,24 @@ layui.define('fly', function (exports) {
         , del: function (li) { //删除
             layer.confirm('确认删除该回答么？', function (index) {
                 layer.close(index);
-                fly.json('/api/jieda-delete/', {
+                $.ajax({
+                    url: '/jie/reply/'+li.data('id'),
+                    type: 'DELETE',
+                    dataType: 'json',
+                    success: function (res) {
+                        setTimeout(function () {
+                            top.layer.close(index);
+                            top.layer.msg(res.msg);
+                            setTimeout(function () {
+                                if (res.code == '0') {
+                                    //刷新父页面
+                                    location.reload();
+                                }
+                            }, 1000)
+                        }, 1000);
+                    }
+                })
+                /*fly.json('/api/jieda-delete/', {
                     id: li.data('id')
                 }, function (res) {
                     if (res.status === 0) {
@@ -356,7 +383,7 @@ layui.define('fly', function (exports) {
                     } else {
                         layer.msg(res.msg);
                     }
-                });
+                });*/
             });
         }
     };

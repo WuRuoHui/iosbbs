@@ -354,6 +354,7 @@ public class JieServiceImpl implements JieService {
     }
 
     @Override
+
     public LayUIResult insertReply(Integer jid, String content, Authentication authentication) {
         if (jid == null || StringUtils.isEmpty(content)) {
             return LayUIResult.build(1,CustomizeErrorCode.INSERT_DATA_NOT_FILL.getMessage());
@@ -366,6 +367,9 @@ public class JieServiceImpl implements JieService {
         reply.setGmtModify(System.currentTimeMillis());
         reply.setParentId(jid);
         replyMapper.insertSelective(reply);
+        Jie jie = jieMapper.selectByPrimaryKey(jid);
+        jie.setCommentCount(jie.getCommentCount()+1);
+        jieMapper.updateByPrimaryKeySelective(jie);
         return LayUIResult.build(0,CustomizeErrorCode.REPLY_SUCCESS.getMessage());
     }
 
@@ -388,6 +392,22 @@ public class JieServiceImpl implements JieService {
             replyDTOS.add(replyDTO);
         }
         return replyDTOS;
+    }
+
+    @Override
+    public LayUIResult deleteReplyById(Integer id) {
+        if (id == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
+        }
+        Reply reply = replyMapper.selectByPrimaryKey(id);
+        if (reply == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        int rows = replyMapper.deleteByPrimaryKey(id);
+        if (rows > 0) {
+            return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
     }
 
     /**

@@ -354,12 +354,17 @@ public class JieController {
         return "jie/index";
     }
 
-    @RequestMapping("/jie/reply")
+    @RequestMapping(value = "/jie/reply",method = RequestMethod.POST)
     @ResponseBody
     public LayUIResult reply(String content,Integer jid,Authentication authentication) {
         LayUIResult layUIResult = jieService.insertReply(jid,content,authentication);
         return layUIResult;
     }
 
-
+    @RequestMapping(value = "/jie/reply/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteReplyById(@PathVariable(name = "id") Integer id) {
+        LayUIResult layUIResult = jieService.deleteReplyById(id);
+        return layUIResult;
+    }
 }
