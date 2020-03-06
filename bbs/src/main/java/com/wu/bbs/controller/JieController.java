@@ -3,6 +3,7 @@ package com.wu.bbs.controller;
 import com.wu.bbs.DTO.JieDTO;
 import com.wu.bbs.DTO.ReplyDTO;
 import com.wu.bbs.pojo.Jie;
+import com.wu.bbs.pojo.Reply;
 import com.wu.bbs.service.JieService;
 import com.wu.common.enums.impl.CustomizeJieTypeCode;
 import com.wu.common.utils.LayUIResult;
@@ -365,6 +366,13 @@ public class JieController {
     @ResponseBody
     public LayUIResult deleteReplyById(@PathVariable(name = "id") Integer id) {
         LayUIResult layUIResult = jieService.deleteReplyById(id);
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/jie/reply",method = RequestMethod.PUT)
+    @ResponseBody
+    public LayUIResult updateReply(Reply reply){
+        LayUIResult layUIResult = jieService.updateReply(reply);
         return layUIResult;
     }
 }

@@ -410,6 +410,23 @@ public class JieServiceImpl implements JieService {
         return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
     }
 
+    @Override
+    public LayUIResult updateReply(Reply reply) {
+        if (reply == null || reply.getId() == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+        }
+        Reply replyIsExist = replyMapper.selectByPrimaryKey(reply.getId());
+        if (replyIsExist == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        reply.setGmtModify(System.currentTimeMillis());
+        int rows = replyMapper.updateByPrimaryKeySelective(reply);
+        if (rows > 0) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
     /**
      * @Description: 根据columnId和status查询对应的总记录数
      * @Param: [columnId, status]

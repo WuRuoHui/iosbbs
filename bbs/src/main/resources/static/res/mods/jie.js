@@ -238,8 +238,6 @@ layui.define('fly', function (exports) {
                                 if (res.code == '0') {
                                     //刷新父页面
                                     location.reload();
-                                    // window.location.href='/jie/'+div.data('id');
-                                    // location.href='/'
                                 }
                             }, 1000)
                         }, 1000);
@@ -323,13 +321,14 @@ layui.define('fly', function (exports) {
             });
         }
         , edit: function (li) { //编辑
-            fly.json('/jie/getDa/', {
-                id: li.data('id')
-            }, function (res) {
-                var data = res.rows;
+            // fly.json('/jie/getDa/', {
+            //     id: li.data('id')
+            // }, function (res) {
+                var textContent = $("li .jieda-body").text();
+                // var data = res.rows;
                 layer.prompt({
                     formType: 2
-                    , value: data.content
+                    , value: textContent
                     , maxlength: 100000
                     , title: '编辑回帖'
                     , area: ['728px', '300px']
@@ -339,15 +338,29 @@ layui.define('fly', function (exports) {
                         });
                     }
                 }, function (value, index) {
-                    fly.json('/jie/updateDa/', {
-                        id: li.data('id')
-                        , content: value
-                    }, function (res) {
-                        layer.close(index);
-                        li.find('.detail-body').html(fly.content(value));
-                    });
+                    $.ajax({
+                        url: '/jie/reply',
+                        type: 'PUT',
+                        data: {
+                            id:li.data('id'),
+                            content:value
+                        },
+                        dataType: 'json',
+                        success: function (res) {
+                            setTimeout(function () {
+                                top.layer.msg(res.msg);
+                                setTimeout(function () {
+                                    if (res.code == '0') {
+                                        //刷新父页面
+                                        layer.close(index);
+                                        li.find('.detail-body').html(fly.content(value));
+                                    }
+                                }, 1000)
+                            }, 1000);
+                        }
+                    })
                 });
-            });
+            // });
         }
         , del: function (li) { //删除
             layer.confirm('确认删除该回答么？', function (index) {

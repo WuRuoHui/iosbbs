@@ -1,5 +1,8 @@
 package com.wu.bbs.pojo;
 
+import lombok.ToString;
+
+@ToString
 public class Reply {
     private Integer id;
 

@@ -3,6 +3,7 @@ package com.wu.bbs.service;
 import com.wu.bbs.DTO.JieDTO;
 import com.wu.bbs.DTO.ReplyDTO;
 import com.wu.bbs.pojo.Jie;
+import com.wu.bbs.pojo.Reply;
 import com.wu.common.utils.LayUIResult;
 import org.springframework.security.core.Authentication;
 
@@ -59,4 +60,6 @@ public interface JieService {
     List<ReplyDTO> selectJieReply(Integer jieId);
 
     LayUIResult deleteReplyById(Integer id);
+
+    LayUIResult updateReply(Reply reply);
 }
