@@ -24,6 +24,15 @@ layui.define(['laypage', 'fly', 'element', 'flow'], function(exports){
     ,infobtn: $('#LAY_btninfo')
   };
 
+  //ajax请求时都带上csrf信息
+  $(function () {
+    var token = $("meta[name='_csrf']").attr("content")
+    var header = $("meta[name='_csrf_header']").attr("content")
+    $(document).ajaxSend(function (e, xhr, options) {
+      xhr.setRequestHeader(header,token)
+    })
+  })
+
   //我的相关数据
   var elemUC = $('#LAY_uc'), elemUCM = $('#LAY_ucm');
   gather.minelog = {};
@@ -153,12 +162,12 @@ layui.define(['laypage', 'fly', 'element', 'flow'], function(exports){
     }
   });
 
-  //根据ip获取城市
+  /*//根据ip获取城市
   if($('#L_city').val() === ''){
     $.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js', function(){
       $('#L_city').val(remote_ip_info.city||'');
     });
-  }
+  }*/
 
   //上传图片
   if($('.upload-img')[0]){
@@ -259,17 +268,42 @@ layui.define(['laypage', 'fly', 'element', 'flow'], function(exports){
   }
 
   //提交成功后刷新
-  fly.form['set-mine'] = function(data, required){
-    layer.msg('修改成功', {
+  form.on('submit(set-info)',function () {
+    //弹出loading
+    var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
+    // 实际使用时的提交信息
+    $.ajax({
+      url: '/user/set',
+      type: 'PUT',
+      data: $(".setInfo").serialize(),
+      dataType: 'json',
+      success: function (res) {
+        setTimeout(function () {
+          top.layer.close(index);
+          top.layer.msg(res.msg);
+          setTimeout(function () {
+            if (res.code == '0') {
+              //刷新父页面
+              location.reload();
+            }
+          }, 1000)
+        }, 1000);
+      }
+    })
+    return false;
+  })
+  // fly.form['set-mine'] = function(data, required){
+    // alert(1)
+    /*layer.msg('修改成功', {
       icon: 1
       ,time: 1000
       ,shade: 0.1
     }, function(){
       location.reload();
-    });
-  }
+    });*/
+  // }
 
-  //帐号绑定
+/*  //帐号绑定
   $('.acc-unbind').on('click', function(){
     var othis = $(this), type = othis.attr('type');
     layer.confirm('整的要解绑'+ ({
@@ -291,7 +325,7 @@ layui.define(['laypage', 'fly', 'element', 'flow'], function(exports){
         }
       });
     });
-  });
+  });*/
 
 
   //我的消息

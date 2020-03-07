@@ -2,8 +2,10 @@ package com.wu.bbs.controller;
 
 import com.wu.bbs.DTO.UserDTO;
 import com.wu.bbs.pojo.Jie;
+import com.wu.bbs.pojo.User;
 import com.wu.bbs.service.JieService;
 import com.wu.bbs.service.UserService;
+import com.wu.common.utils.LayUIResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -39,8 +42,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/set",method = RequestMethod.GET)
-    public String showSetPage() {
+    public String showSetPage(Authentication authentication,Model model) {
         return "user/set";
+    }
+
+    @RequestMapping(value = "/user/set",method = RequestMethod.PUT)
+    @ResponseBody
+    public LayUIResult UpdateUserInfo(User user, Authentication authentication) {
+        LayUIResult layUIResult = userService.UpdateUserInfo(authentication,user);
+        return layUIResult;
     }
 
     @RequestMapping(value = "/user/{id}",method = RequestMethod.GET)

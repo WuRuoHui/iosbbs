@@ -13,9 +13,11 @@ import com.wu.bbs.mapper.UserMapper;
 import com.wu.bbs.mapper.UserRoleMapper;
 import com.wu.bbs.pojo.*;
 import com.wu.bbs.service.UserService;
+import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.LayUIResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -104,4 +106,20 @@ public class UserServiceImpl implements UserService {
         userDTO.setUserGrade(userGrade);
         return userDTO;
     }
+
+    @Override
+    public LayUIResult UpdateUserInfo(Authentication authentication, User user) {
+        User u = (User) authentication.getPrincipal();
+        User userIsExist = userMapper.selectByPrimaryKey(u.getId());
+        if (userIsExist == null) {
+            return LayUIResult.build(1, CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        user.setId(u.getId());
+        int rows = userMapper.updateByPrimaryKeySelective(user);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
 }
