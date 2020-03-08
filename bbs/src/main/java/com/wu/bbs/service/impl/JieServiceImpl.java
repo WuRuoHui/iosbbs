@@ -405,6 +405,11 @@ public class JieServiceImpl implements JieService {
         }
         int rows = replyMapper.deleteByPrimaryKey(id);
         if (rows > 0) {
+            Jie jie = jieMapper.selectByPrimaryKey(reply.getParentId());
+            Jie newJie = new Jie();
+            newJie.setId(jie.getId());
+            newJie.setCommentCount(jie.getCommentCount()-1);
+            jieMapper.updateByPrimaryKeySelective(newJie);
             return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
         }
         return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());

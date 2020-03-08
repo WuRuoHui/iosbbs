@@ -53,6 +53,13 @@ public class UserController {
         return layUIResult;
     }
 
+    @RequestMapping("/user/set/pass")
+    @ResponseBody
+    public LayUIResult updateUserPassword(Authentication authentication,String nowpass,String pass,String repass) {
+        LayUIResult layUIResult = userService.updateUserPassword(authentication,nowpass,pass,repass);
+        return layUIResult;
+    }
+
     @RequestMapping(value = "/user/{id}",method = RequestMethod.GET)
     public String showUserInfo(@PathVariable(name = "id") Integer id, Model model) {
         UserDTO user = userService.selectUserById(id);

@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
@@ -27,6 +29,11 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder createPwdEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 
     @Bean
@@ -55,7 +62,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().deleteCookies("remember-me")
         .and().headers().frameOptions().sameOrigin()
-        ;
+        .and().sessionManagement().maximumSessions(1).sessionRegistry(sessionRegistry());
 //                .csrf().disable()   //关闭跨域访问
         ;
     }

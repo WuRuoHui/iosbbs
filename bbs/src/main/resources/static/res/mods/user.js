@@ -292,6 +292,32 @@ layui.define(['laypage', 'fly', 'element', 'flow'], function(exports){
     })
     return false;
   })
+
+  //提交成功后刷新
+  form.on('submit(set-pass)',function () {
+    //弹出loading
+    var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
+    // 实际使用时的提交信息
+    $.ajax({
+      url: '/user/set/pass',
+      type: 'PUT',
+      data: $(".setPass").serialize(),
+      dataType: 'json',
+      success: function (res) {
+        setTimeout(function () {
+          top.layer.close(index);
+          top.layer.msg(res.msg);
+          setTimeout(function () {
+            if (res.code == '0') {
+              //刷新父页面
+              location.reload();
+            }
+          }, 1000)
+        }, 1000);
+      }
+    })
+    return false;
+  })
   // fly.form['set-mine'] = function(data, required){
     // alert(1)
     /*layer.msg('修改成功', {

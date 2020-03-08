@@ -18,8 +18,11 @@ import com.wu.common.utils.LayUIResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -38,6 +41,10 @@ public class UserServiceImpl implements UserService {
     private UserRoleMapper userRoleMapper;
     @Autowired
     private UserGradeMapper userGradeMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -116,6 +123,28 @@ public class UserServiceImpl implements UserService {
         }
         user.setId(u.getId());
         int rows = userMapper.updateByPrimaryKeySelective(user);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
+    @Override
+    public LayUIResult updateUserPassword(Authentication authentication, String nowpass, String pass, String repass) {
+        if (StringUtils.isEmpty(nowpass) || StringUtils.isEmpty(pass) || StringUtils.isEmpty(repass)) {
+            return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+        }
+        if (!pass.equals(repass)) {
+            return LayUIResult.build(1,"两次密码不一致");
+        }
+        User user = (User) authentication.getPrincipal();
+        if (!passwordEncoder.matches(nowpass, user.getPassword())) {
+            return LayUIResult.build(1,"密码错误");
+        }
+        User userNew = new User();
+        userNew.setId(user.getId());
+        userNew.setPassword(passwordEncoder.encode(pass));
+        int rows = userMapper.updateByPrimaryKeySelective(userNew);
         if (rows > 0 ) {
             return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
         }
