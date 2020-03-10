@@ -2,6 +2,7 @@ package com.wu.manager.controller;
 
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.service.NewsService;
+import com.wu.manager.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,8 @@ public class NewsController {
 
     @Autowired
     private NewsService newsService;
+    @Autowired
+    private ReplyService replyService;
 
     @RequestMapping("/page/news/{pageName}")
     public String showNewsPage(@PathVariable(name = "pageName") String pageName) {
@@ -83,6 +86,18 @@ public class NewsController {
     @ResponseBody
     public LayUIResult updateClosedById(@PathVariable (name = "id") Integer id) {
         LayUIResult layUIResult = newsService.updateClosedById(id);
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/page/reply/replyList",method = RequestMethod.GET)
+    public String showReplyListPage() {
+        return "page/reply/replyList";
+    }
+
+    @RequestMapping(value = "/replies",method = RequestMethod.GET)
+    @ResponseBody
+    public LayUIResult selectReplys(Integer page,Integer limit) {
+        LayUIResult layUIResult = replyService.selectReplys(page,limit);
         return layUIResult;
     }
 }
