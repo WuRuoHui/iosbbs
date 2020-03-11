@@ -15,6 +15,7 @@ import com.wu.manager.service.ReplyService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,5 +62,29 @@ public class ReplyServiceImpl implements ReplyService {
         }
         long count = replyMapper.countByExample(new ReplyExample());
         return LayUIResult.build(0,(int)count, CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),replyDTOS);
+    }
+
+    @Override
+    @Transactional
+    public LayUIResult deleteReplyById(Integer id) {
+        if (id == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        Reply reply = replyMapper.selectByPrimaryKey(id);
+        if (reply == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        int rows = replyMapper.deleteByPrimaryKey(id);
+        if (rows > 0 ) {
+            Jie jie = jieMapper.selectByPrimaryKey(reply.getParentId());
+            Jie newJie = new Jie();
+            jie.setId(jie.getId());
+            jie.setCommentCount(jie.getCommentCount() -1);
+            if (jie != null) {
+                jieMapper.updateByPrimaryKeySelective(jie);
+            }
+            return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
     }
 }

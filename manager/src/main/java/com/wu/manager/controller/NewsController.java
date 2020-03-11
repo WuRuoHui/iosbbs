@@ -100,4 +100,11 @@ public class NewsController {
         LayUIResult layUIResult = replyService.selectReplys(page,limit);
         return layUIResult;
     }
+
+    @RequestMapping(value = "/reply/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteReplyById(@PathVariable(name = "id") Integer id) {
+        LayUIResult layUIResult = replyService.deleteReplyById(id);
+        return layUIResult;
+    }
 }

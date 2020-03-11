@@ -80,7 +80,7 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
 
     //批量删除
     $(".delAll_btn").click(function () {
-        var checkStatus = table.checkStatus('passagewayListTable'),
+        var checkStatus = table.checkStatus('replyListTable'),
             data = checkStatus.data,
             ids = [];
         if (data.length > 0) {
@@ -114,9 +114,9 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
             data = obj.data;
 
         if (layEvent === 'del') { //删除
-            layer.confirm('确定删除此温馨通道？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除此回复？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/systemSetting/passageway/' + data.id,
+                    url: '/reply/' + data.id,
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',

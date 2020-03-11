@@ -12,4 +12,6 @@ import com.wu.common.utils.LayUIResult;
 public interface ReplyService {
 
     LayUIResult selectReplys(Integer page, Integer limit);
+
+    LayUIResult deleteReplyById(Integer id);
 }
