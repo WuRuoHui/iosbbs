@@ -70,6 +70,35 @@ public class ReplyServiceImpl implements ReplyService {
         if (id == null) {
             return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
         }
+        LayUIResult layUIResult = deleteReplyByIdInner(id);
+        return layUIResult;
+    }
+
+    @Override
+    public LayUIResult deleteReplyByIds(List<Integer> ids) {
+        if (ids == null || ids.size() < 1 ) {
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        for (Integer id : ids) {
+            Reply reply = replyMapper.selectByPrimaryKey(id);
+            if (reply == null) {
+                return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+            }
+            int rows = replyMapper.deleteByPrimaryKey(id);
+            if (rows > 0 ) {
+                Jie jie = jieMapper.selectByPrimaryKey(reply.getParentId());
+                Jie newJie = new Jie();
+                jie.setId(jie.getId());
+                jie.setCommentCount(jie.getCommentCount() -1);
+                if (jie != null) {
+                    jieMapper.updateByPrimaryKeySelective(jie);
+                }
+            }
+        }
+        return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
+    }
+
+    LayUIResult deleteReplyByIdInner(Integer id) {
         Reply reply = replyMapper.selectByPrimaryKey(id);
         if (reply == null) {
             return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());

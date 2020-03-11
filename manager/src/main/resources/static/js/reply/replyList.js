@@ -87,9 +87,9 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
             for (var i in data) {
                 ids[i] = data[i].id;
             }
-            layer.confirm('确定删除选中的温馨通道？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除选中的回复？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
-                    url: '/systemSetting/passageways',
+                    url: '/replies',
                     type: 'DELETE',
                     contentType: 'application/json',
                     dataType: 'json',
@@ -104,7 +104,7 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
                 })
             })
         } else {
-            layer.msg("请选择需要删除的温馨通道");
+            layer.msg("请选择需要删除的回复");
         }
     })
 
