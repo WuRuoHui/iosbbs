@@ -1,9 +1,18 @@
 package com.wu.manager.pojo;
 
+import lombok.Data;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @ToString
-public class User {
+@Data
+public class User implements UserDetails {
+
     private Integer id;
 
     private String username;
@@ -18,6 +27,8 @@ public class User {
 
     private Integer vipLevel;
 
+    private String vipName;
+
     private Boolean status;
 
     private String name;
@@ -26,91 +37,30 @@ public class User {
 
     private String description;
 
-    public Integer getId() {
-        return id;
+    private List<Role> roleList = new ArrayList();
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public String getUsername() {
-        return username;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
-    }
-
-    public Long getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(Long gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public Long getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Long gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl == null ? null : avatarUrl.trim();
-    }
-
-    public Integer getVipLevel() {
-        return vipLevel;
-    }
-
-    public void setVipLevel(Integer vipLevel) {
-        this.vipLevel = vipLevel;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roleList;
     }
 }

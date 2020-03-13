@@ -21,6 +21,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("/login")
+    public String login() {
+        return "/page/login/login";
+    }
+
     @RequestMapping("/page/user/{pageName}")
     public String showUserPage(@PathVariable(name = "pageName") String pageName) {
         return "page/user/" + pageName;

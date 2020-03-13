@@ -2,6 +2,7 @@ package com.wu.manager.service;
 
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.pojo.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @create: 2020-01-11 15:42
  **/
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     LayUIResult selectAllUserGrade();
 

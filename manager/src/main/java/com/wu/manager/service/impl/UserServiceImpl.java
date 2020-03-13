@@ -13,6 +13,8 @@ import com.wu.manager.utils.StringRedisService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -233,4 +235,32 @@ public class UserServiceImpl implements UserService {
         userRoleExample.createCriteria().andUserIdEqualTo(id);
         userRoleMapper.deleteByExample(userRoleExample);
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserExample example = new UserExample();
+        example.createCriteria().andUsernameEqualTo(username);
+        com.wu.manager.pojo.User user = userMapper.selectByExample(example).get(0);
+        user.getVipLevel();
+        UserGrade userGrade = userGradeMapper.selectByPrimaryKey(user.getVipLevel());
+        user.setVipName(userGrade.getGradeName());
+        if (user == null) return null;
+        List<Role> authorities = authorities(user.getId());
+        user.setRoleList(authorities);
+        return user;
+    }
+
+    //给当前用户指定角色
+    private List<Role> authorities(Integer id) {
+        List<Role> authorities = new ArrayList<>();
+        UserRoleExample userRoleExample = new UserRoleExample();
+        userRoleExample.createCriteria().andUserIdEqualTo(id);
+        List<UserRole> userRoleList = userRoleMapper.selectByExample(userRoleExample);
+        for (UserRole userRole : userRoleList) {
+            Role role = roleMapper.selectByPrimaryKey(userRole.getRoleId());
+            authorities.add(role);
+        }
+        return authorities;
+    }
+
 }
