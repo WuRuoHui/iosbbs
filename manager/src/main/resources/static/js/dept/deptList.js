@@ -5,6 +5,15 @@ layui.use(['form','layer','table','laytpl'],function(){
         laytpl = layui.laytpl,
         table = layui.table;
 
+    //ajax请求时都带上csrf信息
+    $(function () {
+        var token = $("meta[name='_csrf']").attr("content")
+        var header = $("meta[name='_csrf_header']").attr("content")
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(header,token)
+        })
+    })
+
     //用户列表
     var tableIns = table.render({
         elem: '#deptList',

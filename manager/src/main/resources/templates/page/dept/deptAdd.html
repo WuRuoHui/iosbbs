@@ -15,6 +15,7 @@
 <body class="childrenBody">
 <form class="layui-form addDept" style="width:80%;">
 	<input type="hidden" class="layui-input id" name="id">
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">部门名称</label>
 		<div class="layui-input-block">
