@@ -9,6 +9,8 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="format-detection" content="telephone=no">
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
 	<link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all" />
 	<link rel="stylesheet" th:href="@{/css/public.css}" media="all" />
 </head>

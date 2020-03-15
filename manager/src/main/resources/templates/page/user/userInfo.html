@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<title>个人资料--layui后台管理模板 2.0</title>
@@ -9,6 +9,8 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="format-detection" content="telephone=no">
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
 	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="../../css/public.css" media="all" />
 </head>
@@ -117,4 +119,4 @@
 <script type="text/javascript" src="userInfo.js"></script>
 <script type="text/javascript" src="../../js/cacheUserInfo.js"></script>
 </body>
-</html>
+</>
