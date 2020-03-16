@@ -43,11 +43,7 @@ layui.use(['form', 'element', 'layer', 'jquery'], function () {
     $(".panel a").click(function () {
         parent.addTab($(this));
     })
-    //系统基本参数
-    // if(window.sessionStorage.getItem("systemParameter")){
-    //     var systemParameter = JSON.parse(window.sessionStorage.getItem("systemParameter"));
-    //     fillParameter(systemParameter);
-    // }else{
+
     $.ajax({
         url: "/systemSetting/basicParameter",
         type: "get",
@@ -56,7 +52,7 @@ layui.use(['form', 'element', 'layer', 'jquery'], function () {
             fillParameter(data.data);
         }
     })
-    // }
+
     //填充数据方法
     function fillParameter(data) {
         //判断字段数据是否存在

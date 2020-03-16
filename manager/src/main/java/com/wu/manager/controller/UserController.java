@@ -1,10 +1,12 @@
 package com.wu.manager.controller;
 
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.dto.UserDTO;
 import com.wu.manager.pojo.User;
 import com.wu.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +26,13 @@ public class UserController {
     @RequestMapping("/login")
     public String login() {
         return "/page/login/login";
+    }
+
+    @RequestMapping(value = "/page/user/userInfo/{id}",method = RequestMethod.GET)
+    public String showUserInfo(@PathVariable(name = "id") Integer id, Model model) {
+        UserDTO userDTO = userService.selectUserById(id);
+        model.addAttribute("user",userDTO);
+        return "page/user/userInfo";
     }
 
     @RequestMapping("/page/user/{pageName}")

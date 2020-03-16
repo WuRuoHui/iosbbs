@@ -1,6 +1,7 @@
 package com.wu.manager.service;
 
 import com.wu.common.utils.LayUIResult;
+import com.wu.manager.dto.UserDTO;
 import com.wu.manager.pojo.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -25,4 +26,6 @@ public interface UserService extends UserDetailsService {
     LayUIResult deleteUserByIds(List<Integer> userIds);
 
     LayUIResult selectUserCount();
+
+    UserDTO selectUserById(Integer id);
 }

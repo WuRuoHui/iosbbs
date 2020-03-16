@@ -23,7 +23,7 @@ layui.use(['form','jquery',"layer"],function() {
     }
 
     //公告层
-    function showNotice(){
+    /*function showNotice(){
         layer.open({
             type: 1,
             title: "系统公告",
@@ -56,7 +56,7 @@ layui.use(['form','jquery',"layer"],function() {
     }
     $(".showNotice").on("click",function(){
         showNotice();
-    })
+    })*/
 
 
     //退出

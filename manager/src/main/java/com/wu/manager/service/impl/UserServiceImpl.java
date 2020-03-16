@@ -197,6 +197,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO selectUserById(Integer id) {
+        User user = userMapper.selectByPrimaryKey(id);
+        user.setPassword(null);
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user,userDTO);
+        UserRoleExample userRoleExample = new UserRoleExample();
+        userRoleExample.createCriteria()
+                .andUserIdEqualTo(id);
+        List<UserRole> userRoles = userRoleMapper.selectByExample(userRoleExample);
+        Role role = roleMapper.selectByPrimaryKey(userRoles.get(0).getRoleId());
+        userDTO.setRole(role);
+        return userDTO;
+    }
+
+    @Override
     public LayUIResult selectAllUser() {
         UserExample userExample = new UserExample();
         List<User> users = userMapper.selectByExample(userExample);
