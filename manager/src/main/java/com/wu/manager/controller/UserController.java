@@ -5,6 +5,7 @@ import com.wu.manager.dto.UserDTO;
 import com.wu.manager.pojo.User;
 import com.wu.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -72,6 +73,13 @@ public class UserController {
     @ResponseBody
     public LayUIResult deleteUserById(@PathVariable(name = "id") Integer id) {
         LayUIResult layUIResult = userService.deleteUserById(id);
+        return layUIResult;
+    }
+
+    @PutMapping("/user/pwd")
+    @ResponseBody
+    public LayUIResult updateUserPassword(String oldPwd, String newPwd, Authentication authentication) {
+        LayUIResult layUIResult = userService.updatePassword(oldPwd,newPwd,authentication);
         return layUIResult;
     }
 

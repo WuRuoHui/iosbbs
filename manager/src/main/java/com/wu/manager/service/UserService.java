@@ -3,6 +3,7 @@ package com.wu.manager.service;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.UserDTO;
 import com.wu.manager.pojo.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface UserService extends UserDetailsService {
     LayUIResult selectUserCount();
 
     UserDTO selectUserById(Integer id);
+
+    LayUIResult updatePassword(String oldPwd, String newPwd, Authentication authentication);
 }

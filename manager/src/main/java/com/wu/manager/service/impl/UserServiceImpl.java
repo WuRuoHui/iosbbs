@@ -1,5 +1,6 @@
 package com.wu.manager.service.impl;
 
+import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.UserDTO;
@@ -13,8 +14,10 @@ import com.wu.manager.utils.StringRedisService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -41,6 +44,8 @@ public class UserServiceImpl implements UserService {
     private StringRedisService redisService;
     @Autowired
     private UserRoleMapper userRoleMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Value(value = "${BBS.USER.GRADE}")
     private String BBS_USER_GRADE;
     @Value(value = "BBS.USER")
@@ -209,6 +214,29 @@ public class UserServiceImpl implements UserService {
         Role role = roleMapper.selectByPrimaryKey(userRoles.get(0).getRoleId());
         userDTO.setRole(role);
         return userDTO;
+    }
+
+    @Override
+    public LayUIResult updatePassword(String oldPwd, String newPwd, Authentication authentication) {
+        if(StringUtils.isEmpty(oldPwd) || StringUtils.isEmpty(newPwd)) {
+            return LayUIResult.build(1, CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+        }
+        if (oldPwd.trim().equals(newPwd.trim())) {
+            return LayUIResult.build(1,"输入的新旧密码一致，请重新核对");
+        }
+        User user = (User) authentication.getPrincipal();
+        User userFromDB = userMapper.selectByPrimaryKey(user.getId());
+        if (!passwordEncoder.matches(oldPwd,user.getPassword())){
+            return LayUIResult.build(1,"密码错误");
+        }
+        User newUser = new User();
+        newUser.setId(userFromDB.getId());
+        newUser.setPassword(passwordEncoder.encode(newPwd));
+        int rows = userMapper.updateByPrimaryKeySelective(newUser);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
     }
 
     @Override

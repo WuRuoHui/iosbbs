@@ -8,11 +8,11 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
 
     //添加验证规则
     form.verify({
-        oldPwd : function(value, item){
+        /*oldPwd : function(value, item){
             if(value != "123456"){
                 return "密码错误，请重新输入！";
             }
-        },
+        },*/
         newPwd : function(value, item){
             if(value.length < 6){
                 return "密码长度不能小于6位";
@@ -40,6 +40,29 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
             {title: '当前状态',minWidth:100, templet:'#gradeBar',fixed:"right",align:"center"}
         ]]
     });
+
+    form.on('submit(changePwd)',function () {
+        //弹出loading
+        var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
+        // 实际使用时的提交信息
+        $.ajax({
+            url: '/user/pwd',
+            type: 'PUT',
+            data : {
+                oldPwd:$('.oldPwd').val(),
+                newPwd:$('.newPwd').val()
+            },
+            dataType: 'json',
+            success: function (res) {
+                setTimeout(function () {
+                    top.layer.close(index);
+                    top.layer.msg(res.msg);
+                    $(".pwd").val('');
+                }, 2000);
+            }
+        })
+        return false;
+    })
 
     form.on('switch(gradeStatus)', function(data){
         var tipText = '确定禁用当前会员等级？';

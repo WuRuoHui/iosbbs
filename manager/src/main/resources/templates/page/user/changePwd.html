@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<title>修改密码--layui后台管理模板 2.0</title>
@@ -9,29 +9,32 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="format-detection" content="telephone=no">
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
 	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="../../css/public.css" media="all" />
 </head>
 <body class="childrenBody">
 <form class="layui-form layui-row changePwd">
 	<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
-		<div class="layui-input-block layui-red pwdTips">旧密码请输入“123456”，新密码必须两次输入一致才能提交</div>
+		<div class="layui-form-item"></div>
+<!--		<div class="layui-input-block layui-red pwdTips">旧密码请输入“123456”，新密码必须两次输入一致才能提交</div>-->
 		<div class="layui-form-item">
 			<label class="layui-form-label">用户名</label>
 			<div class="layui-input-block">
-				<input type="text" value="驊驊龔頾" disabled class="layui-input layui-disabled">
+				<input type="text" th:value="${#authentication.principal.username}" disabled class="layui-input layui-disabled">
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">旧密码</label>
 			<div class="layui-input-block">
-				<input type="password" value="" placeholder="请输入旧密码" lay-verify="required|oldPwd" class="layui-input pwd">
+				<input type="password" value="" placeholder="请输入旧密码" lay-verify="required|oldPwd" class="layui-input pwd oldPwd">
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">新密码</label>
 			<div class="layui-input-block">
-				<input type="password" value="" placeholder="请输入新密码" lay-verify="required|newPwd" id="oldPwd" class="layui-input pwd">
+				<input type="password" value="" placeholder="请输入新密码" lay-verify="required|newPwd" id="oldPwd" class="layui-input pwd newPwd">
 			</div>
 		</div>
 		<div class="layui-form-item">
@@ -48,7 +51,8 @@
 		</div>
 	</div>
 </form>
-<script type="text/javascript" src="../../layui/layui.js"></script>
-<script type="text/javascript" src="../../../static/js/user/user.js"></script>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/user/user.js}"></script>
+<script type="text/javascript" th:src="@{/js/common/csrf.js}"></script>
 </body>
 </html>

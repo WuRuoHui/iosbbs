@@ -1,6 +1,5 @@
 layui.use(['layer'],function() {
-    var
-        $ = layui.jquery;
+    var $ = layui.jquery;
     //ajax请求时都带上csrf信息
     $(function () {
         var token = $("meta[name='_csrf']").attr("content")
