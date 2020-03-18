@@ -90,6 +90,7 @@ public class UserServiceImpl implements UserService {
                 user.setPassword(null);
             }
             user.setGmtModified(System.currentTimeMillis());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             int rows = userMapper.updateByPrimaryKeySelective(user);
             //更新用户角色表
             //判断用户角色表中是否存在对应的关系
@@ -128,6 +129,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setGmtCreate(System.currentTimeMillis());
         user.setGmtModified(System.currentTimeMillis());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         int rows = userMapper.insert(user);
         if (rows <= 0) {
             return LayUIResult.fail();
