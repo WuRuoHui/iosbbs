@@ -242,6 +242,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public LayUIResult updateUserInfo(User user, Authentication authentication) {
+        User userFromAuthority = (User) authentication.getPrincipal();
+        User userFromDB = userMapper.selectByPrimaryKey(userFromAuthority.getId());
+        if (userFromDB == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+        }
+        user.setId(userFromAuthority.getId());
+        int rows = userMapper.updateByPrimaryKeySelective(user);
+        if (rows > 0) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
+    @Override
     public LayUIResult selectAllUser() {
         UserExample userExample = new UserExample();
         List<User> users = userMapper.selectByExample(userExample);

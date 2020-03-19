@@ -83,6 +83,13 @@ public class UserController {
         return layUIResult;
     }
 
+    @RequestMapping(value = "/user",method = RequestMethod.PUT)
+    @ResponseBody
+    public LayUIResult updateUserInfo(User user,Authentication authentication) {
+        LayUIResult layUIResult = userService.updateUserInfo(user,authentication);
+        return layUIResult;
+    }
+
     @RequestMapping("/userCount")
     @ResponseBody
     public LayUIResult selectUserCount() {

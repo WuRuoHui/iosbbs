@@ -31,4 +31,6 @@ public interface UserService extends UserDetailsService {
     UserDTO selectUserById(Integer id);
 
     LayUIResult updatePassword(String oldPwd, String newPwd, Authentication authentication);
+
+    LayUIResult updateUserInfo(User user, Authentication authentication);
 }

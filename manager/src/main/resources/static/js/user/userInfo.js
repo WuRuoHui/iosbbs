@@ -1,6 +1,6 @@
 var form, $,areaData;
 layui.config({
-    base : "../../js/"
+    base : "/js/"
 }).extend({
     "address" : "address"
 })
@@ -9,13 +9,14 @@ layui.use(['form','layer','upload','laydate',"address"],function(){
     $ = layui.jquery;
     var layer = parent.layer === undefined ? layui.layer : top.layer,
         upload = layui.upload,
-        laydate = layui.laydate,
-        address = layui.address;
+        laydate = layui.laydate
+        ,address = layui.address
+    ;
 
     //上传头像
     upload.render({
         elem: '.userFaceBtn',
-        url: '../../json/userface.json',
+        url: '/json/userface.json',
         method : "get",  //此处是为了演示之用，实际使用中请将此删除，默认用post方式提交
         done: function(res, index, upload){
             var num = parseInt(4*Math.random());  //生成0-4的随机数，随机显示一个头像信息
@@ -49,8 +50,31 @@ layui.use(['form','layer','upload','laydate',"address"],function(){
     //获取省信息
     address.provinces();
 
+    form.on("submit(changeUser)",function(data) {
+        console.log($('.realName').val())
+        var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
+        // 实际使用时的提交信息
+        $.ajax({
+            url: '/user',
+            type: 'PUT',
+            data: {
+                name:$('.realName').val(),
+                sex:data.field.sex,
+                description:$('.myself').val(),
+                avatarUrl:$('#userFace').attr('src')
+            },
+            dataType: 'json',
+            success: function (res) {
+                setTimeout(function () {
+                    top.layer.close(index);
+                    top.layer.msg(res.msg);
+                }, 2000);
+            }
+        })
+        return false;
+    })
     //提交个人资料
-    form.on("submit(changeUser)",function(data){
+    /*form.on("submit(changeUser)",function(data){
         var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
         //将填写的用户信息存到session以便下次调取
         var key,userInfoHtml = '';
@@ -76,10 +100,10 @@ layui.use(['form','layer','upload','laydate',"address"],function(){
             layer.msg("提交成功！");
         },2000);
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-    })
+    })*/
 
     //修改密码
-    form.on("submit(changePwd)",function(data){
+    /*form.on("submit(changePwd)",function(data){
         var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
         setTimeout(function(){
             layer.close(index);
@@ -87,5 +111,5 @@ layui.use(['form','layer','upload','laydate',"address"],function(){
             $(".pwd").val('');
         },2000);
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-    })
+    })*/
 })
