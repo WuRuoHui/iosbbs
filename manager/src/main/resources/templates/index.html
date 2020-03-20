@@ -64,8 +64,14 @@
                                 class="layui-badge-dot"></span></a></dd>-->
                         <dd pc><a href="javascript:;" class="functionSetting"><i class="layui-icon">&#xe620;</i><cite>功能设定</cite><span
                                 class="layui-badge-dot"></span></a></dd>
-                        <dd><a href="page/login/login.html" class="signOut"><i
-                                class="seraph icon-tuichu"></i><cite>退出</cite></a></dd>
+                        <dd>
+                            <form th:action="@{/logout}" method="post" id="_logoutForm">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <a onclick="document.getElementById('_logoutForm').submit();" class="signOut"><i class="seraph icon-tuichu"></i>
+                                <cite>退出</cite>
+                            </a>
+                            </form>
+                        </dd>
                     </dl>
                 </li>
             </ul>

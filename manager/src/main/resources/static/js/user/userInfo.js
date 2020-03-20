@@ -101,15 +101,4 @@ layui.use(['form','layer','upload','laydate',"address"],function(){
         },2000);
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     })*/
-
-    //修改密码
-    /*form.on("submit(changePwd)",function(data){
-        var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
-        setTimeout(function(){
-            layer.close(index);
-            layer.msg("密码修改成功！");
-            $(".pwd").val('');
-        },2000);
-        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-    })*/
 })

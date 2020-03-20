@@ -26,7 +26,7 @@ public class UserController {
 
     @RequestMapping("/login")
     public String login() {
-        return "/page/login/login";
+        return "page/login/login";
     }
 
     @RequestMapping(value = "/page/user/userInfo/{id}",method = RequestMethod.GET)
