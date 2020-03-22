@@ -25,7 +25,7 @@
 				<a class="layui-btn search_btn" data-type="reload">搜索</a>
 			</div>
 			<div class="layui-inline">
-				<a class="layui-btn layui-btn-normal addNews_btn">添加用户</a>
+				<a class="layui-btn layui-btn-normal addUser_btn">添加用户</a>
 			</div>
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
@@ -34,12 +34,17 @@
 	</blockquote>
 	<table id="userList" lay-filter="userList"></table>
 
-	<!--操作-->
 	<script type="text/html" id="userListBar">
 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+		{{# if(d.status == 1){ }}
+		<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已禁用</a>
+		{{# } }}
+		{{# if(d.status == 0){ }}
 		<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a>
+		{{# } }}
 		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 	</script>
+	<!--操作-->
 </form>
 <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/js/user/userList.js}"></script>

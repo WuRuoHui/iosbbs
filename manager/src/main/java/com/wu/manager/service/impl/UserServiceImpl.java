@@ -257,6 +257,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public LayUIResult updateUserStatus(Integer id) {
+        if (id == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        User user = userMapper.selectByPrimaryKey(id);
+        if (user == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        User userNew = new User();
+        userNew.setId(id);
+        userNew.setStatus(!user.getStatus());
+        int rows = userMapper.updateByPrimaryKeySelective(userNew);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
+    @Override
     public LayUIResult selectAllUser() {
         UserExample userExample = new UserExample();
         List<User> users = userMapper.selectByExample(userExample);

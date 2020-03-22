@@ -62,6 +62,13 @@ public class UserController {
         return layUIResult;
     }
 
+    @RequestMapping(value = "/user/status/{id}",method = RequestMethod.PUT)
+    @ResponseBody
+    public LayUIResult updateUserStatus(@PathVariable(name = "id") Integer id) {
+        LayUIResult layUIResult = userService.updateUserStatus(id);
+        return layUIResult;
+    }
+
     @DeleteMapping("/user")
     @ResponseBody
     public LayUIResult deleteUserByIds(@RequestBody List<Integer> userIds) {

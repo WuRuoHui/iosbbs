@@ -96,7 +96,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
         })
     }
-    $(".addNews_btn").click(function(){
+    $(".addUser_btn").click(function(){
         $(function () {
             addUser();
         })
@@ -162,6 +162,34 @@ layui.use(['form','layer','table','laytpl'],function(){
                 btnText = "已禁用";
             if(_this.text()=="已禁用"){
                 usableText = "是否确定启用此用户？",
+                    btnText = "已启用";
+            }
+            layer.confirm(usableText,{
+                icon: 3,
+                title:'系统提示',
+                cancel : function(index){
+                    layer.close(index);
+                }
+            },function(index){
+                $.ajax({
+                    url: '/user/status/' + data.id,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (res) {
+                        layer.close(index);
+                        top.layer.msg(res.msg)
+                        if (res.code == 0) {
+                            _this.text(btnText);
+                        }
+                    }
+                })
+            });
+            /*var _this = $(this),
+                usableText = "是否确定禁用此用户？",
+                btnText = "已禁用";
+            if(_this.text()=="已禁用"){
+                usableText = "是否确定启用此用户？",
                 btnText = "已启用";
             }
             layer.confirm(usableText,{
@@ -175,7 +203,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 layer.close(index);
             },function(index){
                 layer.close(index);
-            });
+            });*/
         }
     });
 
