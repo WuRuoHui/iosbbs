@@ -5,6 +5,7 @@ import com.wu.manager.pojo.LeftNav;
 import com.wu.manager.pojo.LeftNavNode;
 import com.wu.manager.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,8 +54,8 @@ public class MenuController {
 
     @RequestMapping("/menu/leftNav")      //js在index.js中
     @ResponseBody
-    public Map<String, List<LeftNavNode>> showLeftNav() {
-        Map<String,List<LeftNavNode>> leftNav = menuService.getAllLeftNav();
+    public Map<String, List<LeftNavNode>> showLeftNav(Authentication authentication) {
+        Map<String,List<LeftNavNode>> leftNav = menuService.getAllLeftNav(authentication);
         return leftNav;
     }
 

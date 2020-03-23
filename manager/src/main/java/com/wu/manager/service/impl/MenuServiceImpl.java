@@ -3,12 +3,15 @@ package com.wu.manager.service.impl;
 import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.LeftNavDTO;
+import com.wu.manager.mapper.LeftNavExtMapper;
 import com.wu.manager.mapper.LeftNavMapper;
 import com.wu.manager.mapper.TopMenuMapper;
+import com.wu.manager.mapper.UserRoleMapper;
 import com.wu.manager.pojo.*;
 import com.wu.manager.service.MenuService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,6 +31,10 @@ public class MenuServiceImpl implements MenuService {
     private TopMenuMapper topMenuMapper;
     @Autowired
     private LeftNavMapper leftNavMapper;
+    @Autowired
+    private LeftNavExtMapper leftNavExtMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Override
     public LayUIResult getAllTopMenu() {
@@ -38,14 +45,19 @@ public class MenuServiceImpl implements MenuService {
 
     //待重构
     @Override
-    public Map<String,List<LeftNavNode>> getAllLeftNav() {
+    public Map<String,List<LeftNavNode>> getAllLeftNav(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        UserRoleExample userRoleExample = new UserRoleExample();
+        userRoleExample.createCriteria().andUserIdEqualTo(user.getId());
+        List<UserRole> userRoles = userRoleMapper.selectByExample(userRoleExample);
         List<TopMenu> topMenus = topMenuMapper.selectByExample(new TopMenuExample());
         Map<String,List<LeftNavNode>> map= new HashMap<>();
         for (TopMenu topMenu : topMenus) {
             //获得二级菜单
-            LeftNavExample leftNavExample = new LeftNavExample();
+            List<LeftNav> leftSecNavs = leftNavExtMapper.selectLeftMenuByRoleId(userRoles.get(0).getRoleId(), topMenu.getId(), 2);
+            /*LeftNavExample leftNavExample = new LeftNavExample();
             leftNavExample.createCriteria().andParentIdEqualTo(topMenu.getId()).andMenuLevelEqualTo(2);
-            List<LeftNav> leftSecNavs = leftNavMapper.selectByExample(leftNavExample);
+            List<LeftNav> leftSecNavs = leftNavMapper.selectByExample(leftNavExample);*/
             List<LeftNavNode> leftNavNodes = new ArrayList<>();
             for (LeftNav leftNav : leftSecNavs) {
                 LeftNavNode leftNavNode = new LeftNavNode();

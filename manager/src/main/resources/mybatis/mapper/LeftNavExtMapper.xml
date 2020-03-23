@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wu.manager.mapper.LeftNavExtMapper">
+  <resultMap id="BaseResultMap" type="com.wu.manager.pojo.LeftNav">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="href" jdbcType="VARCHAR" property="href" />
+    <result column="spread" jdbcType="BIT" property="spread" />
+    <result column="menu_level" jdbcType="INTEGER" property="menuLevel" />
+    <result column="is_parent" jdbcType="BIT" property="isParent" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+  </resultMap>
+  <select id="selectLeftMenuByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from bbs_left_nav nav,bbs_permission per
+    where nav.id = per.left_menu_id
+    and per.role_id = #{roleId,jdbcType=INTEGER}
+    and nav.parent_id =#{parentId,jdbcType=INTEGER}
+    and nav.menu_level = #{menuLevel,jdbcType=INTEGER}
+  </select>
+</mapper>

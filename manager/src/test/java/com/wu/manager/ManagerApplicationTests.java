@@ -1,6 +1,7 @@
 package com.wu.manager;
 
 import com.wu.manager.mapper.GameExtMapper;
+import com.wu.manager.mapper.LeftNavExtMapper;
 import com.wu.manager.mapper.UserGradeMapper;
 import com.wu.manager.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -22,9 +23,15 @@ class ManagerApplicationTests {
     private String BBS_USER_GRADE_PREFIX;
     @Autowired
     private GameExtMapper gameExtMapper;
+    @Autowired
+    private LeftNavExtMapper leftNavExtMapper;
 
     @Test
     void contextLoads() {
+        /*List<LeftNav> leftNavs = leftNavExtMapper.selectLeftMenuByRoleId(2, 1, 2);
+        for (LeftNav leftNav : leftNavs) {
+            System.out.println(leftNav);
+        }*/
         /*List<Integer> ids = gameExtMapper.selectIdsByNameSearch("奇迹之剑");
         for (Integer id : ids) {
             System.out.println(id);
