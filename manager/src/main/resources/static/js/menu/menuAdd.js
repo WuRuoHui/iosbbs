@@ -53,8 +53,4 @@ layui.use(['form', 'layer'], function () {
         appendTopMenu();
     })
 
-    /*form.on('radio(isParent)', function (data) {
-        if (data.value==0) alert(1)
-        console.log(data.value); //被点击的radio的value值
-    })*/
 })

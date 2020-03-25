@@ -78,7 +78,7 @@ layui.use(['form', 'element', 'layer', 'jquery'], function () {
         var hotNewsHtml = '';
         for (var i = 0; i < data.data.length; i++) {
             hotNewsHtml += '<tr>'
-                + '<td align="left"><a href="javascript:;"> ' + data.data[i].title + '</a></td>'
+                + '<td align="left"><a target="_blank" href=locahost:8080/jie/'+data.data[i].id+'> ' + data.data[i].title + '</a></td>'
                 + '<td>' + formatDate(new Date(data.data[i].gmtCreate)) + '</td>'
                 + '</tr>';
         }
