@@ -28,4 +28,6 @@ public class LeftNavDTO {
     private Boolean isParent;
 
     private TopMenu parent;
+
+    private Boolean status;
 }

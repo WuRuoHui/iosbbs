@@ -59,6 +59,13 @@ public class MenuController {
         return leftNav;
     }
 
+    @RequestMapping(value = "/menu/leftNav/status/{id}",method = RequestMethod.PUT)      //js在index.js中
+    @ResponseBody
+    public LayUIResult updateLeftNavStatus(@PathVariable(name = "id") Integer id){
+        LayUIResult layUIResult = menuService.updateLeftNavStatus(id);
+        return layUIResult;
+    }
+
     @RequestMapping("/menu/leftNavWithoutKey")
     @ResponseBody
     public LayUIResult selectLeftNav() {

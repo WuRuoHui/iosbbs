@@ -123,10 +123,10 @@ layui.use(['form','layer','table','laytpl'],function(){
             addMenu(data);
         }else if(layEvent === 'usable'){ //启用禁用
             var _this = $(this),
-                usableText = "是否确定禁用此用户？",
+                usableText = "是否确定禁用此菜单项？",
                 btnText = "已禁用";
             if(_this.text()=="已禁用"){
-                usableText = "是否确定启用此用户？",
+                usableText = "是否确定启用此菜单项？",
                 btnText = "已启用";
             }
             layer.confirm(usableText,{
@@ -136,10 +136,19 @@ layui.use(['form','layer','table','laytpl'],function(){
                     layer.close(index);
                 }
             },function(index){
-                _this.text(btnText);
-                layer.close(index);
-            },function(index){
-                layer.close(index);
+                $.ajax({
+                    url: '/menu/leftNav/status/' + data.id,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (res) {
+                        layer.close(index);
+                        top.layer.msg(res.msg)
+                        if (res.code == 0) {
+                            _this.text(btnText);
+                        }
+                    }
+                })
             });
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此菜单项？',{icon:3, title:'提示信息'},function(index){

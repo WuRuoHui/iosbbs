@@ -1,5 +1,6 @@
 package com.wu.manager.service.impl;
 
+import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
 import com.wu.manager.dto.LeftNavDTO;
@@ -141,5 +142,24 @@ public class MenuServiceImpl implements MenuService {
             return LayUIResult.build(0,"删除菜单项成功");
         }
         return LayUIResult.fail("删除菜单项失败");
+    }
+
+    @Override
+    public LayUIResult updateLeftNavStatus(Integer id) {
+        if (id == null) {
+            return LayUIResult.build(1, CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        LeftNav leftNav = leftNavMapper.selectByPrimaryKey(id);
+        if (leftNav == null) {
+            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+        }
+        LeftNav leftNavNew = new LeftNav();
+        leftNavNew.setId(id);
+        leftNavNew.setStatus(!leftNav.getStatus());
+        int rows = leftNavMapper.updateByPrimaryKeySelective(leftNavNew);
+        if (rows > 0 ) {
+            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        }
+        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
     }
 }

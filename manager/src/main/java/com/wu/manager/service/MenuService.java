@@ -27,4 +27,6 @@ public interface MenuService {
     LayUIResult insertOrUpdateLeftNav(LeftNav leftNav);
 
     LayUIResult deleteLeftNavById(Integer id);
+
+    LayUIResult updateLeftNavStatus(Integer id);
 }
