@@ -1,8 +1,5 @@
 package com.wu.manager.pojo;
 
-import lombok.ToString;
-
-@ToString
 public class LeftNav {
     private Integer id;
 
@@ -19,6 +16,8 @@ public class LeftNav {
     private Boolean isParent;
 
     private Integer parentId;
+
+    private Boolean status;
 
     public Integer getId() {
         return id;
@@ -82,5 +81,13 @@ public class LeftNav {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

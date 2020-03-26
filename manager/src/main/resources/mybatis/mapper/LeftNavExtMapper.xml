@@ -10,13 +10,15 @@
     <result column="menu_level" jdbcType="INTEGER" property="menuLevel" />
     <result column="is_parent" jdbcType="BIT" property="isParent" />
     <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="status" jdbcType="BIT" property="status" />
   </resultMap>
-  <select id="selectLeftMenuByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectLeftMenuByRoleId" resultMap="BaseResultMap">
     select *
     from bbs_left_nav nav,bbs_permission per
     where nav.id = per.left_menu_id
     and per.role_id = #{roleId,jdbcType=INTEGER}
     and nav.parent_id =#{parentId,jdbcType=INTEGER}
     and nav.menu_level = #{menuLevel,jdbcType=INTEGER}
+    and nav.status = #{status,jdbcType=BOOLEAN}
   </select>
 </mapper>

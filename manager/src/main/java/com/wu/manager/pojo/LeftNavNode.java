@@ -1,12 +1,9 @@
 package com.wu.manager.pojo;
 
-import com.alibaba.druid.sql.visitor.functions.Left;
 import lombok.Data;
 import lombok.ToString;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @description: 左侧菜单栏节点对象
@@ -24,6 +21,8 @@ public class LeftNavNode {
     private String href;
 
     private Boolean spread;
+
+    private Boolean status;
 
     private List<LeftNavNode> children;
 }

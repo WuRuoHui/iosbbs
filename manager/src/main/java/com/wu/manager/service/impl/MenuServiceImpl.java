@@ -54,10 +54,7 @@ public class MenuServiceImpl implements MenuService {
         Map<String,List<LeftNavNode>> map= new HashMap<>();
         for (TopMenu topMenu : topMenus) {
             //获得二级菜单
-            List<LeftNav> leftSecNavs = leftNavExtMapper.selectLeftMenuByRoleId(userRoles.get(0).getRoleId(), topMenu.getId(), 2);
-            /*LeftNavExample leftNavExample = new LeftNavExample();
-            leftNavExample.createCriteria().andParentIdEqualTo(topMenu.getId()).andMenuLevelEqualTo(2);
-            List<LeftNav> leftSecNavs = leftNavMapper.selectByExample(leftNavExample);*/
+            List<LeftNav> leftSecNavs = leftNavExtMapper.selectLeftMenuByRoleId(userRoles.get(0).getRoleId(), topMenu.getId(), 2,true);
             List<LeftNavNode> leftNavNodes = new ArrayList<>();
             for (LeftNav leftNav : leftSecNavs) {
                 LeftNavNode leftNavNode = new LeftNavNode();
