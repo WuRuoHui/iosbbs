@@ -96,17 +96,31 @@ layui.use(['form','layer','table','laytpl'],function(){
     $(".delAll_btn").click(function(){
         var checkStatus = table.checkStatus('menuListTable'),
             data = checkStatus.data,
-            newsId = [];
+            menuIds = [];
         if(data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].newsId);
+                menuIds.push(data[i].id);
             }
             layer.confirm('确定删除选中的菜单项？', {icon: 3, title: '提示信息'}, function (index) {
+                $.ajax({
+                    url: '/menus',
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify(menuIds),
+                    success: function (res) {
+                        top.layer.msg(res.msg)
+                        if (res.code == 0) {
+                            tableIns.reload();
+                        }
+                        layer.close(index);
+                    }
+                })
                 // $.get("删除文章接口",{
                 //     newsId : newsId  //将需要删除的newsId作为参数传入
                 // },function(data){
-                tableIns.reload();
-                layer.close(index);
+                // tableIns.reload();
+                // layer.close(index);
                 // })
             })
         }else{

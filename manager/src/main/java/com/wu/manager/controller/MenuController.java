@@ -7,10 +7,7 @@ import com.wu.manager.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -84,6 +81,13 @@ public class MenuController {
     @ResponseBody
     public LayUIResult deleteMenuById(@PathVariable(name = "id") Integer id) {
         LayUIResult layUIResult = menuService.deleteLeftNavById(id);
+        return layUIResult;
+    }
+
+    @RequestMapping(value = "/menus",method = RequestMethod.DELETE)
+    @ResponseBody
+    public LayUIResult deleteMenuByIds(@RequestBody List<Integer> menuIds) {
+        LayUIResult layUIResult = menuService.deleteMenuByIds(menuIds);
         return layUIResult;
     }
 

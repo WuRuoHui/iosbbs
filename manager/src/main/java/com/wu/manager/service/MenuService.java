@@ -29,4 +29,6 @@ public interface MenuService {
     LayUIResult deleteLeftNavById(Integer id);
 
     LayUIResult updateLeftNavStatus(Integer id);
+
+    LayUIResult deleteMenuByIds(List<Integer> menuIds);
 }

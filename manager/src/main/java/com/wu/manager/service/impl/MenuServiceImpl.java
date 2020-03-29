@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,20 +47,20 @@ public class MenuServiceImpl implements MenuService {
 
     //待重构
     @Override
-    public Map<String,List<LeftNavNode>> getAllLeftNav(Authentication authentication) {
+    public Map<String, List<LeftNavNode>> getAllLeftNav(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         UserRoleExample userRoleExample = new UserRoleExample();
         userRoleExample.createCriteria().andUserIdEqualTo(user.getId());
         List<UserRole> userRoles = userRoleMapper.selectByExample(userRoleExample);
         List<TopMenu> topMenus = topMenuMapper.selectByExample(new TopMenuExample());
-        Map<String,List<LeftNavNode>> map= new HashMap<>();
+        Map<String, List<LeftNavNode>> map = new HashMap<>();
         for (TopMenu topMenu : topMenus) {
             //获得二级菜单
-            List<LeftNav> leftSecNavs = leftNavExtMapper.selectLeftMenuByRoleId(userRoles.get(0).getRoleId(), topMenu.getId(), 2,true);
+            List<LeftNav> leftSecNavs = leftNavExtMapper.selectLeftMenuByRoleId(userRoles.get(0).getRoleId(), topMenu.getId(), 2, true);
             List<LeftNavNode> leftNavNodes = new ArrayList<>();
             for (LeftNav leftNav : leftSecNavs) {
                 LeftNavNode leftNavNode = new LeftNavNode();
-                BeanUtils.copyProperties(leftNav,leftNavNode);
+                BeanUtils.copyProperties(leftNav, leftNavNode);
                 //如果二级菜单是父节点，即有子节点
                 if (leftNav.getIsParent()) {
                     LeftNavExample leftThrNavExample = new LeftNavExample();
@@ -68,14 +69,14 @@ public class MenuServiceImpl implements MenuService {
                     List<LeftNavNode> navThrNodes = new ArrayList<>();      //三级菜单list容器
                     for (LeftNav leftNav1 : leftThrNavs) {
                         LeftNavNode leftThrNavNode = new LeftNavNode();
-                        BeanUtils.copyProperties(leftNav1,leftThrNavNode);
+                        BeanUtils.copyProperties(leftNav1, leftThrNavNode);
                         navThrNodes.add(leftThrNavNode);
                     }
                     leftNavNode.setChildren(navThrNodes);
                 }
                 leftNavNodes.add(leftNavNode);
             }
-            map.put(topMenu.getParameterName(),leftNavNodes);
+            map.put(topMenu.getParameterName(), leftNavNodes);
         }
         return map;
     }
@@ -85,27 +86,27 @@ public class MenuServiceImpl implements MenuService {
         LeftNavExample leftNavExample = new LeftNavExample();
         List<LeftNav> leftNavs = leftNavMapper.selectByExample(leftNavExample);
         List<LeftNavDTO> leftNavDTOS = new ArrayList<>();
-        if (leftNavs!= null && leftNavs.size()>0) {
+        if (leftNavs != null && leftNavs.size() > 0) {
             for (LeftNav leftNav : leftNavs) {
                 LeftNavDTO leftNavDTO = new LeftNavDTO();
-                BeanUtils.copyProperties(leftNav,leftNavDTO);
+                BeanUtils.copyProperties(leftNav, leftNavDTO);
                 TopMenu topMenu = topMenuMapper.selectByPrimaryKey(leftNav.getParentId());
                 leftNavDTO.setParent(topMenu);
                 leftNavDTOS.add(leftNavDTO);
             }
-            return LayUIResult.build(0,leftNavs.size(),"success",leftNavDTOS);
+            return LayUIResult.build(0, leftNavs.size(), "success", leftNavDTOS);
         }
-        return LayUIResult.build(1,"fail");
+        return LayUIResult.build(1, "fail");
     }
 
     @Override
     public LayUIResult selectTopMenu() {
         TopMenuExample topMenuExample = new TopMenuExample();
         List<TopMenu> topMenus = topMenuMapper.selectByExample(topMenuExample);
-        if (topMenus != null && topMenus.size()>0) {
-            return LayUIResult.build(0,topMenus.size(),"success",topMenus);
+        if (topMenus != null && topMenus.size() > 0) {
+            return LayUIResult.build(0, topMenus.size(), "success", topMenus);
         }
-        return LayUIResult.build(1,"fail");
+        return LayUIResult.build(1, "fail");
     }
 
     @Override
@@ -117,16 +118,16 @@ public class MenuServiceImpl implements MenuService {
         if (leftNav.getId() != null) {
             //存在则进行更新操作
             int rows = leftNavMapper.updateByPrimaryKeySelective(leftNav);
-            if (rows >0) {
-                return LayUIResult.build(0,"更新成功");
+            if (rows > 0) {
+                return LayUIResult.build(0, "更新成功");
             }
             return LayUIResult.fail("更新失败");
         }
         //不存在则进行插入操作
         leftNav.setSpread(false);
         int rows = leftNavMapper.insertSelective(leftNav);
-        if (rows >0 ) {
-            return LayUIResult.build(0,"插入成功");
+        if (rows > 0) {
+            return LayUIResult.build(0, "插入成功");
         }
         return LayUIResult.fail("插入失败");
     }
@@ -139,7 +140,7 @@ public class MenuServiceImpl implements MenuService {
         }
         int rows = leftNavMapper.deleteByPrimaryKey(id);
         if (rows > 0) {
-            return LayUIResult.build(0,"删除菜单项成功");
+            return LayUIResult.build(0, "删除菜单项成功");
         }
         return LayUIResult.fail("删除菜单项失败");
     }
@@ -151,15 +152,34 @@ public class MenuServiceImpl implements MenuService {
         }
         LeftNav leftNav = leftNavMapper.selectByPrimaryKey(id);
         if (leftNav == null) {
-            return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+            return LayUIResult.build(1, CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
         }
         LeftNav leftNavNew = new LeftNav();
         leftNavNew.setId(id);
         leftNavNew.setStatus(!leftNav.getStatus());
         int rows = leftNavMapper.updateByPrimaryKeySelective(leftNavNew);
-        if (rows > 0 ) {
-            return LayUIResult.build(0,CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
+        if (rows > 0) {
+            return LayUIResult.build(0, CustomizeErrorCode.UPDATE_DATA_SUCCESS.getMessage());
         }
-        return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+        return LayUIResult.build(1, CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
+    }
+
+    @Override
+    @Transactional
+    public LayUIResult deleteMenuByIds(List<Integer> menuIds) {
+        if (menuIds == null || menuIds.size() < 1) {
+            return LayUIResult.build(1,CustomizeErrorCode.NOT_ROW_SELECT.getMessage());
+        }
+        for (Integer menuId : menuIds) {
+            LeftNav leftNav = leftNavMapper.selectByPrimaryKey(menuId);
+            if (leftNav == null) {
+                return LayUIResult.build(1,CustomizeErrorCode.DATA_NOT_FOUND.getMessage());
+            }
+            int rows = leftNavMapper.deleteByPrimaryKey(menuId);
+            if (rows < 0 ) {
+                return LayUIResult.build(1,CustomizeErrorCode.DELETE_DATA_FAIL.getMessage());
+            }
+        }
+        return LayUIResult.build(0,CustomizeErrorCode.DELETE_DATA_SUCCESS.getMessage());
     }
 }
