@@ -40,12 +40,12 @@ layui.use(['form','layer','table','laytpl'],function(){
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
         if($(".searchVal").val() != ''){
-            table.reload("newsListTable",{
+            table.reload("menuListTable",{
                 page: {
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    key: $(".searchVal").val()  //搜索的关键字
+                    search: $(".searchVal").val()  //搜索的关键字
                 }
             })
         }else{
@@ -116,12 +116,6 @@ layui.use(['form','layer','table','laytpl'],function(){
                         layer.close(index);
                     }
                 })
-                // $.get("删除文章接口",{
-                //     newsId : newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                // tableIns.reload();
-                // layer.close(index);
-                // })
             })
         }else{
             layer.msg("请选择需要删除的用户");

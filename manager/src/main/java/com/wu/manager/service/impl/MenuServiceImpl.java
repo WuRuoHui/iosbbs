@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,8 +83,12 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public LayUIResult selectLeftNav() {
+    public LayUIResult selectLeftNav(String search) {
         LeftNavExample leftNavExample = new LeftNavExample();
+        if (search != null && !StringUtils.isEmpty(search.trim())) {
+            leftNavExample.createCriteria()
+                    .andTitleLike("%"+search+"%");
+        }
         List<LeftNav> leftNavs = leftNavMapper.selectByExample(leftNavExample);
         List<LeftNavDTO> leftNavDTOS = new ArrayList<>();
         if (leftNavs != null && leftNavs.size() > 0) {
