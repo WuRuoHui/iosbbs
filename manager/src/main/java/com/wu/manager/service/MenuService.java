@@ -20,7 +20,7 @@ public interface MenuService {
 
     public Map<String, List<LeftNavNode>> getAllLeftNav(Authentication authentication);
 
-    LayUIResult selectLeftNav(String search);
+    LayUIResult selectLeftNav(String search,Integer page, Integer limit);
 
     LayUIResult selectTopMenu();
 

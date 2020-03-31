@@ -1,5 +1,6 @@
 package com.wu.manager.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
@@ -83,13 +84,17 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public LayUIResult selectLeftNav(String search) {
+    public LayUIResult selectLeftNav(String search,Integer page, Integer limit) {
+        if (page != null && limit != null) {
+            PageHelper.startPage(page,limit);
+        }
         LeftNavExample leftNavExample = new LeftNavExample();
         if (search != null && !StringUtils.isEmpty(search.trim())) {
             leftNavExample.createCriteria()
                     .andTitleLike("%"+search+"%");
         }
         List<LeftNav> leftNavs = leftNavMapper.selectByExample(leftNavExample);
+        long count = leftNavMapper.countByExample(new LeftNavExample());
         List<LeftNavDTO> leftNavDTOS = new ArrayList<>();
         if (leftNavs != null && leftNavs.size() > 0) {
             for (LeftNav leftNav : leftNavs) {
@@ -99,7 +104,7 @@ public class MenuServiceImpl implements MenuService {
                 leftNavDTO.setParent(topMenu);
                 leftNavDTOS.add(leftNavDTO);
             }
-            return LayUIResult.build(0, leftNavs.size(), "success", leftNavDTOS);
+            return LayUIResult.build(0, Math.toIntExact(count), "success", leftNavDTOS);
         }
         return LayUIResult.build(1, "fail");
     }

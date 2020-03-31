@@ -65,8 +65,8 @@ public class MenuController {
 
     @RequestMapping("/menu/leftNavWithoutKey")
     @ResponseBody
-    public LayUIResult selectLeftNav(String search) {
-        LayUIResult layUIResult = menuService.selectLeftNav(search);
+    public LayUIResult selectLeftNav(String search, Integer page, Integer limit) {
+        LayUIResult layUIResult = menuService.selectLeftNav(search,page,limit);
         return layUIResult;
     }
 
