@@ -1,5 +1,6 @@
 package com.wu.manager.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.wu.common.enums.CustomizeErrorCode;
 import com.wu.common.utils.JsonUtils;
 import com.wu.common.utils.LayUIResult;
@@ -277,8 +278,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public LayUIResult selectAllUser() {
+    public LayUIResult selectAllUser(String search, Integer page, Integer limit) {
+        if (page !=null && limit != null) {
+            PageHelper.startPage(page,limit);
+        }
         UserExample userExample = new UserExample();
+        if (search != null && !StringUtils.isEmpty(search.trim())) {
+            userExample.createCriteria()
+                    .andNameLike("%"+search.trim()+"%");
+        }
         List<User> users = userMapper.selectByExample(userExample);
         List<UserDTO> userDTOS = new ArrayList<>();
         for (User user : users) {

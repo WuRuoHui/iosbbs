@@ -18,7 +18,7 @@ public interface UserService extends UserDetailsService {
 
     LayUIResult selectAllUserGrade();
 
-    LayUIResult selectAllUser();
+    LayUIResult selectAllUser(String search, Integer page, Integer limit);
 
     LayUIResult insertUser(User user, Integer roleId);
 
