@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface NewsService {
 
-    LayUIResult selectAllNews();
+    LayUIResult selectAllNews(String search);
 
     LayUIResult deleteNewsById(Integer id);
 
@@ -27,5 +27,5 @@ public interface NewsService {
 
     LayUIResult updateClosedById(Integer id);
 
-    LayUIResult selectNewsWithPaging(Integer page, Integer limit);
+    LayUIResult selectNewsWithPaging(String search, Integer page, Integer limit);
 }

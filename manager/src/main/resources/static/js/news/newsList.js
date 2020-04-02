@@ -130,7 +130,7 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    key: $(".searchVal").val()  //搜索的关键字
+                    search: $(".searchVal").val()  //搜索的关键字
                 }
             })
         }else{
