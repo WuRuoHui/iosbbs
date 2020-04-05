@@ -338,8 +338,9 @@ public class JieController {
     }
 
     @RequestMapping(value = "/jie/all",method = RequestMethod.GET)
-    public String selectJieByCurr(Model model){
-        List<JieDTO> jieDTOS = jieService.selectJieByCurr(1);
+    public String selectJieByCurr(Model model,String q){
+//        List<JieDTO> jieDTOS = jieService.selectJieByCurr(1);
+        List<JieDTO> jieDTOS = jieService.selectJieByCurrAndSearch(1,q);
         Integer jieCount = jieService.countJie();
         model.addAttribute("jieList",jieDTOS);
         model.addAttribute("jieCount",jieCount);

@@ -62,4 +62,6 @@ public interface JieService {
     LayUIResult deleteReplyById(Integer id);
 
     LayUIResult updateReply(Reply reply);
+
+    List<JieDTO> selectJieByCurrAndSearch(Integer curr, String q);
 }

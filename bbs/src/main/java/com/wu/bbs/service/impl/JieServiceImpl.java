@@ -432,6 +432,20 @@ public class JieServiceImpl implements JieService {
         return LayUIResult.build(1,CustomizeErrorCode.UPDATE_DATA_FAIL.getMessage());
     }
 
+    @Override
+    public List<JieDTO> selectJieByCurrAndSearch(Integer curr, String q) {
+        PageHelper.startPage(curr,10);
+        JieExample jieExample = new JieExample();
+        if (q!=null && !StringUtils.isEmpty(q)) {
+            jieExample.createCriteria()
+                    .andTitleLike("%"+q.trim()+"%");
+        }
+        jieExample.setOrderByClause("gmt_create DESC");
+        List<Jie> jies = jieMapper.selectByExample(jieExample);
+        List<JieDTO> jieDTOS = copyJieToJieDTO(jies);
+        return jieDTOS;
+    }
+
     /**
      * @Description: 根据columnId和status查询对应的总记录数
      * @Param: [columnId, status]
