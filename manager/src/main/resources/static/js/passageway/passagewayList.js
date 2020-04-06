@@ -50,14 +50,14 @@ layui.use(['form', 'layer', 'laydate', 'table', 'upload'], function () {
     //搜索按钮单击事件
     $(".search_btn").on("click", function () {
         $.ajax({
-            url: '/systemSetting/linkList',
+            url: '/systemSetting/passageways',
             type: 'GET',
             dataType: 'json',
             data: {
                 search:$(".searchVal").val()
             },
             success: function (res) {
-                table.reload("linkListTab", {
+                table.reload("passagewayListTable", {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     },

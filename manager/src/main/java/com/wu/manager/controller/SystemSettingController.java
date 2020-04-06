@@ -110,8 +110,8 @@ public class SystemSettingController {
     @CrossOrigin(origins = "http://127.0.0.1:8080",maxAge = 3600)
     @RequestMapping(value = "/systemSetting/passageways",method = RequestMethod.GET)
     @ResponseBody
-    public LayUIResult selectAllPassageway() {
-        LayUIResult layUIResult = systemSettingService.selectAllPassageway();
+    public LayUIResult selectAllPassageway(String search) {
+        LayUIResult layUIResult = systemSettingService.selectAllPassageway(search);
         return layUIResult;
     }
 

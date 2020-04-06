@@ -158,7 +158,18 @@ public class SystemSettingServiceImpl implements SystemSettingService {
     }
 
     @Override
-    public LayUIResult selectAllPassageway() {
+    public LayUIResult selectAllPassageway(String search) {
+        if (search != null && !StringUtils.isEmpty(search.trim())) {
+            System.out.println(search);
+            PassagewayExample passagewayExample = new PassagewayExample();
+            passagewayExample.createCriteria()
+                    .andNameLike("%"+search.trim()+"%");
+            List<Passageway> passageways = passagewayMapper.selectByExample(passagewayExample);
+            if (passageways.size() > 0 ) {
+                return LayUIResult.build(0,passageways.size(),CustomizeErrorCode.SELECT_DATA_SUCCESS.getMessage(),passageways);
+            }
+            return LayUIResult.build(1,CustomizeErrorCode.SELECT_DATA_FAIL.getMessage());
+        }
         String passageway_from_redis = stringRedisService.getString(BBS_PASSAGEWAY);
         if (!StringUtils.isEmpty(passageway_from_redis)) {
             List<Passageway> passageways = JsonUtils.jsonToList(passageway_from_redis, Passageway.class);

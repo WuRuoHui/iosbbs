@@ -22,7 +22,7 @@ public interface SystemSettingService {
 
     LayUIResult deleteLinkListByIds(List<Integer> linkIds);
 
-    LayUIResult selectAllPassageway();
+    LayUIResult selectAllPassageway(String search);
 
     LayUIResult insertPassageway(Passageway passageway);
 
